@@ -4,13 +4,16 @@ public class User {
     private String id;
     private String password;
     private String name;
+    private String nickName;
 
     public User() {}
 
-    public User(String id, String password, String name) {
+
+    public User(String id, String password, String name, String nickName) {
         this.id = id;
         this.password = password;
         this.name = name;
+        this.nickName = nickName;
     }
 
     public String getId() {
@@ -37,12 +40,22 @@ public class User {
         this.name = name;
     }
 
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", nickName='" + nickName + '\'' +
                 '}';
     }
 }
