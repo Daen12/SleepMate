@@ -4,16 +4,17 @@ public class User {
     private String id;
     private String password;
     private String name;
-    private String nickName;
+    private String nickname;
+    private String email;
 
     public User() {}
 
-
-    public User(String id, String password, String name, String nickName) {
+    public User(String id, String password, String name, String nickname, String email) {
         this.id = id;
         this.password = password;
         this.name = name;
-        this.nickName = nickName;
+        this.nickname = nickname;
+        this.email = email;
     }
 
     public String getId() {
@@ -40,13 +41,20 @@ public class User {
         this.name = name;
     }
 
-
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -55,7 +63,8 @@ public class User {
                 "id='" + id + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", nickName='" + nickName + '\'' +
+                ", nickName='" + nickname + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

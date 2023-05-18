@@ -8,4 +8,27 @@
         FROM users
         WHERE id = #{id}
     </select>
+
+    <select id="getUserId" parameterType="String" resultType="Integer">
+        SELECT count(*)
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <select id="getUserNickName" parameterType="String" resultType="Integer">
+        SELECT count(*)
+        FROM users
+        WHERE nickname = #{nickname}
+    </select>
+
+    <select id="getUserEmail" parameterType="String" resultType="Integer">
+        SELECT count(*)
+        FROM users
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+        INSERT INTO users
+        VALUES(#{id}, #{password}, #{name}, #{nickname}, #{email})
+    </insert>
 </mapper>

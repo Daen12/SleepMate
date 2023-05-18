@@ -21,4 +21,29 @@ public class UserServieceImpl implements UserService{
             return null;
         }
     }
+
+    @Override
+    public boolean checkId(String id) {
+        int num = userDao.getUserId(id);
+        if (num == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int signUp(User user) {
+        int inspection = userDao.getUserNickName(user.getNickname());
+        // 닉네임 중복 검사
+        if (inspection != 0) return 2;
+        else {
+            // 이메일 중복 검사
+            inspection = userDao.getUserEmail(user.getEmail());
+            if (inspection != 0) return 3;
+            else {
+                return userDao.insertUser(user);
+            }
+        }
+    }
 }
