@@ -1,1 +1,1 @@
-# SleepMate
+# YogaMate
