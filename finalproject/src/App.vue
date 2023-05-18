@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <div></div>
+    <div>다영</div>
+    <!-- 다영이가 추가 -->
     <router-view />
   </div>
 </template>
