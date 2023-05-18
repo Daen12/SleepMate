@@ -77,7 +77,7 @@ public class UserController {
 
         if (resNum == 1) {
             result.put("message", SUCCESS);
-            status = HttpStatus.ACCEPTED;
+            status = HttpStatus.CREATED;
         } else if (resNum == 2) {
             result.put("message", "Duplicate NickName");
             status = HttpStatus.CONFLICT;
