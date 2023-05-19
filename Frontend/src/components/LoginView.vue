@@ -3,24 +3,25 @@
   <section class="signin-form">
     <h1>LOGIN</h1>
     <!-- form을 만들어야 서버에 전송 가능 -->
-    <form class="signup-form" method = "post" action="/process/adduser">
-      
+    <!-- <form class="signup-form" method = "post" action="/process/adduser"> -->
+    <div class="signup-form">
         <div class="int-area">
             <input v-model="id" type="text" name="id" id="id" autocomplete="off" required>
             <label for="id">USER NAME</label>
         </div>
         <div class="int-area">
-            <input v-model="password" type="password" name="pw" id="pw" autocomplete="off" required>
+            <input  @keyup.enter="login" v-model="password" type="password" name="pw" id="pw" autocomplete="off" required>
             <label for="pw">PASSWORD</label>
         </div>
    
         <div class="button-area">
-            <button type="submit">LOGIN</button>
+            <button @click="login" type="submit">LOGIN</button>
         </div>
         <!-- <div class="caption">
             <a href="">Forgot Password?</a>
         </div> -->
-    </form>
+         </div>
+    <!-- </form> -->
 </section>
 </div>
 </template>
@@ -28,28 +29,24 @@
 <script>
 export default {
     data() {
-    return {
-      name: "",
-      email : "",
-      id: "",
-      password: "",
-    };
-  },
+        return {
+            id: "",
+            password: "",
+        }
+    },
   methods: {
-    regist() {
-      if (this.id === "" || this.password === "" || this.name === "" || this.email==="") {
+    login() {
+      if (this.id === "" || this.password === "") {
         alert("모든 내용을 입력해주세요");
         return;
       }
 
       let user = {
         id: this.id,
-        email:this.email,
         password: this.password,
-        name: this.name,
       };
 
-      this.$store.dispatch("createUser", user);
+      this.$store.dispatch("setLoginUser", user);
     },
   },
 }

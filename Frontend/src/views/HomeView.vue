@@ -66,10 +66,13 @@
                 <li class="nav-item">
                   <a class="nav-link" href="#contact-us">Contact Us</a>
                 </li>
-                <li class="nav-item">
+                <li v-if="!loginUser" class="nav-item">
                   <router-link to="/login"><a class="nav-link" href="#">Login</a></router-link>
                 </li>
-                <li class="nav-item">
+                <li v-if="loginUser" class="nav-item">
+                  <button class="nav-link logoutButton" @click="logout">Logout</button>
+                </li>
+                <li v-if="!loginUser" class="nav-item">
                   <router-link to="/signup"><a class="nav-link" href="#">signup</a></router-link>
                 </li>
               </ul>
@@ -90,13 +93,21 @@
   <section class="shop_section layout_padding">
     <div class="container">
       <div class="box">
-        <div class="detail-box">
+        <div v-if="!loginUser" class="detail-box">
           <h2>
             YogaMate - 
             내 손 안의 요가 도우미
           </h2>
           <p>
             맞춤형 요가 영상부터 전문가와의 빠른 상담과 더 나은 자세를 위한 커뮤니티까지. 현대인을 위한 요가 플랫폼, YogaMate.
+          </p>
+        </div>
+        <div v-if="loginUser" class="detail-box">
+          <h2>
+            Good {{time}}, {{loginUser.userNickname}}
+          </h2>
+          <p>
+            로그인 했을때 나오는 글 
           </p>
         </div>
 
@@ -476,15 +487,55 @@
 
 <script>
 import LookAround from "@/components/LookAround.vue"
+import { mapState } from 'vuex';
 export default {
   name: 'HomeView',
+  data(){
+    return {
+      time : "",
+    }
+  },
+  methods : {
+    logout() {
+          console.log("trying to log out");
+            this.$store.dispatch("logout");
+            this.$router.go(0);
+        },
+  },
+  created(){
+    let hours = new Date().getHours();
+    if (hours < 12 && hours > 0) {
+     this.time = "Morning";
+  } else if (hours > 12 && hours < 18) {
+     this.time = "afternoon";
+  } else {
+     this.time = "night";
+  }
+      console.log("created");
+      if(sessionStorage.getItem("loginUser")){
+            let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+            console.log("user logged in");
+            this.$store.commit("SET_LOGIN_USER", loginUser);
+            return true;
+          } else {
+            console.log("user not detected")
+            return false;
+          }
+  },
   components: {
     LookAround,
-  }
+  },
+  computed: {
+    ...mapState(["loginUser"]), //loginUser를 state에서 가져와 매핑한다.
+  } 
 }
 </script>
 
 <style scoped>
+.logoutButton {
+  background-color: transparent;
+  border : 0px;
+}
 .info_section {
   width: 100%;
 }
