@@ -1,5 +1,7 @@
 package com.ssafy.YogaMate.config;
 
+import com.ssafy.YogaMate.interceptor.JwtInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -16,8 +18,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
     }
 
+    @Autowired
+    JwtInterceptor jwtInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
+//        registry.addInterceptor(jwtInterceptor);
     }
 }
