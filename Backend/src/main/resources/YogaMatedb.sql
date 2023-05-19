@@ -10,11 +10,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 `password` VARCHAR(20) NOT NULL,
 `name` VARCHAR(20) NOT NULL,
 `nickname` VARCHAR(20) NOT NULL,
+`email` VARCHAR(30) NOT NULL,
 PRIMARY KEY (`id`)
 );
 
-insert into `users` (id, password, name, nickname)
-values ("ssafy", "1234", "김싸피", "왕십리 야식");
+insert into `users` (id, password, name, nickname, email)
+values ("ssafy", "1234", "김싸피", "왕십리 야식", "m@m.com");
 
 
 -- -----------------------------------------------------
