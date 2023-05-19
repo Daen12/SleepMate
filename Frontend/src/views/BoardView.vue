@@ -33,7 +33,6 @@ export default {
 <style >
 
 .board_intro {
-  color: #008b6668;
 }
 
 
