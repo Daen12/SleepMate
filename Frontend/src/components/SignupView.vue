@@ -3,7 +3,8 @@
   <section class="signin-form">
     <h1>SIGN UP</h1>
     <!-- form을 만들어야 서버에 전송 가능 -->
-    <form class="signup-form" method = "post" action="/process/adduser">
+    <!-- <form class="signup-form" method = "post" > -->
+        <div class="signup-form">
         <!-- post로 전송해야 보안성이 좋다. action은 process부서의 adduser에서 데이터 처리해달라는 뜻 -->
         <div class="int-area">
             <!-- name은 키값이 된다. -->
@@ -11,15 +12,17 @@
             <label for="name">YOUR NAME</label>
         </div>
         <div class="int-area">
-            <input v-model="nickname" type="text" name="id" id="id" autocomplete="off" required>
-            <label for="id">NICKNAME</label>
+            <input @keyup="dupcheckNick()" v-model="nickname" type="text" name="id" id="id" autocomplete="off" required>
+            <label for="id">NICK NAME</label>
+            <span v-if="dupNick==0">중복된 닉네임입니다</span>
         </div>
         <div class="int-area">
-            <input v-model="email" type="text" name="age" id="age" autocomplete="off" required>
-            <label for="pw">EMAIL</label>
+            <!-- <input v-model="email" type="text" name="age" id="age" autocomplete="off" required>
+            <label for="pw">EMAIL</label> -->
         <div class="int-area">
-            <input v-model="id" type="text" name="id" id="id" autocomplete="off" required>
+            <input @keyup="dupcheckId()" v-model="id" type="text" name="id" id="id" autocomplete="off" required>
             <label for="id">USER NAME</label>
+            <span  v-if="dupId==0">중복된 아이디입니다</span>
         </div>
         <div class="int-area">
             <input v-model="password" type="password" name="pw" id="pw" autocomplete="off" required>
@@ -27,39 +30,56 @@
         </div>
         </div>
         <div class="button-area">
-            <button type="submit">SIGN UP</button>
+            <button @click="regist" type="submit">SIGN UP</button>
         </div>
         <!-- <div class="caption">
             <a href="">Forgot Password?</a>
         </div> -->
-    </form>
+        </div>
+    <!-- </form> -->
 </section>
 </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     data() {
     return {
+    // Nickcheck:"",
+    // Idcheck:"",
       name: "",
-      nickname: "",
+      nickname:"",
       email : "",
       id: "",
       password: "",
     };
   },
+  computed : {
+    ...mapState(["dupNick"]),
+    ...mapState(["dupId"])
+
+  },
   methods: {
+    dupcheckNick(){
+        this.$store.dispatch("dupcheckNick", this.nickname);
+    },
+    dupcheckId(){
+        this.$store.dispatch("dupcheckId", this.id);
+
+    },
     regist() {
-      if (this.id === "" || this.password === "" || this.name === "" || this.email==="") {
+      if (this.id === "" || this.password === "" || this.name === "" || this.nickname==="" || this.email === "") {
         alert("모든 내용을 입력해주세요");
         return;
       }
 
       let user = {
+        email : this.email,
         name: this.name,
         nickname: this.nickname,
         id: this.id,
-        email:this.email,
         password: this.password,
       };
 
