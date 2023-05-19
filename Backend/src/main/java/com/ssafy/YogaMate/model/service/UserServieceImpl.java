@@ -2,21 +2,33 @@ package com.ssafy.YogaMate.model.service;
 
 import com.ssafy.YogaMate.model.dao.UserDao;
 import com.ssafy.YogaMate.model.dto.User;
+import com.ssafy.YogaMate.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
-public class UserServieceImpl implements UserService{
+public class UserServieceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    JwtUtil jwtUtil;
+
     @Override
-    public User selectUser(User user) {
+    public Map<String, Object> selectUser(User user) throws UnsupportedEncodingException {
+        Map<String, Object> loginData = new HashMap<>();
         User loginUser = userDao.selectUser(user.getId());
+        loginData.put("loginUser", loginUser);
 
         if (loginUser != null && user.getPassword().equals(loginUser.getPassword())) {
-            return loginUser;
+            String token = jwtUtil.createToken("id", user.getId());
+            loginData.put("token", token);
+            return loginData;
         } else {
             return null;
         }
@@ -33,17 +45,18 @@ public class UserServieceImpl implements UserService{
     }
 
     @Override
-    public int signUp(User user) {
-        int inspection = userDao.getUserNickName(user.getNickname());
-        // 닉네임 중복 검사
-        if (inspection != 0) return 2;
-        else {
-            // 이메일 중복 검사
-            inspection = userDao.getUserEmail(user.getEmail());
-            if (inspection != 0) return 3;
-            else {
-                return userDao.insertUser(user);
-            }
+    public boolean checkNickname(String nickname) {
+        int num = userDao.getUserNickName(nickname);
+        if (num == 0) {
+            return true;
+        } else {
+            return false;
         }
     }
+
+    @Override
+    public int signUp(User user) {
+        return userDao.insertUser(user);
+    }
 }
+

@@ -10,6 +10,5 @@ public interface UserDao {
     // 회원가입
     int getUserId(String id);
     int getUserNickName(String nickname);
-    int getUserEmail(String email);
     int insertUser(User user);
 }
