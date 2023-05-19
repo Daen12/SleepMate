@@ -105,6 +105,7 @@ export default new Vuex.Store({
             //local storage 비우기
             sessionStorage.removeItem("loginUser");
             sessionStorage.removeItem("access-token");
+            alert("로그아웃 되었습니다.");
         },
     },
     modules: {},

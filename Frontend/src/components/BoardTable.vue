@@ -1,5 +1,7 @@
 <template>
 <div>
+  <board-detail v-if="step == 1"></board-detail>
+<div v-if="step==0">
   <table class="tg" style="undefined;table-layout: fixed; width: 546px">
 <colgroup>
 <col style="width: 50px">
@@ -28,15 +30,15 @@
     <td class="tg-0lax">2023-05-18</td>
     <td class="tg-baqh">1</td>
   </tr>
-  <tr v-for="row in 14" :key="row">
+  <tr @click="step = 1" v-for="review in 3" :key="review">
     <td class="tg-0lax">2</td>
     <td class="tg-0lax">ed</td>
-    <td class="tg-0lax">제목제목</td>
+    <td class="tg-0lax"> <router-link :to="{name : 'BoardDetail', params : {idx : 2}}">제목제목</router-link> </td>
     <td class="tg-0lax">민식</td>
     <td class="tg-0lax">2023-05-18</td>
     <td class="tg-baqh">1</td>
   </tr>
-
+<!-- -->
 </tbody>
 </table>
 <!-- 여기서부터 pagination -->
@@ -51,13 +53,17 @@
 </div>
 <!-- 여기까지 pagination -->
 </div>
+</div>
 </template>
 
 <script>
+import BoardDetail from './BoardDetail.vue';
 export default {
+  components: { BoardDetail },
     data () {
     return {
-      pageNum: 0
+      pageNum: 0,
+      step : 0,
     }
   },
   props : {

@@ -13,6 +13,7 @@
       <br>
       <br>
     <board-table></board-table>
+
   </div>
   
   </div>
@@ -25,7 +26,12 @@ import SideBar from '@/components/common/SideBar.vue'
 import BoardTable from '@/components/BoardTable.vue'
 
 export default {
-  components: { SideBar, BoardTable },
+  components: { SideBar, BoardTable,  },
+  data(){
+    return{
+    
+    }
+  }
   
 }
 </script>

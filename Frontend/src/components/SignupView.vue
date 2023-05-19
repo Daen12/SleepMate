@@ -78,15 +78,11 @@ export default {
         alert("모든 내용을 입력해주세요");
         return;
       }
-      if(this.dupcheckId == 0){
-        alert("아이디 중복확인을 해주세요");
+      if(this.dupId == 0 || this.dupNick==0){
+        alert("아이디 또는 닉네임 중복확인을 해주세요");
         return;
       }
-      if(this.dupcheckNick==0){
-        alert("닉네임 중복확인을 해주세요");
-        return;
-      }
-        console.log(this.dupcheckId);
+
       let user = {
         name: this.name,
         nickname: this.nickname,
