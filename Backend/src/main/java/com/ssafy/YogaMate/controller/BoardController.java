@@ -61,7 +61,7 @@ public class BoardController {
         }
     }
 
-    @PutMapping("/board/detail/update")
+    @PutMapping("/board/update")
     @ApiOperation(value = "Update Article", notes = "게시판 글 업데이트")
     public ResponseEntity<?> updateArticle(@RequestBody Board board) {
         if (boardService.updateArticle(board)) {
@@ -71,7 +71,7 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("/board/detail/{idx}")
+    @DeleteMapping("/board/delete/{idx}")
     @ApiOperation(value = "Delete Article", notes = "게시판 글 삭제")
     public ResponseEntity<Void> deleteArticle(@PathVariable int idx) {
         if (boardService.deleteArticle(idx)) {
