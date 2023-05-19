@@ -63,10 +63,14 @@ export default {
   },
   methods: {
     dupcheckNick(){
-        this.$store.dispatch("dupcheckNick", this.nickname);
+        if(this.nickname.length > 0) {
+            this.$store.dispatch("dupcheckNick", this.nickname);
+        }
     },
     dupcheckId(){
-        this.$store.dispatch("dupcheckId", this.id);
+        if (this.id.length > 0) {
+            this.$store.dispatch("dupcheckId", this.id);
+        }
 
     },
     regist() {

@@ -39,10 +39,10 @@ public class UserController {
             result.put("message", SUCCESS);
             result.put("userId", loginUser.getId());
             result.put("userNickName", loginUser.getNickname());
-            status = HttpStatus.ACCEPTED;
+            status = HttpStatus.OK;
         } else {
             result.put("message", FAIL);
-            status = HttpStatus.NO_CONTENT;
+            status = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
@@ -58,7 +58,7 @@ public class UserController {
             status = HttpStatus.ACCEPTED;
         } else {
             result.put("result", 0);
-            status = HttpStatus.CONFLICT;
+            status = HttpStatus.ACCEPTED;
         }
         return new ResponseEntity<Map<String, Integer>>(result, status);
     }
@@ -74,7 +74,7 @@ public class UserController {
             status = HttpStatus.ACCEPTED;
         } else {
             result.put("result", 0);
-            status = HttpStatus.CONFLICT;
+            status = HttpStatus.ACCEPTED;
         }
         return new ResponseEntity<Map<String, Integer>>(result, status);
     }
@@ -88,10 +88,10 @@ public class UserController {
 
         if (resNum == 1) {
             result.put("message", SUCCESS);
-            status = HttpStatus.ACCEPTED;
+            status = HttpStatus.OK;
         } else {
             result.put("message", FAIL);
-            status = HttpStatus.CONFLICT;
+            status = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<Map<String, Object>>(result, status);
     }

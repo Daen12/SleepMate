@@ -67,7 +67,7 @@ export default new Vuex.Store({
                 url: API_URL,
                 method: "GET",
             }).then((res) => {
-                console.log("duplicate? : " + res);
+                console.log("duplicate? : " + res.data.result);
                 commit("DUPLICATE_CHECK_NICK", res.data.result);
             });
         },
@@ -78,8 +78,8 @@ export default new Vuex.Store({
                 url: API_URL,
                 method: "GET",
             }).then((res) => {
-                console.log("duplicate? : " + res);
-                commit("DUPLICATE_CHECK", res.data.result);
+                console.log("duplicate? : " + res.data);
+                commit("DUPLICATE_CHECK_ID", res.data.result);
             });
         },
         createUser({ commit }, user) {
