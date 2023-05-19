@@ -78,7 +78,7 @@ export default new Vuex.Store({
                 url: API_URL,
                 method: "GET",
             }).then((res) => {
-                console.log("duplicate? : " + res.data);
+                console.log("duplicate? : " + res.data.result);
                 commit("DUPLICATE_CHECK_ID", res.data.result);
             });
         },

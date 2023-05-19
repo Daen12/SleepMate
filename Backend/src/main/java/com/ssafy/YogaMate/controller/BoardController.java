@@ -22,7 +22,7 @@ public class BoardController {
     BoardService boardService;
 
     @GetMapping("/board")
-    @ApiOperation(value = "Get All Board Article", notes = "게시판 모든 글 가져오기)")
+    @ApiOperation(value = "Get All Board Article", notes = "게시판 모든 글 가져오기")
     public ResponseEntity<Map<String, Object>> getAllArticles() {
         Map<String, Object> result = new HashMap<>();
         List<Board> boardList = boardService.getAllArticles();
@@ -30,7 +30,7 @@ public class BoardController {
 
         if (boardList == null && boardList.size() == 0) {
             result.put("Article Number", 0);
-            status = HttpStatus.NO_CONTENT;
+            status = HttpStatus.ACCEPTED;
         } else {
             result.put("Article Number", boardList.size());
             result.put("articles", boardList);
