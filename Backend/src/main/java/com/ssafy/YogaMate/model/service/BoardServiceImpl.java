@@ -25,6 +25,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Board readArticle(int idx) {
+        boardDao.updateViewCnt(idx);
         return boardDao.readArticle(idx);
     }
 

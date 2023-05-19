@@ -12,8 +12,8 @@
 
     <!-- 게시글 작성 -->
     <insert id="writeArticle" parameterType="Board">
-        INSERT INTO board (class_num, title, content)
-        VALUES (#{classNum}, #{title}, #{content})
+        INSERT INTO board (class_num, title, content, writer)
+        VALUES (#{classNum}, #{title}, #{content}, #{writer})
     </insert>
 
     <!-- 게시판 글 상세보기 -->
@@ -35,4 +35,11 @@
         DELETE FROM board
         WHERE idx = #{idx}
     </delete>
+
+    <!-- 게시글 조회수 1 증가 -->
+    <update id="updateViewCnt" parameterType="Integer">
+        UPDATE board
+        SET view_cnt = view_cnt + 1
+        WHERE idx = #{idx}
+    </update>
 </mapper>
