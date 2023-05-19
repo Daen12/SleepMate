@@ -33,7 +33,22 @@ insert into `board` (class_num, title, content)
 values (1, "게시판 테스트 제목입니다.", "게시판 테스트 내용입니다.");
 
 -- -----------------------------------------------------
+-- Table `comment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `comment` (
+`idx` BIGINT AUTO_INCREMENT,
+`article_idx` BIGINT NOT NULL,
+`content` VARCHAR(50) NOT NULL,
+`writer` VARCHAR(20) NOT NULL,
+`reg_date` TIMESTAMP DEFAULT now(),
+PRIMARY KEY (`idx`)
+);
+
+insert into `comment` (article_idx, content, writer)
+values (1, "댓글 테스트 내용입니다 ㅎㅎ", "ssafy");
+-- -----------------------------------------------------
 -- Verify Table
 -- -----------------------------------------------------
 SELECT * FROM users;
 SELECT * FROM board;
+SELECT * FROM comment;
