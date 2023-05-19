@@ -5,13 +5,13 @@
     <div class="brand_box">
       <a class="navbar-brand">
         <span>
-          Sleepmate
+          YogaMate
         </span>
       </a>
     </div>
     <!-- end header section -->
     <!-- slider section -->
-    <!-- <section class=" slider_section position-relative">
+  <section class=" slider_section position-relative">
       <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
@@ -37,7 +37,7 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-    </section> -->
+    </section> 
     <!-- end slider section -->
   </div>
 
@@ -64,15 +64,18 @@
                   <router-link to="/base"><a class="nav-link" href="#">Our Community </a></router-link>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="contact.html">Contact Us</a>
+                  <a class="nav-link" href="#contact-us">Contact Us</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Login</a>
+                  <router-link to="/login"><a class="nav-link" href="#">Login</a></router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/signup"><a class="nav-link" href="#">signup</a></router-link>
                 </li>
               </ul>
-              <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
-                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
-              </form>
+              <!-- <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                <button class="btn  my-2 my-sm-0 nav_human" type="submit">signup</button>
+              </form> -->
             </div>
           </div>
         </nav>
@@ -89,11 +92,11 @@
       <div class="box">
         <div class="detail-box">
           <h2>
-            Sleepmate - 로고
-            <!-- 내 손 안의 수면 도우미 -->
+            YogaMate - 
+            내 손 안의 요가 도우미
           </h2>
           <p>
-            맞춤형 수면 스트레칭부터 전문가와의 빠른 상담과 더 나은 수면을 위한 커뮤니티까지. 현대인을 위한 수면 플랫폼, Sleepmate.
+            맞춤형 요가 영상부터 전문가와의 빠른 상담과 더 나은 자세를 위한 커뮤니티까지. 현대인을 위한 요가 플랫폼, YogaMate.
           </p>
         </div>
 
@@ -328,7 +331,7 @@
 
 
   <!-- contact section -->
-  <section class="contact_section layout_padding-bottom">
+  <section id="contact-us" class="contact_section layout_padding-bottom">
     <div class="container-fluid">
       <div class="row">
         <div class="offset-lg-2 col-md-10 offset-md-1">
@@ -348,19 +351,19 @@
               <div class="contact_form-container">
                 <div>
                   <div>
-                    <input type="text" placeholder="Full Name" />
+                    <input type="text" placeholder="이름" />
                   </div>
                   <div>
-                    <input type="email" placeholder="Email" />
+                    <input type="email" placeholder="이메일" />
                   </div>
                   <div>
-                    <input type="text" placeholder="Phone Number" />
+                    <input type="text" placeholder="연락처" />
                   </div>
                   <div>
-                    <input type="text" class="message_input" placeholder="Message" />
+                    <input type="text" class="message_input" placeholder="문의하실 내용을 적어주세요" />
                   </div>
-                  <div>
-                    <button type="submit">
+                  <div >
+                    <button class="contact-button" type="submit">
                       Send
                     </button>
                   </div>
@@ -371,7 +374,7 @@
           <div class="col-md-6 px-0">
             <div class="map_container">
               <div class="map-responsive">
-                <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Eiffel+Tower+Paris+France" width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%" allowfullscreen></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3213.5258606356565!2d127.29234808944422!3d36.348039521851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35654cb4cad2461b%3A0x9f3a7424c0a0a981!2z64yA7KCE6rSR7Jet7IucIOycoOyEseq1rCDrj5nshJzrjIDroZwxNznrsojquLggNjItNw!5e0!3m2!1sko!2skr!4v1684413703198!5m2!1sko!2skr" width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%" allowfullscreen></iframe>
               </div>
             </div>
           </div>
@@ -388,7 +391,7 @@
     <div class="container">
       <div class="info_logo">
         <h2>
-          Sleepmate
+          YogaMate
         </h2>
       </div>
       <div class="info_contact">
@@ -397,7 +400,7 @@
             <a href="">
               <img src="images/location.png" alt="">
               <span>
-                대전광역시 유성구 덕명동 어쩌고저쩌고
+                대전광역시 유성구 동서대로 179번길 62-7 스위치
               </span>
             </a>
           </div>
@@ -405,7 +408,7 @@
             <a href="">
               <img src="images/call.png" alt="">
               <span>
-                Call : +012334567890
+                Call : +822334567890
               </span>
             </a>
           </div>
@@ -413,7 +416,7 @@
             <a href="">
               <img src="images/mail.png" alt="">
               <span>
-                이메일@gmail.com
+                sdy971213@gmail.com
               </span>
             </a>
           </div>
@@ -480,3 +483,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.info_section {
+  width: 100%;
+}
+
+.contact-button {
+  background-color: rgb(209, 199, 56);
+}
+</style>

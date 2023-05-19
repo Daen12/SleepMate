@@ -4,7 +4,7 @@
     <div class="brand_box">
       <a class="navbar-brand">
         <router-link to="/"> <span>
-          Sleepmate
+          YogaMate
         </span> </router-link>
       </a>
     </div>
@@ -33,12 +33,15 @@
                   <a class="nav-link" href="contact.html">Contact Us</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Login</a>
+                  <router-link to="/login"><a class="nav-link" href="#">Login</a></router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/signup"> <a class="nav-link" href="#">SignUp</a></router-link>
                 </li>
               </ul>
-              <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+              <!-- <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
-              </form>
+              </form> -->
             </div>
           </div>
         </nav>
@@ -54,7 +57,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped >
 .container {
     position: fixed;
     top: 150px;
@@ -64,6 +67,7 @@ export default {
 img {
     position: fixed;
     top: 0px;
+    height: 180px;
     width: 100%;
     /* height: ; */
     left: 0px;
