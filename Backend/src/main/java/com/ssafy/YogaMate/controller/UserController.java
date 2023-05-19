@@ -28,48 +28,59 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value = "User Login", notes = "유저 로그인")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) throws UnsupportedEncodingException {
         Map<String, Object> result = new HashMap<>();
-        User loginUser = userService.selectUser(user);
+        Map<String, Object> loginData = userService.selectUser(user);
+        User loginUser = (User) loginData.get("loginUser");
         HttpStatus status = null;
 
-        try {
-            if (loginUser != null) {
-                result.put("access-token", jwtUtil.createToken("id", user.getId()));
-                result.put("message", SUCCESS);
-                result.put("userId", loginUser.getId());
-                result.put("userNickName", loginUser.getNickname());
-                status = HttpStatus.ACCEPTED;
-            } else {
-                result.put("message", FAIL);
-                status = HttpStatus.NO_CONTENT;
-            }
-        } catch (UnsupportedEncodingException e) {
+        if (loginData != null) {
+            result.put("access-token", (String) loginData.get("token"));
+            result.put("message", SUCCESS);
+            result.put("userId", loginUser.getId());
+            result.put("userNickName", loginUser.getNickname());
+            status = HttpStatus.ACCEPTED;
+        } else {
             result.put("message", FAIL);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-            e.printStackTrace();
+            status = HttpStatus.NO_CONTENT;
         }
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
 
-    @GetMapping("/signup/{id}")
+    @GetMapping("/signup/id/{id}")
     @ApiOperation(value = "Duplicate Check id", notes = "유저 회원가입 전 아이디 중복 체크")
-    public ResponseEntity<Map<String, Object>> CheckId(@PathVariable String id) {
-        Map<String, Object> result = new HashMap<>();
+    public ResponseEntity<Map<String, Integer>> CheckId(@PathVariable String id) {
+        Map<String, Integer> result = new HashMap<>();
         HttpStatus status = null;
 
         if (userService.checkId(id)) {
-            result.put("message", "NOT Duplicate ID");
+            result.put("result", 1);
             status = HttpStatus.ACCEPTED;
         } else {
-            result.put("message", "Duplicate ID");
+            result.put("result", 0);
             status = HttpStatus.CONFLICT;
         }
-        return new ResponseEntity<Map<String, Object>>(result, status);
+        return new ResponseEntity<Map<String, Integer>>(result, status);
+    }
+
+    @GetMapping("/signup/nickname/{nickname}")
+    @ApiOperation(value = "Duplicate Check nickname", notes = "유저 회원가입 전 닉네임 중복 체크")
+    public ResponseEntity<Map<String, Integer>> CheckNickname(@PathVariable String nickname) {
+        Map<String, Integer> result = new HashMap<>();
+        HttpStatus status = null;
+
+        if (userService.checkNickname(nickname)) {
+            result.put("result", 1);
+            status = HttpStatus.ACCEPTED;
+        } else {
+            result.put("result", 0);
+            status = HttpStatus.CONFLICT;
+        }
+        return new ResponseEntity<Map<String, Integer>>(result, status);
     }
 
     @PostMapping("/signup")
-    @ApiOperation(value = "User Signup", notes = "유저 닉네임, 이메일 중복 체크 and 회원가입")
+    @ApiOperation(value = "User Signup", notes = "유저 이메일 중복 체크 and 회원가입")
     public ResponseEntity<Map<String, Object>> signup(@RequestBody User user) {
         Map<String, Object> result = new HashMap<>();
         int resNum = userService.signUp(user); // 결과 값) 1: 정상 회원가입 // 2: nickname 중복 // 3: email 중복
@@ -77,12 +88,9 @@ public class UserController {
 
         if (resNum == 1) {
             result.put("message", SUCCESS);
-            status = HttpStatus.CREATED;
-        } else if (resNum == 2) {
-            result.put("message", "Duplicate NickName");
-            status = HttpStatus.CONFLICT;
-        } else if (resNum == 3) {
-            result.put("message", "Duplicate Email");
+            status = HttpStatus.ACCEPTED;
+        } else {
+            result.put("message", FAIL);
             status = HttpStatus.CONFLICT;
         }
         return new ResponseEntity<Map<String, Object>>(result, status);

@@ -5,16 +5,14 @@ public class User {
     private String password;
     private String name;
     private String nickname;
-    private String email;
 
     public User() {}
 
-    public User(String id, String password, String name, String nickname, String email) {
+    public User(String id, String password, String name, String nickname) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
-        this.email = email;
     }
 
     public String getId() {
@@ -49,22 +47,13 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", nickName='" + nickname + '\'' +
-                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
                 '}';
     }
 }
