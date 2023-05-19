@@ -13,7 +13,7 @@
       <br>
       <br>
     <board-table v-if="!detailopen"  @openDetail="openDetail"></board-table>
-    <board-detail v-if="detailopen"></board-detail>
+    <board-detail :idx="this.idx" v-if="detailopen"></board-detail>
   </div>
   
   </div>
@@ -27,15 +27,22 @@ import BoardTable from '@/components/BoardTable.vue'
 import BoardDetail from '@/components/BoardDetail.vue'
 
 export default {
-  components: { SideBar, BoardTable, BoardDetail,  },
+  components: { 
+    SideBar, 
+    BoardTable, 
+    BoardDetail,  
+    },
   data(){
     return{
       detailopen : false,
+      idx : -1,
     }
   },
   methods : {
-    openDetail(){
+    openDetail(idx){
+      // this.$router.push(`/base/${idx}`)
       this.detailopen = true;
+      this.idx = idx;
     }
   }
   

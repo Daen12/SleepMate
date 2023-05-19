@@ -22,21 +22,21 @@
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <!-- <tr>
     <td class="tg-0lax">1</td>
     <td class="tg-0lax">ed</td>
     <td class="tg-0lax">제목제목</td>
     <td class="tg-0lax">다영</td>
     <td class="tg-0lax">2023-05-18</td>
     <td class="tg-baqh">1</td>
-  </tr>
-  <tr v-for="review in 3" :key="review">
-    <td class="tg-0lax">2</td>
-    <td class="tg-0lax">ed</td>
-    <td class="tg-0lax"><button @click="goToDetail">제목제목</button></td>
-    <td class="tg-0lax">민식</td>
-    <td class="tg-0lax">2023-05-18</td>
-    <td class="tg-baqh">1</td>
+  </tr> -->
+  <tr v-for="(board, i) in boardList" :key="i">
+    <td class="tg-0lax">{{i+1}}</td>
+    <td class="tg-0lax">{{board.classNum}}</td>
+    <td class="tg-0lax"><button @click="goToDetail(board.idx)">{{board.title}}</button></td>
+    <td class="tg-0lax">{{board.writer}}</td>
+    <td class="tg-0lax">{{board.date}}</td>
+    <td class="tg-baqh">{{board.viewCnt}}</td>
   </tr>
 <!-- <router-link :to="{name : 'BoardDetail', params : {idx : 2}}"></router-link>  -->
 
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import BoardDetail from './BoardDetail.vue';
 export default {
   components: { BoardDetail },
@@ -78,6 +79,9 @@ export default {
       default: 5,
     },
   },
+  created(){
+    this.$store.dispatch("setBoardList")
+  },
   methods: {
     nextPage () {
       this.pageNum += 1;
@@ -85,13 +89,15 @@ export default {
     prevPage () {
       this.pageNum -= 1;
     },
-    goToDetail(){
-      this.$emit('openDetail');
+    goToDetail(idx){
+      this.$emit("openDetail", idx);
     }
   },
   computed: {
+    ...mapState(['boardList']),
+
     pageCount () {
-        let listLeng = 15,
+        let listLeng = this.boardList.length,
             listSize = this.pageSize,
             page = Math.floor(listLeng/listSize);
         if (listLeng % listSize > 0) page += 1;
@@ -105,7 +111,7 @@ export default {
     paginatedData () {
       const start = this.pageNum * this.pageSize,
             end = start + this.pageSize;
-      return this.reviews.slice(start, end);
+      return this.boardList.slice(start, end);
     },
   }
 }
