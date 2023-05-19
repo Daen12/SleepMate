@@ -12,8 +12,8 @@
       <p>sample text comes here lorem ipsum</p>
       <br>
       <br>
-    <board-table></board-table>
-
+    <board-table v-if="!detailopen"  @openDetail="openDetail"></board-table>
+    <board-detail v-if="detailopen"></board-detail>
   </div>
   
   </div>
@@ -24,12 +24,18 @@
 <script>
 import SideBar from '@/components/common/SideBar.vue'
 import BoardTable from '@/components/BoardTable.vue'
+import BoardDetail from '@/components/BoardDetail.vue'
 
 export default {
-  components: { SideBar, BoardTable,  },
+  components: { SideBar, BoardTable, BoardDetail,  },
   data(){
     return{
-    
+      detailopen : false,
+    }
+  },
+  methods : {
+    openDetail(){
+      this.detailopen = true;
     }
   }
   

@@ -1,7 +1,7 @@
 <template>
 <div>
   <board-detail v-if="step == 1"></board-detail>
-<div v-if="step==0">
+<div>
   <table class="tg" style="undefined;table-layout: fixed; width: 546px">
 <colgroup>
 <col style="width: 50px">
@@ -30,14 +30,16 @@
     <td class="tg-0lax">2023-05-18</td>
     <td class="tg-baqh">1</td>
   </tr>
-  <tr @click="step = 1" v-for="review in 3" :key="review">
+  <tr v-for="review in 3" :key="review">
     <td class="tg-0lax">2</td>
     <td class="tg-0lax">ed</td>
-    <td class="tg-0lax"> <router-link :to="{name : 'BoardDetail', params : {idx : 2}}">제목제목</router-link> </td>
+    <td class="tg-0lax"><button @click="goToDetail">제목제목</button></td>
     <td class="tg-0lax">민식</td>
     <td class="tg-0lax">2023-05-18</td>
     <td class="tg-baqh">1</td>
   </tr>
+<!-- <router-link :to="{name : 'BoardDetail', params : {idx : 2}}"></router-link>  -->
+
 <!-- -->
 </tbody>
 </table>
@@ -63,7 +65,6 @@ export default {
     data () {
     return {
       pageNum: 0,
-      step : 0,
     }
   },
   props : {
@@ -83,6 +84,9 @@ export default {
     },
     prevPage () {
       this.pageNum -= 1;
+    },
+    goToDetail(){
+      this.$emit('openDetail');
     }
   },
   computed: {
@@ -90,10 +94,7 @@ export default {
         let listLeng = 15,
             listSize = this.pageSize,
             page = Math.floor(listLeng/listSize);
-    //   let listLeng = this.listArray.length,
-    //       listSize = this.pageSize,
-    //       page = Math.floor(listLeng / listSize);
-      if (listLeng % listSize > 0) page += 1;
+        if (listLeng % listSize > 0) page += 1;
       
       /*
       아니면 page = Math.floor((listLeng - 1) / listSize) + 1;
