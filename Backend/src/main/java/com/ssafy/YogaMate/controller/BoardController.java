@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/board")
 @Api(tags = "게시판 컨트롤러")
 public class BoardController {
 
     @Autowired
     BoardService boardService;
 
-    @GetMapping("/board")
+    @GetMapping("/")
     @ApiOperation(value = "Get All Board Article", notes = "게시판 모든 글 가져오기")
     public ResponseEntity<Map<String, Object>> getAllArticles() {
         Map<String, Object> result = new HashMap<>();
@@ -40,7 +40,7 @@ public class BoardController {
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
 
-    @PostMapping("/board/write")
+    @PostMapping("/write")
     @ApiOperation(value = "Create Article", notes = "게시판에 글 쓰기")
     public ResponseEntity<?> writeArticle(@RequestBody Board board) {
         if (boardService.writeArticle(board)) {
@@ -50,7 +50,7 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/board/detail/{idx}")
+    @GetMapping("/detail/{idx}")
     @ApiOperation(value = "Read Article", notes = "게시판 글 상세보기")
     public ResponseEntity<?> readArticle(@PathVariable int idx) {
         Board board = boardService.readArticle(idx);
@@ -61,7 +61,7 @@ public class BoardController {
         }
     }
 
-    @PutMapping("/board/update")
+    @PutMapping("/update")
     @ApiOperation(value = "Update Article", notes = "게시판 글 업데이트")
     public ResponseEntity<?> updateArticle(@RequestBody Board board) {
         if (boardService.updateArticle(board)) {
@@ -71,7 +71,7 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("/board/delete/{idx}")
+    @DeleteMapping("/delete/{idx}")
     @ApiOperation(value = "Delete Article", notes = "게시판 글 삭제")
     public ResponseEntity<Void> deleteArticle(@PathVariable int idx) {
         if (boardService.deleteArticle(idx)) {

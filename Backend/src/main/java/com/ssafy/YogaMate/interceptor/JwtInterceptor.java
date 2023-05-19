@@ -2,6 +2,7 @@ package com.ssafy.YogaMate.interceptor;
 
 import com.ssafy.YogaMate.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -19,11 +20,13 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader(HEADER_AUTH);
         if (request.getMethod().equals("OPTIONS")) return true;
+
         if (token != null) {
             jwtUtil.valid(token);
             return true;
         }
 
-        throw new Exception("유효하지 않은 접근이다.");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        return false;
     }
 }

@@ -5,16 +5,19 @@ public class Board {
     private int classNum;
     private String title;
     private String content;
+    private String writer;
     private int viewCnt;
     private String date;
 
-    public Board() { }
+    public Board() {
+    }
 
-    public Board(int idx, int classNum, String title, String content, int viewCnt, String date) {
+    public Board(int idx, int classNum, String title, String content, String writer, int viewCnt, String date) {
         this.idx = idx;
         this.classNum = classNum;
         this.title = title;
         this.content = content;
+        this.writer = writer;
         this.viewCnt = viewCnt;
         this.date = date;
     }
@@ -67,6 +70,10 @@ public class Board {
         this.date = date;
     }
 
+    public String getWriter() { return writer; }
+
+    public void setWriter(String writer) { this.writer = writer; }
+
     @Override
     public String toString() {
         return "Board{" +
@@ -74,6 +81,7 @@ public class Board {
                 ", classNum=" + classNum +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", writer='" + writer + '\'' +
                 ", viewCnt=" + viewCnt +
                 ", date='" + date + '\'' +
                 '}';
