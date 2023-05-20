@@ -61,7 +61,7 @@ export default new Vuex.Store({
                     console.log(err);
                 })
                 .finally(() => {
-                    router.push("/");
+                    router.go(-1);
                 });
         },
         dupcheckNick({ commit }, value) {

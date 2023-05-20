@@ -12,8 +12,9 @@
       <p>정보공유를 위한 커뮤니티 입니다.</p>
       <br>
       <br>
-    <board-table v-if="!detailopen"  @openDetail="openDetail"></board-table>
-    <board-detail :idx="this.idx" :num="this.num" v-if="detailopen"></board-detail>
+    <board-table v-if="!detailopen && !createopen" @createOpen ="createOpen" @openDetail="openDetail" ></board-table>
+    <board-create v-if="createopen"></board-create>
+    <board-detail :idx="this.idx" :num="this.num" v-if="detailopen" @openDetail="openDetail"></board-detail>
   </div>
   
   </div>
@@ -25,16 +26,19 @@
 import SideBar from '@/components/common/SideBar.vue'
 import BoardTable from '@/components/BoardTable.vue'
 import BoardDetail from '@/components/BoardDetail.vue'
+import BoardCreate from '@/components/BoardCreate.vue'
 
 export default {
   components: { 
     SideBar, 
     BoardTable, 
     BoardDetail,  
+    BoardCreate,
     },
   data(){
     return{
       detailopen : false,
+      createopen : false,
       idx : -1,
       num : 0,
     }
@@ -44,8 +48,14 @@ export default {
       // this.$router.push(`/base/${idx}`)
       this.detailopen = true;
       this.idx = idx;
+      console.log(this.idx);
       this.num = num;
+      console.log("num : "+this.num);
       console.log(num);
+    },
+    createOpen(){
+      this.createopen = true;
+
     }
   }
   

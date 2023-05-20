@@ -4,43 +4,40 @@
   <!-- 상세페이지 입체적인 css 부여 -->
     <div class="board_view_wrap">
         <div class="board_view">
-            <div v-if="!updatemode" class="title">
+            <!-- <div class="title">
                 {{board.title}}
-            </div>
-            <input v-if="updatemode" type="text" v-model="this.board.title" class="title update">
-
+            </div> -->
+            <input v-model="title" type="text" class="title" placeholder="제목을 입력하세요">
         </div>
         <div class="info">
             <dl>
-                <dt>번호</dt>
-                <dd>{{this.num}}</dd>
+                <dt>작성자</dt>
+                <dd>{{nickName}}</dd>
             </dl>
             <dl>
-                <dt>글쓴이</dt>
-                <dd>{{board.writer}}</dd>
-            </dl>
-            <dl>
-                <dt>작성일</dt>
-                <dd>{{board.date}}</dd>
-            </dl>
-            <dl>
-                <dt>조회</dt>
-                <dd>{{board.viewCnt}}</dd>
-            </dl>
+                <dt>카테고리</dt>
+                <dd>
+                    <select name="" id="" v-model="category" class="category">
+                        <option value="1">카테고리1</option>
+                        <option value="2">카테고리2</option>
+                        <option value="3">카테고리3</option>
+                        <option value="4">카테고리4</option>
+                    </select>
+                </dd>
+            </dl> 
+            
         </div>
-        <div v-if="!updatemode" class="cont">
+        <!-- <div class="cont">
             {{board.content}}
-        </div>
-        <textarea v-if="updatemode" v-model="this.board.content" class="update cont">
+        </div> -->
+        <textarea v-model="content" class="cont" placeholder="내용을 입력하세요">
            
         </textarea>
     </div>
 
     <div class="bt_wrap">
-        <button class="goBackBtn" @click="goback">목록으로</button> 
-        <button v-if="!this.updatemode" class="goBackBtn" @click="updateBoard">수정</button> 
-        <button v-if="this.updatemode" class="goBackBtn updateFinish" @click="updateFinish">수정완료</button> 
-        <button v-if="!updatemode" class="goBackBtn" @click="deleteBoard">삭제</button>
+        <button class="" @click="goback">목록으로</button> 
+        <button class="" @click="createBoard">등록</button>
     </div>
 
     </div>
@@ -67,91 +64,53 @@
 import router from '@/router'
 import axios from 'axios';
 export default {
+
     methods : {
         goback(){
             router.go(0);
         },
-        deleteBoard(){
-            // this.$store.dispatch("deleteBoard");
-            if(confirm("정말로 삭제하시겠습니까?")){
-                const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
-                axios({
-                    url : API_URL,
-                    method : "DELETE",
-                    headers : {
-                        "access-token" : sessionStorage.getItem("access-token"),
-                    }
-                }).then(() => {
-                    console.log("deleted");
-                    alert("삭제되었습니다.");
-                    router.go(0).catch((err) => err);
-                })
-
+        createBoard(){
+            if(!sessionStorage.getItem("loginUser")){
+                alert("로그인 후 이용 가능한 서비스입니다.");
+                return;
             }
-        },
-        updateBoard(){
-            this.updatemode = true;
-        },
-        updateFinish(){
-            //axios요청 보내기 
-            this.updatemode = false;
-            console.log(this.board)
-            const API_URL =`http://localhost:9999/api/board/update`;
+            //axios 요청 보내기
+            let board = {
+                classNum : this.category,
+                title : this.title,
+                content : this.content,
+                writer : this.nickName,
+            };
             axios({
-                url: API_URL,
-                method: "POST",
-                data : this.board,
-            }).then((res) => {
-                console.log(res.data);
-                //this.$emit("openDetail");
-
-
-            });
+                url : `http://localhost:9999/api/board/write`,
+                method : "POST",
+                data : board,
+            }).then(()=>{
+                router.go(0);
+                alert("등록되었습니다.");
+            })
 
         }
-
     },
     data (){
         return {
             board : null,
             comments : [],
             updatemode : false,
+            title : "",
+            content : "",
             // updateText : "",
+            nickName : "",
+            category : "1",
         }
     },
     props : {
         idx : Number,
         num : Number,
     },
-    created(){
-        console.log(this.num);
-        axios({
-                url: `http://localhost:9999/api/board/detail/${this.idx}`,
-                method: "GET",
-            })
-            .then((res) => {
-                console.log(res.data);
-                this.board = res.data;
-                this.updateText = this.board.content;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        
-        axios({
-            url: `http://localhost:9999/api/comment/${this.idx}`,
-                method: "GET",
-            })
-            .then((res) => {
-                console.log(res.data.comments);
-                this.comments = res.data.comments;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-            console.log("here!");
-            
-    }
+   created(){
+    this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
+   },
 }
 
 </script>
@@ -178,6 +137,20 @@ export default {
 
 
 /*** */
+dd .category {
+    outline: none;
+    border: transparent;
+    background-color: #ffffff8e;
+}
+.title {
+    color: #222;
+    background-color: transparent;
+    border : transparent;
+    width: 600px;
+    font-size: 17px;
+    outline: none;
+}
+
 .update{
     background-color: #ffffffcb;
 }
@@ -241,19 +214,23 @@ export default {
     font-size: 13px;
 }
 
-.info dl dt {
-}
+/* .info dl dt {
+} */
 .info dl dd {
     display: inline-block;
     color: #777;
     margin-left: 10px;
 }
 .cont {
-    padding: 15px;
+    padding: 30px;
     height: 230px;
     width: 100%;
     line-height: 160%;
-    font-size: 15px;
+    font-size: 17px;
+    color: #222;
+    border: transparent;
+    background-color: transparent;
+    outline: none;
 }
 .bt_wrap {
     margin-top: 10px;

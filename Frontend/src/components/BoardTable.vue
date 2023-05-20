@@ -5,10 +5,10 @@
   <table class="tg" style="undefined;table-layout: fixed; width: 546px">
 <colgroup>
 <col style="width: 50px">
-<col style="width: 150px">
-<col style="width: 300px">
 <col style="width: 100px">
-<col style="width: 200px">
+<col style="width: 300px">
+<col style="width: 150px">
+<col style="width: 150px">
 <col style="width: 90px">
 </colgroup>
 <thead>
@@ -55,6 +55,7 @@
 </div>
 <!-- 여기까지 pagination -->
 </div>
+<button @click="writeBoard" class="writeboard_btn">글 작성</button>
 </div>
 </template>
 
@@ -80,7 +81,8 @@ export default {
     },
   },
   created(){
-    this.$store.dispatch("setBoardList")
+    this.$store.dispatch("setBoardList");
+    console.log("create");
   },
   methods: {
     nextPage () {
@@ -92,6 +94,14 @@ export default {
     goToDetail(idx, num){
       console.log(num);
       this.$emit("openDetail", idx, num);
+    },
+    writeBoard(){
+      if(!sessionStorage.getItem("loginUser")){
+          alert("로그인 후 이용 가능한 서비스입니다.");
+          return;
+      } else {
+          this.$emit("createOpen");
+      }
     }
   },
   computed: {
@@ -119,6 +129,24 @@ export default {
 </script>
 
 <style>
+.tg-0lax button {
+  border: none;
+  font-weight: 500;
+  background-color: transparent;
+}
+.writeboard_btn {
+  height: 42px;
+    background-color: #000;
+    color: #fff;
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    /* padding: 10px; */
+    border : 1px solid black;
+    border-radius : 2px;
+    float: right;
+    margin-right: 80px;
+}
 /* board */
 .board-intro {
   margin-top: 10px;
