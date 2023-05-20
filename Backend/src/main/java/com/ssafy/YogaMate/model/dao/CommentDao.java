@@ -5,7 +5,7 @@ import com.ssafy.YogaMate.model.dto.Comment;
 import java.util.List;
 
 public interface CommentDao {
-    List<Comment> getAllComments(int article_idx);
+    List<Comment> getAllComments(int articleIdx);
 
     boolean writeComment(Comment comment);
 

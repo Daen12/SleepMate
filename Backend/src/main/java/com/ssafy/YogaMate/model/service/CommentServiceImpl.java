@@ -14,8 +14,8 @@ public class CommentServiceImpl implements CommentService{
     CommentDao commentDao;
 
     @Override
-    public List<Comment> getAllComments(int article_idx) {
-        return commentDao.getAllComments(article_idx);
+    public List<Comment> getAllComments(int articleIdx) {
+        return commentDao.getAllComments(articleIdx);
     }
 
     @Override

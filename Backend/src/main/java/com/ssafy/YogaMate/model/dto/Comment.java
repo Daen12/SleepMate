@@ -5,16 +5,16 @@ public class Comment {
     private int articleIdx;
     private String content;
     private String writer;
-    private String regDate;
+    private String regdate;
 
     public Comment() { }
 
-    public Comment(int idx, int articleIdx, String content, String writer, String regDate) {
+    public Comment(int idx, int articleIdx, String content, String writer, String regdate) {
         this.idx = idx;
         this.articleIdx = articleIdx;
         this.content = content;
         this.writer = writer;
-        this.regDate = regDate;
+        this.regdate = regdate;
     }
 
     public int getIdx() {
@@ -49,12 +49,12 @@ public class Comment {
         this.writer = writer;
     }
 
-    public String getRegDate() {
-        return regDate;
+    public String getRegdate() {
+        return regdate;
     }
 
-    public void setRegDate(String regDate) {
-        this.regDate = regDate;
+    public void setRegdate(String regdate) {
+        this.regdate = regdate;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Comment {
                 ", articleIdx=" + articleIdx +
                 ", content='" + content + '\'' +
                 ", writer='" + writer + '\'' +
-                ", regDate='" + regDate + '\'' +
+                ", regdate='" + regdate + '\'' +
                 '}';
     }
 }
