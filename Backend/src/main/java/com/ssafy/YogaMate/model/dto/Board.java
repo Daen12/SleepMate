@@ -2,24 +2,24 @@ package com.ssafy.YogaMate.model.dto;
 
 public class Board {
     private int idx;
-    private int classNum;
+    private int classnum;
     private String title;
     private String content;
     private String writer;
-    private int viewCnt;
-    private String date;
+    private int viewcnt;
+    private String regdate;
 
     public Board() {
     }
 
-    public Board(int idx, int classNum, String title, String content, String writer, int viewCnt, String date) {
+    public Board(int idx, int classnum, String title, String content, String writer, int viewcnt, String regdate) {
         this.idx = idx;
-        this.classNum = classNum;
+        this.classnum = classnum;
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.viewCnt = viewCnt;
-        this.date = date;
+        this.viewcnt = viewcnt;
+        this.regdate = regdate;
     }
 
     public int getIdx() {
@@ -30,12 +30,12 @@ public class Board {
         this.idx = idx;
     }
 
-    public int getClassNum() {
-        return classNum;
+    public int getClassnum() {
+        return classnum;
     }
 
-    public void setClassNum(int classNum) {
-        this.classNum = classNum;
+    public void setClassnum(int classnum) {
+        this.classnum = classnum;
     }
 
     public String getTitle() {
@@ -54,36 +54,40 @@ public class Board {
         this.content = content;
     }
 
-    public int getViewCnt() {
-        return viewCnt;
+    public String getWriter() {
+        return writer;
     }
 
-    public void setViewCnt(int viewCnt) {
-        this.viewCnt = viewCnt;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
-    public String getDate() {
-        return date;
+    public int getViewcnt() {
+        return viewcnt;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setViewcnt(int viewcnt) {
+        this.viewcnt = viewcnt;
     }
 
-    public String getWriter() { return writer; }
+    public String getRegdate() {
+        return regdate;
+    }
 
-    public void setWriter(String writer) { this.writer = writer; }
+    public void setRegdate(String regdate) {
+        this.regdate = regdate;
+    }
 
     @Override
     public String toString() {
         return "Board{" +
                 "idx=" + idx +
-                ", classNum=" + classNum +
+                ", classnum=" + classnum +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", writer='" + writer + '\'' +
-                ", viewCnt=" + viewCnt +
-                ", date='" + date + '\'' +
+                ", viewcnt=" + viewcnt +
+                ", regdate='" + regdate + '\'' +
                 '}';
     }
 }
