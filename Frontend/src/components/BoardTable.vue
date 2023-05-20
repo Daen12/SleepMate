@@ -33,7 +33,7 @@
   <tr v-for="(board, i) in boardList" :key="i">
     <td class="tg-0lax">{{i+1}}</td>
     <td class="tg-0lax">{{board.classNum}}</td>
-    <td class="tg-0lax"><button @click="goToDetail(board.idx)">{{board.title}}</button></td>
+    <td class="tg-0lax"><button @click="goToDetail(board.idx, i+1)">{{board.title}}</button></td>
     <td class="tg-0lax">{{board.writer}}</td>
     <td class="tg-0lax">{{board.date}}</td>
     <td class="tg-baqh">{{board.viewCnt}}</td>
@@ -89,8 +89,9 @@ export default {
     prevPage () {
       this.pageNum -= 1;
     },
-    goToDetail(idx){
-      this.$emit("openDetail", idx);
+    goToDetail(idx, num){
+      console.log(num);
+      this.$emit("openDetail", idx, num);
     }
   },
   computed: {

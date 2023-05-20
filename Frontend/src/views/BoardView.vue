@@ -9,11 +9,11 @@
 
   <div class="child2">
       <h2 class="board_intro">커뮤니티</h2>
-      <p>sample text comes here lorem ipsum</p>
+      <p>정보공유를 위한 커뮤니티 입니다.</p>
       <br>
       <br>
     <board-table v-if="!detailopen"  @openDetail="openDetail"></board-table>
-    <board-detail :idx="this.idx" v-if="detailopen"></board-detail>
+    <board-detail :idx="this.idx" :num="this.num" v-if="detailopen"></board-detail>
   </div>
   
   </div>
@@ -36,13 +36,16 @@ export default {
     return{
       detailopen : false,
       idx : -1,
+      num : 0,
     }
   },
   methods : {
-    openDetail(idx){
+    openDetail(idx, num){
       // this.$router.push(`/base/${idx}`)
       this.detailopen = true;
       this.idx = idx;
+      this.num = num;
+      console.log(num);
     }
   }
   
@@ -52,6 +55,11 @@ export default {
 <style >
 
 .board_intro {
+  margin-left: 25px;
+  font-size: 23px;
+}
+.child2 p {
+  margin-left: 20px;
 }
 
 
