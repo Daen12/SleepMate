@@ -1,7 +1,5 @@
 package com.ssafy.YogaMate.controller;
 
-
-import com.ssafy.YogaMate.model.dto.Board;
 import com.ssafy.YogaMate.model.dto.Comment;
 import com.ssafy.YogaMate.model.service.CommentService;
 import io.swagger.annotations.Api;
@@ -23,11 +21,11 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
-    @GetMapping("/{article_idx}")
+    @GetMapping("/{articleIdx}")
     @ApiOperation(value = "Get All Comment", notes = "게시글에 해당하는 모든 댓글 가져오기")
-    public ResponseEntity<Map<String, Object>> getAllComments(@PathVariable int article_idx) {
+    public ResponseEntity<Map<String, Object>> getAllComments(@PathVariable int articleIdx) {
         Map<String, Object> result = new HashMap<>();
-        List<Comment> commentList = commentService.getAllComments(article_idx);
+        List<Comment> commentList = commentService.getAllComments(articleIdx);
         HttpStatus status = null;
 
         if (commentList == null && commentList.size() == 0) {
