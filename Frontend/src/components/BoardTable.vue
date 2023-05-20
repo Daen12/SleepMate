@@ -6,7 +6,7 @@
 <colgroup>
 <col style="width: 50px">
 <col style="width: 100px">
-<col style="width: 300px">
+<col style="width: 330px">
 <col style="width: 150px">
 <col style="width: 150px">
 <col style="width: 90px">
@@ -32,11 +32,11 @@
   </tr> -->
   <tr v-for="(board, i) in boardList" :key="i">
     <td class="tg-0lax">{{i+1}}</td>
-    <td class="tg-0lax">{{board.classNum}}</td>
+    <td class="tg-0lax">{{board.classnum}}</td>
     <td class="tg-0lax"><button @click="goToDetail(board.idx, i+1)">{{board.title}}</button></td>
     <td class="tg-0lax">{{board.writer}}</td>
-    <td class="tg-0lax">{{board.date}}</td>
-    <td class="tg-baqh">{{board.viewCnt}}</td>
+    <td class="tg-0lax">{{board.regdate.slice(0,11)}}</td>
+    <td class="tg-baqh">{{board.viewcnt}}</td>
   </tr>
 <!-- <router-link :to="{name : 'BoardDetail', params : {idx : 2}}"></router-link>  -->
 
@@ -46,11 +46,11 @@
 <!-- 여기서부터 pagination -->
  <div class="btn-cover">
       <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">
-        이전
+        ← &ensp;
       </button>
       <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
       <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">
-        다음
+        &ensp; →
       </button>
 </div>
 <!-- 여기까지 pagination -->
@@ -145,7 +145,8 @@ export default {
     border : 1px solid black;
     border-radius : 2px;
     float: right;
-    margin-right: 80px;
+    margin-right: 150px;
+    margin-top: -40px;
 }
 /* board */
 .board-intro {
@@ -159,7 +160,8 @@ tr {
 .tg  {
   border-collapse:collapse;
   border-spacing:0;
-  margin: auto;
+  margin-left: 20px;
+  margin-top: -40px;
   }
 .tg td{
   border-bottom-width:1px;
@@ -200,4 +202,14 @@ tr {
   vertical-align:center;
   
   }
+.btn-cover {
+  margin-top: 20px;
+  margin-left: 40px;
+  color: #682b2b;
+  font-size: 17px;
+}
+.btn-cover .page-btn {
+  border: none;
+  background-color: transparent;
+}
 </style>

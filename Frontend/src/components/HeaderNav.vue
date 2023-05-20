@@ -27,7 +27,8 @@
                   <a class="nav-link" href="about.html">About </a>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/base"><a class="nav-link" href="#">Our Community </a></router-link>
+                  <a class="nav-link pointer" @click="goToCommun">Our Community </a>
+                  <!-- <router-link to="/base"></router-link> -->
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#contact-us">Contact Us</a>
@@ -71,6 +72,9 @@ export default {
             this.$store.dispatch("logout");
             this.$router.go(0);
         },
+    goToCommun(){
+      this.$router.go(0);
+    }
   },
     computed : {
       ...mapState(["loginUser"])
@@ -80,6 +84,9 @@ export default {
 </script>
 
 <style scoped >
+.pointer {
+  cursor: pointer;
+}
 .logoutButton {
   background-color: transparent;
   border : 0px;

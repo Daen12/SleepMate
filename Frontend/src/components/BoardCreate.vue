@@ -70,13 +70,10 @@ export default {
             router.go(0);
         },
         createBoard(){
-            if(!sessionStorage.getItem("loginUser")){
-                alert("로그인 후 이용 가능한 서비스입니다.");
-                return;
-            }
+            
             //axios 요청 보내기
             let board = {
-                classNum : this.category,
+                classnum : this.category,
                 title : this.title,
                 content : this.content,
                 writer : this.nickName,

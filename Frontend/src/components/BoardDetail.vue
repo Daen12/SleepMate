@@ -7,7 +7,7 @@
             <div v-if="!updatemode" class="title">
                 {{board.title}}
             </div>
-            <input v-if="updatemode" type="text" v-model="this.board.title" class="title update">
+            <input v-if="updatemode" type="text" v-model="board.title" class="title update">
 
         </div>
         <div class="info">
@@ -21,17 +21,17 @@
             </dl>
             <dl>
                 <dt>작성일</dt>
-                <dd>{{board.date}}</dd>
+                <dd>{{board.regdate.slice(0,11)}}</dd>
             </dl>
             <dl>
                 <dt>조회</dt>
-                <dd>{{board.viewCnt}}</dd>
+                <dd>{{board.viewcnt}}</dd>
             </dl>
         </div>
         <div v-if="!updatemode" class="cont">
             {{board.content}}
         </div>
-        <textarea v-if="updatemode" v-model="this.board.content" class="update cont">
+        <textarea v-if="updatemode" v-model="board.content" class="update cont">
            
         </textarea>
     </div>
@@ -66,13 +66,17 @@
 <script>
 import router from '@/router'
 import axios from 'axios';
+import { mapState } from 'vuex';
 export default {
     methods : {
         goback(){
             router.go(0);
         },
         deleteBoard(){
-            // this.$store.dispatch("deleteBoard");
+            if(!sessionStorage.getItem("loginUser")){
+                alert("로그인 후 이용 가능합니다.");
+                return;
+            } else {
             if(confirm("정말로 삭제하시겠습니까?")){
                 const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
                 axios({
@@ -86,24 +90,36 @@ export default {
                     alert("삭제되었습니다.");
                     router.go(0).catch((err) => err);
                 })
-
+            }
             }
         },
         updateBoard(){
-            this.updatemode = true;
+            if(!sessionStorage.getItem("loginUser")){
+                alert("로그인 후 이용 가능합니다")
+            } else if(this.board.writer !== JSON.parse(sessionStorage.getItem("loginUser")).userNickname){
+                alert("본인이 작성한 글만 수정 가능합니다");
+            } else {
+                this.updatemode = true;
+            }
         },
         updateFinish(){
             //axios요청 보내기 
-            this.updatemode = false;
+            console.log(this.titleUpdate);
+            console.log(this.contentUpdate);
+
             console.log(this.board)
             const API_URL =`http://localhost:9999/api/board/update`;
             axios({
                 url: API_URL,
-                method: "POST",
+                method: "PUT",
+                headers : {
+                        "access-token" : sessionStorage.getItem("access-token"),
+                    },
                 data : this.board,
             }).then((res) => {
                 console.log(res.data);
                 //this.$emit("openDetail");
+                this.updatemode = false;
 
 
             });
@@ -113,7 +129,9 @@ export default {
     },
     data (){
         return {
-            board : null,
+            // board : {},
+            titleUpdate : "",
+            contentUpdate : "",
             comments : [],
             updatemode : false,
             // updateText : "",
@@ -122,6 +140,9 @@ export default {
     props : {
         idx : Number,
         num : Number,
+    },
+    computed : {
+        ...mapState(["board"])
     },
     created(){
         console.log(this.num);
@@ -132,7 +153,8 @@ export default {
             .then((res) => {
                 console.log(res.data);
                 this.board = res.data;
-                this.updateText = this.board.content;
+                this.$store.commit("SET_BOARD", res.data);
+                // this.updateText = this.board.content;
             })
             .catch((err) => {
                 console.log(err);

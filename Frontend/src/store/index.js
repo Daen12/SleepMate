@@ -13,6 +13,7 @@ export default new Vuex.Store({
         dupId: 1,
         loginUser: null,
         boardList: [],
+        board: {},
     },
     getters: {},
     mutations: {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
         },
         SET_BOARD_LIST(state, boardList) {
             state.boardList = boardList;
+        },
+        SET_BOARD(state, board) {
+            state.board = board;
         },
     },
     actions: {

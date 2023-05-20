@@ -78,7 +78,7 @@ export default {
   position: inherit;
   width: 1500px;
   height: 800px;
-  background-color: #7f8c8d50;
+  background-color: #bdd0d218;
 }
 .parent {
   padding-top: 100px;
