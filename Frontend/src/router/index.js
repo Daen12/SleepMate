@@ -34,11 +34,13 @@ const routes = [
                 path: "",
                 name: "BoardView",
                 component: BoardView,
-            },
-            {
-                path: ":idx",
-                name: "BoardDetail",
-                component: BoardDetail,
+                children: [
+                    {
+                        path: ":idx",
+                        name: "BoardDetail",
+                        component: BoardDetail,
+                    },
+                ],
             },
         ],
     },

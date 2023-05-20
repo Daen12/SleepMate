@@ -2,7 +2,7 @@
 <div class="board-container">
 
   <div class="parent">
-  <div class="child1">I am the first child
+  <div class="child1">
   <side-bar></side-bar>
   </div>
 
@@ -56,7 +56,7 @@ export default {
 
 .board_intro {
   margin-left: 25px;
-  font-size: 23px;
+  font-size: 27px;
 }
 .child2 p {
   margin-left: 20px;
@@ -79,11 +79,11 @@ export default {
   display: flex;
 }
 .child1 {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   flex: 1;
 }
 .child2 {
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
   flex: 4;
 }
 

@@ -27,7 +27,8 @@
                   <a class="nav-link" href="about.html">About </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Our Community </a>
+                  <!-- :to="{name : 'BoardDetail' -->
+                   <a class="nav-link"><router-link to="/base">Our Community </router-link></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="contact.html">Contact Us</a>

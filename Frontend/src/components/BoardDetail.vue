@@ -26,14 +26,18 @@
                 <dd>{{board.viewCnt}}</dd>
             </dl>
         </div>
-        <div class="cont">
+        <div v-if="!updatemode" class="cont">
             {{board.content}}
         </div>
+        <textarea v-if="updatemode" v-model="this.board.content" class="cont update">
+           
+        </textarea>
     </div>
 
     <div class="bt_wrap">
         <button class="goBackBtn" @click="goback">목록으로</button> 
-        <button class="goBackBtn" @click="updateBoard">수정</button> 
+        <button v-if="!this.updatemode" class="goBackBtn" @click="updateBoard">수정</button> 
+        <button v-if="this.updatemode" class="goBackBtn updateFinish" @click="updateFinish">수정완료</button> 
         <button class="goBackBtn" @click="deleteBoard">삭제</button>
     </div>
 
@@ -66,13 +70,60 @@ export default {
             router.go(0);
         },
         deleteBoard(){
-            this.$store.dispatch("deleteBoard")
+            // this.$store.dispatch("deleteBoard");
+            if(confirm("정말로 삭제하시겠습니까?")){
+                const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
+                axios({
+                    url : API_URL,
+                    method : "DELETE",
+                }).then(() => {
+                    console.log("deleted");
+                    alert("삭제되었습니다.");
+                    router.push(0);
+                })
+
+            }
+        },
+        updateBoard(){
+            this.updatemode = true;
+            const API_URL =`http://localhost:9999/api/board/update`;
+            axios({
+                url: API_URL,
+                method: "POST",
+                data : this.board,
+            }).then((res) => {
+                console.log(res.data);
+                //this.$emit("openDetail");
+
+
+            });
+
+        },
+        updateFinish(){
+            //axios요청 보내기 
+            this.updatemode = false;
+            console.log(this.board)
+            const API_URL =`http://localhost:9999/api/board/update`;
+            axios({
+                url: API_URL,
+                method: "POST",
+                data : this.board,
+            }).then((res) => {
+                console.log(res.data);
+                //this.$emit("openDetail");
+
+
+            });
+
         }
+
     },
     data (){
         return {
-            board : {},
+            board : null,
             comments : [],
+            updatemode : false,
+            // updateText : "",
         }
     },
     props : {
@@ -88,6 +139,7 @@ export default {
             .then((res) => {
                 console.log(res.data);
                 this.board = res.data;
+                this.updateText = this.board.content;
             })
             .catch((err) => {
                 console.log(err);
@@ -98,12 +150,13 @@ export default {
                 method: "GET",
             })
             .then((res) => {
-                console.log(res.data);
+                console.log(res.data.comments);
                 this.comments = res.data.comments;
             })
             .catch((err) => {
                 console.log(err);
             });
+            console.log("here!");
             
     }
 }
@@ -132,7 +185,9 @@ export default {
 
 
 /*** */
-
+.update{
+    background-color: #ffffffcb;
+}
 .board_container {
     margin-top: -50px;
     margin-left: 20px;
@@ -203,6 +258,7 @@ export default {
 .cont {
     padding: 15px;
     height: 230px;
+    width: 100%;
     line-height: 160%;
     font-size: 15px;
 }
@@ -229,7 +285,9 @@ export default {
     background-color: #fff;
     color: #000;
 }
-
+.bt_wrap .updateFinish {
+    background-color: rosybrown;
+}
 .bt_wrap button.on {
     background : #000;
     color: #fff;
