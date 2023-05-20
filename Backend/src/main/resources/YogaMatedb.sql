@@ -21,16 +21,16 @@ values ("ssafy", "1234", "김싸피", "왕십리 야식");
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `board` (
 `idx` BIGINT AUTO_INCREMENT,
-`class_num` INT NOT NULL,
+`classnum` INT NOT NULL,
 `title` VARCHAR(20) NOT NULL,
 `content` VARCHAR(50) NOT NULL,
 `writer` VARCHAR(20) NOT NULL,
-`view_cnt` INT DEFAULT 0,
-`reg_date` TIMESTAMP DEFAULT now(),
+`viewcnt` INT DEFAULT 0,
+`regdate` TIMESTAMP DEFAULT now(),
 PRIMARY KEY (`idx`)
 );
 
-insert into `board` (class_num, title, content, writer)
+insert into `board` (classnum, title, content, writer)
 values (1, "게시판 테스트 제목입니다.", "게시판 테스트 내용입니다.", "왕십리 야식");
 
 -- -----------------------------------------------------
@@ -38,14 +38,14 @@ values (1, "게시판 테스트 제목입니다.", "게시판 테스트 내용�
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `comment` (
 `idx` BIGINT AUTO_INCREMENT,
-`article_idx` BIGINT NOT NULL,
+`articleIdx` BIGINT NOT NULL,
 `content` VARCHAR(50) NOT NULL,
 `writer` VARCHAR(20) NOT NULL,
-`reg_date` TIMESTAMP DEFAULT now(),
+`regdate` TIMESTAMP DEFAULT now(),
 PRIMARY KEY (`idx`)
 );
 
-insert into `comment` (article_idx, content, writer)
+insert into `comment` (articleIdx, content, writer)
 values (1, "댓글 테스트 내용입니다 ㅎㅎ", "ssafy");
 -- -----------------------------------------------------
 -- Verify Table

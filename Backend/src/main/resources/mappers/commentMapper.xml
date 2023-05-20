@@ -7,19 +7,19 @@
     <select id="getAllComments" parameterType="Integer" resultType="Comment">
         SELECT *
         FROM comment
-        WHERE article_idx = #{articleIdx}
+        WHERE articleIdx = #{articleIdx}
     </select>
 
     <!-- 댓글 작성 -->
     <insert id="writeComment" parameterType="Comment">
-        INSERT INTO comment (article_idx, content, writer)
+        INSERT INTO comment (articleIdx, content, writer)
         VALUES (#{articleIdx}, #{content}, #{writer})
     </insert>
 
     <!-- 댓글 수정 -->
     <update id="updateComment" parameterType="Comment">
         UPDATE comment
-        SET content = #{content}, reg_date = now()
+        SET content = #{content}, regdate = now()
         WHERE idx = #{idx}
     </update>
 
