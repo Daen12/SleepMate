@@ -36,8 +36,8 @@
     </div>
 
     <div class="bt_wrap">
-        <button class="" @click="goback">목록으로</button> 
-        <button class="" @click="createBoard">등록</button>
+        <button class="btn" @click="goback">목록으로</button> 
+        <button class="btn" @click="createBoard">등록</button>
     </div>
 
     </div>

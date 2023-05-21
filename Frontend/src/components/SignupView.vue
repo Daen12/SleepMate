@@ -128,8 +128,7 @@ export default {
     background : url("./signup.jpg") no-repeat center;
     background-size: cover;
     backdrop-filter: blur(2px);
-    height: 1080px;
-    width: 1910px;
+    width: 2000px;
     }
 .signup-form {
     width: 400px;

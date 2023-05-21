@@ -1,35 +1,33 @@
 <template>
-  <ul class="menu-hover-fill flex flex-col items-start leading-none text-2xl uppercase space-y-4 board-sidebar">
-  <li><a href="#" data-text="요가 제품 추천">요가 제품 추천</a></li>
-  <li><a href="#" data-text="요가 자격증 정보">요가 자격증 정보</a></li>
-  <li><a href="#" data-text="요가 센터 추천">요가 센터 추천</a></li>
-  <li><a href="#" data-text="요가 영상 토크">요가 영상 후기</a></li>
-  <li><a href="#" data-text="about">about</a></li>
-</ul>
+  <div class="sidebar">
+    <ul
+      class="menu-hover-fill flex flex-col items-start leading-none text-2xl uppercase space-y-4 board-sidebar"
+    >
+      <li><a href="#" data-text="요가 제품 추천">요가 제품 추천</a></li>
+      <li><a href="#" data-text="요가 자격증 정보">요가 자격증 정보</a></li>
+      <li><a href="#" data-text="요가 센터 추천">요가 센터 추천</a></li>
+      <li><a href="#" data-text="요가 영상 후기">요가 영상 후기</a></li>
+      <li><a href="#" data-text="about">about</a></li>
+    </ul>
+  </div>
 </template>
 
-<script>
-export default {
-
-}
+<script scoped>
+export default {};
 </script>
 
 <style>
-
+.sidebar {
+ margin-right: 30px;
+}
 
 li {
-    margin-top: 10px;
-}
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  margin-top: 10px;
 }
 
 :root {
   --grey-color: #687576;
-  color:rgb(213, 215, 60)
+  color: rgb(213, 215, 60);
 }
 
 ul {
@@ -58,7 +56,8 @@ a {
 .menu-hover-fill li a {
   --menu-link-color: var(--grey-color);
   position: relative;
-  background: linear-gradient(var(--menu-link-active-color) 0 100%) left/0 no-repeat;
+  background: linear-gradient(var(--menu-link-active-color) 0 100%) left/0
+    no-repeat;
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
