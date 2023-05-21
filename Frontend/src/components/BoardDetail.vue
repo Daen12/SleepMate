@@ -31,6 +31,7 @@
         <div v-if="!updatemode" class="cont">
             {{board.content}}
         </div>
+        <comment-view></comment-view>
         <textarea v-if="updatemode" v-model="board.content" class="update cont">
            
         </textarea>
@@ -67,7 +68,11 @@
 import router from '@/router'
 import axios from 'axios';
 import { mapState } from 'vuex';
+import CommentView from "@/components/CommentView.vue";
 export default {
+    components : {
+        CommentView,
+    },
     methods : {
         goback(){
             router.go(0);
@@ -88,7 +93,8 @@ export default {
                 }).then(() => {
                     console.log("deleted");
                     alert("삭제되었습니다.");
-                    router.go(0).catch((err) => err);
+                    router.go(0);
+                    // .catch((err) => err);
                 })
             }
             }
@@ -272,7 +278,7 @@ export default {
 }
 .cont {
     padding: 15px;
-    height: 230px;
+    height: 0px;
     width: 100%;
     line-height: 160%;
     font-size: 15px;

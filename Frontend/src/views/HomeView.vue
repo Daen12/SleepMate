@@ -104,7 +104,7 @@
         </div>
         <div v-if="loginUser" class="detail-box">
           <h2>
-            Good {{time}}, {{loginUser.userNickname}}
+            {{loginUser.userNickname}}님, 좋은 {{time}}!
           </h2>
           <p>
             로그인 했을때 나오는 글 
@@ -181,6 +181,9 @@
             <h5>
               Community
             </h5>
+            <h5>
+              커뮤니티
+            </h5>
             <router-link to="/base">
               Click
            </router-link>
@@ -190,10 +193,13 @@
           <img src="" alt="">
           <div class="link_box">
             <h5>
-              Blueberry
+              Youtube
+            </h5>
+            <h5>
+              맞춤형 유튜브
             </h5>
             <a href="">
-              Buy Now
+              Click
             </a>
           </div>
         </div>
@@ -201,10 +207,13 @@
           <img src="images/f-3.jpg" alt="">
           <div class="link_box">
             <h5>
-              Banana
+              Consultation
+            </h5>
+            <h5>
+              전문가 상담
             </h5>
             <a href="">
-              Buy Now
+              Click
             </a>
           </div>
         </div>
@@ -505,11 +514,11 @@ export default {
   created(){
     let hours = new Date().getHours();
     if (hours < 12 && hours > 0) {
-     this.time = "Morning";
+     this.time = "아침이에요";
   } else if (hours > 12 && hours < 18) {
-     this.time = "afternoon";
+     this.time = "오후에요";
   } else {
-     this.time = "night";
+     this.time = "저녁이에요";
   }
       console.log("created");
       if(sessionStorage.getItem("loginUser")){
@@ -532,6 +541,10 @@ export default {
 </script>
 
 <style scoped>
+.detail-box h2 {
+  color: #222;
+  font-weight:200;
+}
 .logoutButton {
   background-color: transparent;
   border : 0px;
