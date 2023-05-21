@@ -160,7 +160,6 @@ dd .category {
     border-radius: 7px;
     background-color: #ffffff75;
     border-bottom: 1px solid #000;
-    height: 400px;
     width: 90%;
 }
 .board_view {

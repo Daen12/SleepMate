@@ -1,50 +1,76 @@
 <template>
-<div class="board_container">
-  <!-- 여기서부터 상세페이지가 시작돼요 -->
-  <!-- 상세페이지 입체적인 css 부여 -->
-    <div class="board_view_wrap">
+  <div>
+    <div class="board_container">
+      <!-- 여기서부터 상세페이지가 시작돼요 -->
+      <!-- 상세페이지 입체적인 css 부여 -->
+      <div class="board_view_wrap">
         <div class="board_view">
-            <div v-if="!updatemode" class="title">
-                {{board.title}}
-            </div>
-            <input v-if="updatemode" type="text" v-model="board.title" class="title update">
-
+          <div v-if="!updatemode" class="title">
+            {{ board.title }}
+          </div>
+          <input
+            v-if="updatemode"
+            type="text"
+            v-model="board.title"
+            class="title update"
+          />
         </div>
         <div class="info">
-            <dl>
-                <dt>번호</dt>
-                <dd>{{this.num}}</dd>
-            </dl>
-            <dl>
-                <dt>글쓴이</dt>
-                <dd>{{board.writer}}</dd>
-            </dl>
-            <dl>
-                <dt>작성일</dt>
-                <dd>{{board.regdate.slice(0,11)}}</dd>
-            </dl>
-            <dl>
-                <dt>조회</dt>
-                <dd>{{board.viewcnt}}</dd>
-            </dl>
+          <dl>
+            <dt>번호</dt>
+            <dd>{{ this.num }}</dd>
+          </dl>
+          <dl>
+            <dt>글쓴이</dt>
+            <dd>{{ board.writer }}</dd>
+          </dl>
+          <dl>
+            <dt>작성일</dt>
+            <dd>{{ board.regdate.slice(0, 11) }}</dd>
+          </dl>
+          <dl>
+            <dt>조회</dt>
+            <dd>{{ board.viewcnt }}</dd>
+          </dl>
         </div>
         <div v-if="!updatemode" class="cont">
-            {{board.content}}
+          {{ board.content }}
         </div>
+
+        <comment-view
+          v-if="!updatemode"
+          :idx="board.idx"
+          :comments="comments"
+        ></comment-view>
+
         <textarea v-if="updatemode" v-model="board.content" class="update cont">
-           
         </textarea>
+      </div>
     </div>
 
     <div class="bt_wrap">
-        <button class="goBackBtn" @click="goback">목록으로</button> 
-        <button v-if="!this.updatemode" class="btn goBackBtn" @click="updateBoard">수정</button> 
-        <button v-if="this.updatemode" class="btn goBackBtn updateFinish" @click="updateFinish">수정완료</button> 
-        <button v-if="!updatemode" class="btn goBackBtn" @click="deleteBoard">삭제</button>
+      <button class="btn goBackBtn" @click="goback">목록으로</button>
+      <div v-if="checkUser" class="modifyDeleteBtn">
+        <button
+          v-if="!this.updatemode"
+          class="btn goBackBtn"
+          @click="updateBoard"
+        >
+          수정
+        </button>
+        <button
+          v-if="this.updatemode"
+          class="btn goBackBtn updateFinish"
+          @click="updateFinish"
+        >
+          수정완료
+        </button>
+        <button v-if="!updatemode" class="btn goBackBtn" @click="deleteBoard">
+          삭제
+        </button>
+      </div>
     </div>
-
-    </div>
-
+  </div>
 
   <!-- <div class="detailView">
     <div></div>
@@ -58,124 +84,132 @@
     <hr>
     </div>
   </div> -->
-
-
-
 </template>
 
 <script>
-import router from '@/router'
-import axios from 'axios';
-import { mapState } from 'vuex';
+import router from "@/router";
+import axios from "axios";
+import { mapState } from "vuex";
+import CommentView from "@/components/CommentView.vue";
 export default {
-    methods : {
-        goback(){
-            router.go(0);
-        },
-        deleteBoard(){
-            if(!sessionStorage.getItem("loginUser")){
-                alert("로그인 후 이용 가능합니다.");
-                return;
-            } else {
-            if(confirm("정말로 삭제하시겠습니까?")){
-                const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
-                axios({
-                    url : API_URL,
-                    method : "DELETE",
-                    headers : {
-                        "access-token" : sessionStorage.getItem("access-token"),
-                    }
-                }).then(() => {
-                    console.log("deleted");
-                    alert("삭제되었습니다.");
-                    router.go(0).catch((err) => err);
-                })
-            }
-            }
-        },
-        updateBoard(){
-            if(!sessionStorage.getItem("loginUser")){
-                alert("로그인 후 이용 가능합니다")
-            } else if(this.board.writer !== JSON.parse(sessionStorage.getItem("loginUser")).userNickname){
-                alert("본인이 작성한 글만 수정 가능합니다");
-            } else {
-                this.updatemode = true;
-            }
-        },
-        updateFinish(){
-            //axios요청 보내기 
-            console.log(this.titleUpdate);
-            console.log(this.contentUpdate);
-
-            console.log(this.board)
-            const API_URL =`http://localhost:9999/api/board/update`;
-            axios({
-                url: API_URL,
-                method: "PUT",
-                headers : {
-                        "access-token" : sessionStorage.getItem("access-token"),
-                    },
-                data : this.board,
-            }).then((res) => {
-                console.log(res.data);
-                //this.$emit("openDetail");
-                this.updatemode = false;
-
-
-            });
-
+  methods: {
+    showComment() {
+      this.showingComment = true;
+    },
+    goback() {
+      router.go(0);
+    },
+    deleteBoard() {
+      if (!sessionStorage.getItem("loginUser")) {
+        alert("로그인 후 이용 가능합니다.");
+        return;
+      } else {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
+          axios({
+            url: API_URL,
+            method: "DELETE",
+            headers: {
+              "access-token": sessionStorage.getItem("access-token"),
+            },
+          }).then(() => {
+            console.log("deleted");
+            alert("삭제되었습니다.");
+            router.go(0).catch((err) => err);
+          });
         }
+      }
+    },
+    updateBoard() {
+      if (!sessionStorage.getItem("loginUser")) {
+        alert("로그인 후 이용 가능합니다");
+      } else if (
+        this.board.writer !==
+        JSON.parse(sessionStorage.getItem("loginUser")).userNickname
+      ) {
+        alert("본인이 작성한 글만 수정 가능합니다");
+      } else {
+        this.updatemode = true;
+      }
+    },
+    updateFinish() {
+      //axios요청 보내기
+      console.log(this.titleUpdate);
+      console.log(this.contentUpdate);
 
+      console.log(this.board);
+      const API_URL = `http://localhost:9999/api/board/update`;
+      axios({
+        url: API_URL,
+        method: "PUT",
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+        },
+        data: this.board,
+      }).then((res) => {
+        console.log(res.data);
+        this.$emit("openDetail");
+        this.updatemode = false;
+      });
     },
-    data (){
-        return {
-            // board : {},
-            titleUpdate : "",
-            contentUpdate : "",
-            comments : [],
-            updatemode : false,
-            // updateText : "",
-        }
-    },
-    props : {
-        idx : Number,
-        num : Number,
-    },
-    computed : {
-        ...mapState(["board"])
-    },
-    created(){
-        console.log(this.num);
-        axios({
-                url: `http://localhost:9999/api/board/detail/${this.idx}`,
-                method: "GET",
-            })
-            .then((res) => {
-                console.log(res.data);
-                this.board = res.data;
-                this.$store.commit("SET_BOARD", res.data);
-                // this.updateText = this.board.content;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        
-        axios({
-            url: `http://localhost:9999/api/comment/${this.idx}`,
-                method: "GET",
-            })
-            .then((res) => {
-                console.log(res.data.comments);
-                this.comments = res.data.comments;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-            console.log("here!");
-            
+  },
+  data() {
+    return {
+      showingComment: false,
+      titleUpdate: "",
+      contentUpdate: "",
+      comments: [],
+      updatemode: false,
+      checkUser: false,
+    };
+  },
+  props: {
+    idx: Number,
+    num: Number,
+  },
+  computed: {
+    ...mapState(["board", "loginUser"]),
+  },
+  created() {
+    console.log(this.num);
+    axios({
+      url: `http://localhost:9999/api/board/detail/${this.idx}`,
+      method: "GET",
+    })
+      .then((res) => {
+        console.log(res.data);
+        this.board = res.data;
+        this.$store.commit("SET_BOARD", res.data);
+        // this.updateText = this.board.content;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios({
+      url: `http://localhost:9999/api/comment/${this.idx}`,
+      method: "GET",
+    })
+      .then((res) => {
+        console.log(res.data.comments);
+        this.comments = res.data.comments;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log("here!");
+
+    
+  },
+  updated() {
+    if (this.board.writer === this.loginUser.userNickname) {
+      this.checkUser = true;
     }
-}
-
+  },
+  components: {
+    CommentView,
+  },
+};
 </script>
 
 <style>
@@ -196,116 +230,117 @@ export default {
 .board_view {
     height : 30px;
     padding: 5px, 10px;
-} */ 
-
+} */
 
 /*** */
-.update{
-    background-color: #ffffffcb;
+.modifyDeleteBtn {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.update {
+  background-color: #ffffffcb;
 }
 .board_container {
-    margin-top: -50px;
-    margin-left: 20px;
+  margin-top: -50px;
+  margin-left: 20px;
 }
 .board_view_wrap {
-    /* border: 1px solid white; */
-    border-radius: 7px;
-    background-color: #ffffff75;
-    border-bottom: 1px solid #000;
-    height: 400px;
-    width: 90%;
+  /* border: 1px solid white; */
+  border-radius: 7px;
+  background-color: #ffffff75;
+  border-bottom: 1px solid #000;
+  width: 90%;
 }
 .board_view {
-    height : 63px;
-    border-bottom: 1px solid gray;
-    border-top : 1.5px solid black;
-    padding-left: 30px;
-    padding-top: 20px;
-    font-weight: bold;
-    font-size: larger;
-    
+  height: 63px;
+  border-bottom: 1px solid gray;
+  border-top: 1.5px solid black;
+  padding-left: 30px;
+  padding-top: 20px;
+  font-weight: bold;
+  font-size: larger;
 }
 .info {
-    padding-left: 30px;
-    height: 35px;
-    border-bottom: 1px solid #999;
-    margin-top : 15px;
+  padding-left: 30px;
+  height: 35px;
+  border-bottom: 1px solid #999;
+  margin-top: 15px;
 }
 .info dl {
-    /* 부모를 relative로 설정해주면 그에 맞게 자식이 dl:before이 position absolute 설정 가능하다 */
-    position: relative;
-    display: inline-block;
-    padding: 0 20px;
+  /* 부모를 relative로 설정해주면 그에 맞게 자식이 dl:before이 position absolute 설정 가능하다 */
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
 }
 .info dl:first-child {
-    padding-left: 0px;
+  padding-left: 0px;
 }
 
 .info dl::before {
-    /* display inline이라 자신만의 영역을 갖고잇지 않으므로 block으로 바꿔야함 */
-    display: block; 
-    top: 1px;
-    left: 0px;
-    content: "";
-    position: absolute;
-    width: 1px;
-    height: 17px;
-    background: gray ;
+  /* display inline이라 자신만의 영역을 갖고잇지 않으므로 block으로 바꿔야함 */
+  display: block;
+  top: 1px;
+  left: 0px;
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 17px;
+  background: gray;
 }
 .info dl:first-child::before {
-    display: none;
-    /* 첫번째 가상선택자는 보이지 않게 */
+  display: none;
+  /* 첫번째 가상선택자는 보이지 않게 */
 }
 
-.info dl dt, 
+.info dl dt,
 .info dl dd {
-    display: inline-block;
-    font-size: 13px;
+  display: inline-block;
+  font-size: 13px;
 }
 
 .info dl dt {
 }
 .info dl dd {
-    display: inline-block;
-    color: #777;
-    margin-left: 10px;
+  display: inline-block;
+  color: #777;
+  margin-left: 10px;
 }
 .cont {
-    padding: 15px;
-    height: 230px;
-    width: 100%;
-    line-height: 160%;
-    font-size: 15px;
+  padding: 15px;
+  height: 230px;
+  width: 100%;
+  line-height: 160%;
+  font-size: 15px;
 }
 .bt_wrap {
-    margin-top: 10px;
-    /* text-align: center; */
-    font-size: 0;
-    height: 40px;
+  margin-top: 10px;
+  /* text-align: center; */
+  font-size: 0;
+  height: 40px;
 }
 
 .bt_wrap button {
-    height: 42px;
-    background-color: #000;
-    color: #fff;
-    display: inline-block;
-    min-width: 80px;
-    margin-left: 10px;
-    /* padding: 10px; */
-    border : 1px solid black;
-    border-radius : 2px;
+  height: 42px;
+  background-color: #000;
+  color: #fff;
+  display: inline-block;
+  min-width: 80px;
+  margin-left: 10px;
+  /* padding: 10px; */
+  border: 1px solid black;
+  border-radius: 2px;
 }
 .bt_wrap button:first-child {
-    margin-left: 0;
-    background-color: #fff;
-    color: #000;
+  margin-left: 0;
+  background-color: #fff;
+  color: #000;
 }
 .bt_wrap .updateFinish {
-    background-color: rosybrown;
+  background-color: rosybrown;
 }
 .bt_wrap button.on {
-    background : #000;
-    color: #fff;
+  background: #000;
+  color: #fff;
 }
-
 </style>
