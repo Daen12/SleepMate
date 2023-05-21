@@ -14,7 +14,7 @@
         <div class="int-area">
             <input @keyup="dupcheckNick()" v-model="nickname" type="text" name="id" id="id" autocomplete="off" required>
             <label for="id">NICK NAME</label>
-            <span v-if="dupNick==0">중복된 닉네임입니다</span>
+            <span class="dup_alert" v-if="dupNick==0">중복된 닉네임입니다</span>
         </div>
         <div class="int-area">
             <!-- <input v-model="email" type="text" name="age" id="age" autocomplete="off" required>
@@ -22,10 +22,10 @@
         <div class="int-area">
             <input @keyup="dupcheckId()" v-model="id" type="text" name="id" id="id" autocomplete="off" required>
             <label for="id">USER NAME</label>
-            <span  v-if="dupId==0">중복된 아이디입니다</span>
+            <span class="dup_alert" v-if="dupId==0">중복된 아이디입니다</span>
         </div>
         <div class="int-area">
-            <input v-model="password" type="password" name="pw" id="pw" autocomplete="off" required>
+            <input @keyup.enter="regist" v-model="password" type="password" name="pw" id="pw" autocomplete="off" required>
             <label for="pw">PASSWORD</label>
         </div>
         </div>
@@ -74,13 +74,16 @@ export default {
 
     },
     regist() {
-      if (this.id === "" || this.password === "" || this.name === "" || this.nickname==="" || this.email === "") {
+      if (this.id === "" || this.password === "" || this.name === "" || this.nickname==="") {
         alert("모든 내용을 입력해주세요");
+        return;
+      }
+      if(this.dupId == 0 || this.dupNick==0){
+        alert("아이디 또는 닉네임 중복확인을 해주세요");
         return;
       }
 
       let user = {
-        email : this.email,
         name: this.name,
         nickname: this.nickname,
         id: this.id,
@@ -95,7 +98,10 @@ export default {
 </script>
 
 <style>
-
+.dup_alert {
+    color: rgb(255, 24, 16);
+    font-size: 13px;
+}
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 *{
     margin: 0;

@@ -2,17 +2,19 @@
 <div class="board-container">
 
   <div class="parent">
-  <div class="child1">I am the first child
+  <div class="child1">
   <side-bar></side-bar>
   </div>
 
 
   <div class="child2">
       <h2 class="board_intro">커뮤니티</h2>
-      <p>sample text comes here lorem ipsum</p>
+      <p>정보공유를 위한 커뮤니티 입니다.</p>
       <br>
       <br>
-    <board-table></board-table>
+    <board-table v-if="!detailopen && !createopen" @createOpen ="createOpen" @openDetail="openDetail" ></board-table>
+    <board-create v-if="createopen"></board-create>
+    <board-detail :idx="this.idx" :num="this.num" v-if="detailopen" @openDetail="openDetail"></board-detail>
   </div>
   
   </div>
@@ -23,9 +25,39 @@
 <script>
 import SideBar from '@/components/common/SideBar.vue'
 import BoardTable from '@/components/BoardTable.vue'
+import BoardDetail from '@/components/BoardDetail.vue'
+import BoardCreate from '@/components/BoardCreate.vue'
 
 export default {
-  components: { SideBar, BoardTable },
+  components: { 
+    SideBar, 
+    BoardTable, 
+    BoardDetail,  
+    BoardCreate,
+    },
+  data(){
+    return{
+      detailopen : false,
+      createopen : false,
+      idx : -1,
+      num : 0,
+    }
+  },
+  methods : {
+    openDetail(idx, num){
+      // this.$router.push(`/base/${idx}`)
+      this.detailopen = true;
+      this.idx = idx;
+      console.log(this.idx);
+      this.num = num;
+      console.log("num : "+this.num);
+      console.log(num);
+    },
+    createOpen(){
+      this.createopen = true;
+
+    }
+  }
   
 }
 </script>
@@ -33,6 +65,11 @@ export default {
 <style >
 
 .board_intro {
+  margin-left: 25px;
+  font-size: 27px;
+}
+.child2 p {
+  margin-left: 20px;
 }
 
 
@@ -41,7 +78,7 @@ export default {
   position: inherit;
   width: 1500px;
   height: 800px;
-  background-color: #7f8c8d50;
+  background-color: #bdd0d218;
 }
 .parent {
   padding-top: 100px;
@@ -52,11 +89,11 @@ export default {
   display: flex;
 }
 .child1 {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   flex: 1;
 }
 .child2 {
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
   flex: 4;
 }
 

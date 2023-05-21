@@ -1,12 +1,14 @@
 <template>
 <div>
+  <board-detail v-if="step == 1"></board-detail>
+<div>
   <table class="tg" style="undefined;table-layout: fixed; width: 546px">
 <colgroup>
 <col style="width: 50px">
-<col style="width: 150px">
-<col style="width: 300px">
 <col style="width: 100px">
-<col style="width: 200px">
+<col style="width: 330px">
+<col style="width: 150px">
+<col style="width: 150px">
 <col style="width: 90px">
 </colgroup>
 <thead>
@@ -20,44 +22,51 @@
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <!-- <tr>
     <td class="tg-0lax">1</td>
     <td class="tg-0lax">ed</td>
     <td class="tg-0lax">제목제목</td>
     <td class="tg-0lax">다영</td>
     <td class="tg-0lax">2023-05-18</td>
     <td class="tg-baqh">1</td>
+  </tr> -->
+  <tr v-for="(board, i) in boardList" :key="i">
+    <td class="tg-0lax">{{i+1}}</td>
+    <td class="tg-0lax">{{board.classnum}}</td>
+    <td class="tg-0lax"><button @click="goToDetail(board.idx, i+1)">{{board.title}}</button></td>
+    <td class="tg-0lax">{{board.writer}}</td>
+    <td class="tg-0lax">{{board.regdate.slice(0,11)}}</td>
+    <td class="tg-baqh">{{board.viewcnt}}</td>
   </tr>
-  <tr v-for="row in 14" :key="row">
-    <td class="tg-0lax">2</td>
-    <td class="tg-0lax">ed</td>
-    <td class="tg-0lax">제목제목</td>
-    <td class="tg-0lax">민식</td>
-    <td class="tg-0lax">2023-05-18</td>
-    <td class="tg-baqh">1</td>
-  </tr>
+<!-- <router-link :to="{name : 'BoardDetail', params : {idx : 2}}"></router-link>  -->
 
+<!-- -->
 </tbody>
 </table>
 <!-- 여기서부터 pagination -->
  <div class="btn-cover">
       <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">
-        이전
+        ← &ensp;
       </button>
       <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
       <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">
-        다음
+        &ensp; →
       </button>
 </div>
 <!-- 여기까지 pagination -->
 </div>
+<button @click="writeBoard" class="writeboard_btn">글 작성</button>
+</div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import BoardDetail from './BoardDetail.vue';
 export default {
+  components: { BoardDetail },
     data () {
     return {
-      pageNum: 0
+      pageNum: 0,
     }
   },
   props : {
@@ -71,23 +80,38 @@ export default {
       default: 5,
     },
   },
+  created(){
+    this.$store.dispatch("setBoardList");
+    console.log("create");
+  },
   methods: {
     nextPage () {
       this.pageNum += 1;
     },
     prevPage () {
       this.pageNum -= 1;
+    },
+    goToDetail(idx, num){
+      console.log(num);
+      this.$emit("openDetail", idx, num);
+    },
+    writeBoard(){
+      if(!sessionStorage.getItem("loginUser")){
+          alert("로그인 후 이용 가능한 서비스입니다.");
+          return;
+      } else {
+          this.$emit("createOpen");
+      }
     }
   },
   computed: {
+    ...mapState(['boardList']),
+
     pageCount () {
-        let listLeng = 15,
+        let listLeng = this.boardList.length,
             listSize = this.pageSize,
             page = Math.floor(listLeng/listSize);
-    //   let listLeng = this.listArray.length,
-    //       listSize = this.pageSize,
-    //       page = Math.floor(listLeng / listSize);
-      if (listLeng % listSize > 0) page += 1;
+        if (listLeng % listSize > 0) page += 1;
       
       /*
       아니면 page = Math.floor((listLeng - 1) / listSize) + 1;
@@ -98,13 +122,32 @@ export default {
     paginatedData () {
       const start = this.pageNum * this.pageSize,
             end = start + this.pageSize;
-      return this.reviews.slice(start, end);
+      return this.boardList.slice(start, end);
     },
   }
 }
 </script>
 
 <style>
+.tg-0lax button {
+  border: none;
+  font-weight: 500;
+  background-color: transparent;
+}
+.writeboard_btn {
+  height: 42px;
+    background-color: #000;
+    color: #fff;
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    /* padding: 10px; */
+    border : 1px solid black;
+    border-radius : 2px;
+    float: right;
+    margin-right: 150px;
+    margin-top: -40px;
+}
 /* board */
 .board-intro {
   margin-top: 10px;
@@ -117,7 +160,8 @@ tr {
 .tg  {
   border-collapse:collapse;
   border-spacing:0;
-  margin: auto;
+  margin-left: 20px;
+  margin-top: -40px;
   }
 .tg td{
   border-bottom-width:1px;
@@ -158,4 +202,14 @@ tr {
   vertical-align:center;
   
   }
+.btn-cover {
+  margin-top: 20px;
+  margin-left: 40px;
+  color: #682b2b;
+  font-size: 17px;
+}
+.btn-cover .page-btn {
+  border: none;
+  background-color: transparent;
+}
 </style>

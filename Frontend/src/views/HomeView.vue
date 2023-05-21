@@ -208,7 +208,7 @@
             </a>
           </div>
         </div>
-        <div class="box">
+        <!-- <div class="box">
           <img src="images/f-4.jpg" alt="">
           <div class="link_box">
             <h5>
@@ -240,7 +240,7 @@
               Buy Now
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -411,7 +411,7 @@
             <a href="">
               <img src="images/location.png" alt="">
               <span>
-                대전광역시 유성구 동서대로 179번길 62-7 스위치
+                대전광역시 유성구 동서대로 179번길 62-7
               </span>
             </a>
           </div>

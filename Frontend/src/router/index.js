@@ -5,6 +5,8 @@ import BoardView from "../views/BoardView.vue";
 import BaseView from "../views/BaseView.vue";
 import SignupView from "../components/SignupView.vue";
 import LoginView from "../components/LoginView.vue";
+import BoardDetail from "@/components/BoardDetail.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,6 +34,13 @@ const routes = [
                 path: "",
                 name: "BoardView",
                 component: BoardView,
+                children: [
+                    {
+                        path: ":idx",
+                        name: "BoardDetail",
+                        component: BoardDetail,
+                    },
+                ],
             },
         ],
     },

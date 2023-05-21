@@ -12,6 +12,8 @@ export default new Vuex.Store({
         dupNick: 1,
         dupId: 1,
         loginUser: null,
+        boardList: [],
+        board: {},
     },
     getters: {},
     mutations: {
@@ -26,6 +28,12 @@ export default new Vuex.Store({
         },
         SET_LOGIN_USER: function (state, user) {
             state.loginUser = user;
+        },
+        SET_BOARD_LIST(state, boardList) {
+            state.boardList = boardList;
+        },
+        SET_BOARD(state, board) {
+            state.board = board;
         },
     },
     actions: {
@@ -57,7 +65,7 @@ export default new Vuex.Store({
                     console.log(err);
                 })
                 .finally(() => {
-                    router.push("/");
+                    router.go(-1);
                 });
         },
         dupcheckNick({ commit }, value) {
@@ -105,7 +113,28 @@ export default new Vuex.Store({
             //local storage 비우기
             sessionStorage.removeItem("loginUser");
             sessionStorage.removeItem("access-token");
+            alert("로그아웃 되었습니다.");
         },
+        setBoardList({ commit }) {
+            const API_URL = REST_API + `board/`;
+            axios({
+                url: API_URL,
+                method: "GET",
+            }).then((res) => {
+                console.log(res.data.articles);
+                commit("SET_BOARD_LIST", res.data.articles);
+            });
+        },
+        // deleteBoard({ commit }, idx) {
+        //     const API_URL = REST_API + `board/`;
+        //     axios({
+        //         url: API_URL,
+        //         method: "GET",
+        //     }).then((res) => {
+        //         console.log(res.data.articles);
+        //         commit("SET_BOARD_LIST", res.data.articles);
+        //     });
+        // },
     },
     modules: {},
 });

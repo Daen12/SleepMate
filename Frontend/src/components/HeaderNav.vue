@@ -20,23 +20,27 @@
           <div class="collapse navbar-collapse navigation" id="navbarSupportedContent">
             <div class="d-flex  flex-column flex-lg-row align-items-center">
               <ul class="navbar-nav  ">
-                <li class="nav-item active">
+               <li class="nav-item active">
                   <router-link to="/"> <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a></router-link>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="about.html">About </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Our Community </a>
+                  <a class="nav-link pointer" @click="goToCommun">Our Community </a>
+                  <!-- <router-link to="/base"></router-link> -->
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="contact.html">Contact Us</a>
+                  <a class="nav-link" href="#contact-us">Contact Us</a>
                 </li>
-                <li class="nav-item">
+                <li v-if="!loginUser" class="nav-item">
                   <router-link to="/login"><a class="nav-link" href="#">Login</a></router-link>
                 </li>
-                <li class="nav-item">
-                  <router-link to="/signup"> <a class="nav-link" href="#">SignUp</a></router-link>
+                <li v-if="loginUser" class="nav-item">
+                  <button class="nav-link logoutButton" @click="logout">Logout</button>
+                </li>
+                <li v-if="!loginUser" class="nav-item">
+                  <router-link to="/signup"><a class="nav-link" href="#">signup</a></router-link>
                 </li>
               </ul>
               <!-- <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
@@ -51,13 +55,42 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
-    
+    created(){
+       if(sessionStorage.getItem("loginUser")){
+            let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+            this.$store.commit("SET_LOGIN_USER", loginUser);
+            return true;
+          } else {
+            return false;
+          }
+    },
+    methods : {
+    logout() {
+          console.log("trying to log out");
+            this.$store.dispatch("logout");
+            this.$router.go(0);
+        },
+    goToCommun(){
+      this.$router.go(0);
+    }
+  },
+    computed : {
+      ...mapState(["loginUser"])
+    }
 
 }
 </script>
 
 <style scoped >
+.pointer {
+  cursor: pointer;
+}
+.logoutButton {
+  background-color: transparent;
+  border : 0px;
+}
 .container {
     position: fixed;
     top: 150px;
