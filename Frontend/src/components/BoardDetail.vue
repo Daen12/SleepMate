@@ -39,9 +39,9 @@
 
     <div class="bt_wrap">
         <button class="goBackBtn" @click="goback">목록으로</button> 
-        <button v-if="!this.updatemode" class="goBackBtn" @click="updateBoard">수정</button> 
-        <button v-if="this.updatemode" class="goBackBtn updateFinish" @click="updateFinish">수정완료</button> 
-        <button v-if="!updatemode" class="goBackBtn" @click="deleteBoard">삭제</button>
+        <button v-if="!this.updatemode" class="btn goBackBtn" @click="updateBoard">수정</button> 
+        <button v-if="this.updatemode" class="btn goBackBtn updateFinish" @click="updateFinish">수정완료</button> 
+        <button v-if="!updatemode" class="btn goBackBtn" @click="deleteBoard">삭제</button>
     </div>
 
     </div>

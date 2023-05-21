@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 
 .board_intro {
   margin-left: 25px;
@@ -72,12 +72,10 @@ export default {
   margin-left: 20px;
 }
 
-
 .board-container {
   margin-bottom: -280px;
   position: inherit;
-  width: 1500px;
-  height: 800px;
+  height: 1500px;
   background-color: #bdd0d218;
 }
 .parent {
