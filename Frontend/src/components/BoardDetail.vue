@@ -40,7 +40,6 @@
         <comment-view
           v-if="!updatemode"
           :idx="board.idx"
-          :comments="comments"
         ></comment-view>
 
         <textarea v-if="updatemode" v-model="board.content" class="update cont">
@@ -71,23 +70,9 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="detailView">
-    <div></div>
-    <div>{{board.writer}}</div>
-    <div>{{board.viewCnt}}</div>
-    <div>{{board.date}}</div>
-    <hr> 여기부터 COMMENT
-    <div v-for="(comment, i) in comments" :key="i">
-    <div>{{comment.content}}</div>
-    <div>{{comment.writer}}</div>
-    <hr>
-    </div>
-  </div> -->
 </template>
 
 <script>
-import router from "@/router";
 import axios from "axios";
 import { mapState } from "vuex";
 import CommentView from "@/components/CommentView.vue";
@@ -97,7 +82,7 @@ export default {
       this.showingComment = true;
     },
     goback() {
-      router.go(0);
+      this.$emit("finishDetail");
     },
     deleteBoard() {
       if (!sessionStorage.getItem("loginUser")) {
@@ -115,7 +100,7 @@ export default {
           }).then(() => {
             console.log("deleted");
             alert("삭제되었습니다.");
-            router.go(0).catch((err) => err);
+            this.$emit("finishDelete");
           });
         }
       }
@@ -133,11 +118,6 @@ export default {
       }
     },
     updateFinish() {
-      //axios요청 보내기
-      console.log(this.titleUpdate);
-      console.log(this.contentUpdate);
-
-      console.log(this.board);
       const API_URL = `http://localhost:9999/api/board/update`;
       axios({
         url: API_URL,
@@ -146,9 +126,7 @@ export default {
           "access-token": sessionStorage.getItem("access-token"),
         },
         data: this.board,
-      }).then((res) => {
-        console.log(res.data);
-        this.$emit("openDetail");
+      }).then(() => {
         this.updatemode = false;
       });
     },
@@ -158,7 +136,6 @@ export default {
       showingComment: false,
       titleUpdate: "",
       contentUpdate: "",
-      comments: [],
       updatemode: false,
       checkUser: false,
     };
@@ -171,16 +148,13 @@ export default {
     ...mapState(["board", "loginUser"]),
   },
   created() {
-    console.log(this.num);
     axios({
       url: `http://localhost:9999/api/board/detail/${this.idx}`,
       method: "GET",
     })
       .then((res) => {
-        console.log(res.data);
         this.board = res.data;
         this.$store.commit("SET_BOARD", res.data);
-        // this.updateText = this.board.content;
       })
       .catch((err) => {
         console.log(err);
@@ -191,18 +165,14 @@ export default {
       method: "GET",
     })
       .then((res) => {
-        console.log(res.data.comments);
-        this.comments = res.data.comments;
+        this.$store.commit("SET_COMMENTS", res.data.comments);
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("here!");
-
-    
   },
   updated() {
-    if (this.board.writer === this.loginUser.userNickname) {
+    if (this.loginUser && this.board.writer === this.loginUser.userNickname) {
       this.checkUser = true;
     }
   },

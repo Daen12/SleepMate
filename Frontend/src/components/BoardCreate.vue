@@ -83,8 +83,8 @@ export default {
                 method : "POST",
                 data : board,
             }).then(()=>{
-                router.go(0);
                 alert("등록되었습니다.");
+                this.$emit("finishCreate");
             })
 
         }

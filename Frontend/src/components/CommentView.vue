@@ -1,16 +1,28 @@
 <template>
   <div class="comment_container">
     <div class="comment_header">
-      <div class="pointer writeBtn" v-if="loginUser && !writemode" @click="writeComment">&nbsp;+&nbsp;</div>
+      <div
+        class="pointer writeBtn"
+        v-if="loginUser && !writemode"
+        @click="writemode = true"
+      >
+        &nbsp;+&nbsp;
+      </div>
     </div>
     <!-- 댓글 쓰는 창 -->
-    <div class="content" v-show="writemode">
-        <dl class="writer">{{nickName}}</dl>
-        <dl class="real"><input type="text" @keyup.enter="commentWrite" v-model="c_content" placeholder="댓글을 입력해주세요."> </dl>
-        <dl class="date"></dl>
-        <dl class="pointer" @click="commentWrite">등록</dl> 
-        <dl class="pointer" @click="writemode = false">취소</dl> 
-
+    <div class="content" v-if="writemode">
+      <dl class="writer">{{ nickName }}</dl>
+      <dl class="real">
+        <input
+          type="text"
+          @keyup.enter="commentWrite"
+          v-model="c_content"
+          placeholder="댓글을 입력해주세요."
+        />
+      </dl>
+      <dl class="date"></dl>
+      <dl class="pointer" @click="commentWrite">등록</dl>
+      <dl class="pointer" @click="writemode = false">취소</dl>
     </div>
     <!-- 댓글 수정 창 -->
     <!-- <div class="content">
@@ -32,95 +44,101 @@
         <dl class="pointer" @click="commentDelete(comment.idx)">삭제</dl>
       </div> -->
 
-        <dl class="writer">{{comment.writer}}</dl>
-        <dl class="real">{{comment.content}}</dl>
-        <dl class="date">{{comment.regdate.slice(0,11)}}</dl>
-        <dl class="pointer" @click="updateComment(comment.content)">수정</dl>
-        <dl class="pointer" @click="commentDelete(comment.idx)">삭제</dl>
-
+      <dl class="writer">{{ comment.writer }}</dl>
+      <dl class="real" v-if="!updateContentmode[i]">{{ comment.content }} {{updateContentmode[i]}}</dl>
+      <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="e_content[i]" /></dl>
+      <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
+      <dl class="pointer" v-if="!updateContentmode[i]" @click="updateComment(i)">수정</dl>
+      <dl class="pointer" v-if="!updateContentmode[i]" @click="commentDelete(comment.idx)">삭제</dl>
+      <dl class="pointer" v-if="updateContentmode[i]">수정완료</dl>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import {mapState} from 'vuex';
+import axios from "axios";
+import { mapState } from "vuex";
 export default {
-    name : "CommentView",
-    props : {
-      comments : Array,
-      idx : Number,
-    },
-    computed: {
-      ...mapState(["loginUser"])
-    },
-    data(){
-      return {
-        writemode : false,
-        // updatemode : false,
-        nickName : "",
-        c_content : "",
-        e_content : "",
-      }
-    },
-    methods: {
-      commentUpdate(){
-
-      },
-      updateComment(content){
-        console.log(content);
-        // this.updatemode = true;
-        this.e_content = content;
-      },
-      // cancelWrite(){
-      //   this.writemode = false;
-      // },
-      commentDelete(idx){
-        console.log(idx);
-        const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
-        axios({
-          url : API_URL,
-          method : "DELETE",
-          headers : {
-                      "access-token" : sessionStorage.getItem("access-token"),
-                  }
-              }).then(() => {
-                  alert("삭제되었습니다.");
-                  this.$router.go(0);
-              }).catch((err) => {
-                console.log(err);
-                alert("로그인 후 이용해주세요");
-              })
-        },
-        commentWrite(){
-          let comment = {
-            articleIdx : this.idx,
-            content : this.c_content,
-            writer : this.nickName,
-          }
-          console.log(comment);
-           const API_URL = `http://localhost:9999/api/comment/write`;
-          axios({
-          url : API_URL,
-          method : "POST",
-          data : comment,
-              }).then(() => {
-                  this.$router.go(0); //
-                  alert("댓글이 등록되었습니다.");
-              }).catch((err) => {
-                console.log(err);
-              })
-        },
-        writeComment(){
-          this.writemode = true;
-        }
-      },
-      created(){
-        this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
-        console.log(this.idx);
-      }
+  name: "CommentView",
+  props: {
+    idx: Number,
+  },
+  data() {
+    return {
+      writemode: false,
+      nickName: "",
+      c_content: "",
+      e_content: [],
+      updateContentmode: [],
     }
-
+  },
+  computed: {
+    ...mapState(["loginUser", "comments"]),
+  },
+  methods: {
+    commentUpdate() {},
+    updateComment(idx) {
+      this.updateContentmode[idx] = true;
+      console.log(this.updateContentmode);
+    },
+    commentDelete(idx) {
+      const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
+      axios({
+        url: API_URL,
+        method: "DELETE",
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+        },
+      })
+        .then(() => {
+          alert("삭제되었습니다.");
+          this.$store.commit("DELETE_COMMENT", idx);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("로그인 후 이용해주세요");
+        });
+    },
+    commentWrite() {
+      let comment = {
+        articleIdx: this.idx,
+        content: this.c_content,
+        writer: this.nickName,
+      };
+      const API_URL = `http://localhost:9999/api/comment/write`;
+      axios({
+        url: API_URL,
+        method: "POST",
+        data: comment,
+      })
+        .then((res) => {
+          this.$store.commit("CREATE_COMMENT", res.data);
+          this.writemode = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+  created() {
+    if (sessionStorage.getItem("loginUser")) {
+      this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
+    }
+    this.e_content = this.comments.content;
+    for (let i = 0; i < this.comments.length; i++) {
+      this.updateContentmode[i] = false;
+    }
+  },
+  beforeUpdate() {
+    if (sessionStorage.getItem("loginUser")) {
+      this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
+    }
+    for (let i = 0; i < this.comments.length; i++) {
+      this.updateContentmode[i] = false;
+    }
+    this.e_content = this.comments.content;
+  }
+}
 </script>
 
 <style>
@@ -139,7 +157,7 @@ export default {
   margin-bottom: 20px;
 }
 .content input {
-  width : 90%;
+  width: 90%;
   border: none;
   outline: none;
   background-color: #ffffffd9;
@@ -157,7 +175,7 @@ export default {
   border-bottom: 1px dotted #ddd;
   display: flex;
 }
-.content .real{
+.content .real {
   flex: 17;
   text-align: left;
   color: #222;
