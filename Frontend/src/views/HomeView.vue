@@ -181,6 +181,9 @@
             <h5>
               Community
             </h5>
+            <h5>
+              커뮤니티
+            </h5>
             <router-link to="/base">
               Click
            </router-link>
@@ -190,10 +193,13 @@
           <img src="" alt="">
           <div class="link_box">
             <h5>
-              Blueberry
+              Youtube
+            </h5>
+            <h5>
+              맞춤형 유튜브
             </h5>
             <a href="">
-              Buy Now
+              Click
             </a>
           </div>
         </div>
@@ -201,10 +207,13 @@
           <img src="images/f-3.jpg" alt="">
           <div class="link_box">
             <h5>
-              Banana
+              Consultation
+            </h5>
+            <h5>
+              전문가 상담
             </h5>
             <a href="">
-              Buy Now
+              Click
             </a>
           </div>
         </div>
