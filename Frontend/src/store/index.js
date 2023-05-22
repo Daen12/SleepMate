@@ -15,8 +15,13 @@ export default new Vuex.Store({
         boardList: [],
         board: {},
         comments: [],
+        category: 1,
     },
-    getters: {},
+    getters: {
+        // getCategory(state, num) {
+        //     state.category = num;
+        // },
+    },
     mutations: {
         DUPLICATE_CHECK_NICK(state, value) {
             state.dupNick = value;
@@ -48,6 +53,9 @@ export default new Vuex.Store({
                     state.comments.splice(i, 1);
                 }
             }
+        },
+        ADD_BOARD(state, board) {
+            state.boardList.push(board);
         },
     },
     actions: {
@@ -140,6 +148,16 @@ export default new Vuex.Store({
             }).then((res) => {
                 console.log(res.data.articles);
                 commit("SET_BOARD_LIST", res.data.articles);
+            });
+        },
+        writeBoard({ commit }, board) {
+            axios({
+                url: `http://localhost:9999/api/board/write`,
+                method: "POST",
+                data: board,
+            }).then((res) => {
+                commit("ADD_BOARD", res.data);
+                alert("등록되었습니다.");
             });
         },
         // deleteBoard({ commit }, idx) {

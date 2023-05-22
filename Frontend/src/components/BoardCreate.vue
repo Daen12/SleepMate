@@ -18,10 +18,10 @@
                 <dt>카테고리</dt>
                 <dd>
                     <select name="" id="" v-model="category" class="category">
-                        <option value="1">카테고리1</option>
-                        <option value="2">카테고리2</option>
-                        <option value="3">카테고리3</option>
-                        <option value="4">카테고리4</option>
+                        <option value="1">요가 용품</option>
+                        <option value="2">자격증 정보</option>
+                        <option value="3">요가원 추천</option>
+                        <option value="4">영상 후기</option>
                     </select>
                 </dd>
             </dl> 
@@ -41,28 +41,10 @@
     </div>
 
     </div>
-
-
-  <!-- <div class="detailView">
-    <div></div>
-    <div>{{board.writer}}</div>
-    <div>{{board.viewCnt}}</div>
-    <div>{{board.date}}</div>
-    <hr> 여기부터 COMMENT
-    <div v-for="(comment, i) in comments" :key="i">
-    <div>{{comment.content}}</div>
-    <div>{{comment.writer}}</div>
-    <hr>
-    </div>
-  </div> -->
-
-
-
 </template>
 
 <script>
 import router from '@/router'
-import axios from 'axios';
 export default {
 
     methods : {
@@ -70,7 +52,6 @@ export default {
             router.go(0);
         },
         createBoard(){
-            
             //axios 요청 보내기
             let board = {
                 classnum : this.category,
@@ -78,14 +59,12 @@ export default {
                 content : this.content,
                 writer : this.nickName,
             };
-            axios({
-                url : `http://localhost:9999/api/board/write`,
-                method : "POST",
-                data : board,
-            }).then(()=>{
-                alert("등록되었습니다.");
+            this.$store.dispatch("writeBoard", board);
+            setTimeout(()=>{
                 this.$emit("finishCreate");
-            })
+            },200)
+
+           
 
         }
     },

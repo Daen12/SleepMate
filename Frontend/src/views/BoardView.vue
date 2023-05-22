@@ -8,8 +8,9 @@
 
 
   <div class="child2">
-      <h2 class="board_intro">커뮤니티</h2>
-      <p>정보공유를 위한 커뮤니티 입니다.</p>
+      <h2 class="board_intro">커뮤니티 공간</h2>
+      <p>YogaMate 회원들의 정보공유를 위한 커뮤니티 입니다.</p>
+      <hr>
       <br>
       <br>
     <board-table v-if="!detailopen && !createopen" @createOpen ="createOpen" @openDetail="openDetail" ></board-table>
@@ -69,6 +70,7 @@ export default {
 <style>
 
 .board_intro {
+  margin-top: 35px;
   margin-left: 25px;
   font-size: 27px;
 }
