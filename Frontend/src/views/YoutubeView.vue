@@ -74,6 +74,7 @@
       </section>
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
+      <button @click="verify">실험</button>
       <br />
       <br />
       <br />
@@ -90,6 +91,7 @@
           차별화된 맞춤 영상을 확인하실 수 있습니다.
         </div>
 
+        <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <div class="subTitle">키워드1</div>
         <div class="slide_wrapper">
           <ul class="slides">
@@ -100,6 +102,7 @@
                 <li>slide 05</li> -->
           </ul>
         </div>
+
         <div class="subTitle">키워드2</div>
         <div class="slide_wrapper">
           <ul class="slides">
@@ -110,6 +113,7 @@
                 <li>slide 05</li> -->
           </ul>
         </div>
+
         <div class="subTitle">키워드3</div>
         <div class="slide_wrapper">
           <ul class="slides">
@@ -126,7 +130,15 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { Configuration, OpenAIApi } from "openai";
 export default {
+  data() {
+    return {
+      prior1: {},
+      prior2: {},
+      prior3: {},
+    };
+  },
   // mounted() {
   //     const recaptchaScript = document.createElement('script');
   //     recaptchaScript.setAttribute(
@@ -140,16 +152,87 @@ export default {
   //     console.log("updated")
   // },
   components: {},
+  computed: {
+    ...mapState(["loginUser"]),
+  },
   created() {
     if (sessionStorage.getItem("loginUser")) {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
       this.$store.commit("SET_LOGIN_USER", loginUser);
-      return true;
-    } else {
-      return false;
     }
+    
+    setTimeout(() => {this.prior1 = this.openai(1)}, 3000);
+    setTimeout(() => {this.prior2 = this.openai(2)}, 6000);
+    setTimeout(() => {this.prior3 = this.openai(3)}, 9000);
+
   },
   methods: {
+    async openai(num) {
+
+      const configuration = new Configuration({
+        organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
+        apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
+      });
+      const openai = new OpenAIApi(configuration);
+
+      if (num === 1) {
+        const completion = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content: "결과 값은 항상 Javascript 객체의 형식이다.",
+            },
+            {
+              role: "user",
+              content: `${this.loginUser.prefer1}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 300,
+        });
+        return await completion.data.choices[0].message.content;
+      }
+
+      if (num === 2) {
+        const completion = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content: "결과 값은 항상 Javascript 객체의 형식이다.",
+            },
+            {
+              role: "user",
+              content: `${this.loginUser.prefer2}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 300,
+        });
+        return await completion.data.choices[0].message.content;
+      }
+
+      if (num === 3) {
+        const completion = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content: "결과 값은 항상 Javascript 객체의 형식이다.",
+            },
+            {
+              role: "user",
+              content: `${this.loginUser.prefer3}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 300,
+        });
+        return await completion.data.choices[0].message.content;
+      }
+
+    },
     logout() {
       console.log("trying to log out");
       this.$store.dispatch("logout");
@@ -158,9 +241,11 @@ export default {
     goToCommun() {
       this.$router.push("/base");
     },
-  },
-  computed: {
-    ...mapState(["loginUser"]),
+    verify() {
+    console.log(this.prior1);
+    console.log(this.prior2);
+    console.log(this.prior3);
+    }
   },
 };
 </script>
