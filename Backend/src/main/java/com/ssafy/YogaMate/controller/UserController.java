@@ -39,6 +39,11 @@ public class UserController {
             result.put("message", SUCCESS);
             result.put("userId", loginUser.getId());
             result.put("userNickName", loginUser.getNickname());
+            if (loginUser.getPrefer1() != null) {
+                result.put("prefer1", loginUser.getPrefer1());
+                result.put("prefer2", loginUser.getPrefer2());
+                result.put("prefer3", loginUser.getPrefer3());
+            }
             status = HttpStatus.OK;
         } else {
             result.put("message", FAIL);
@@ -83,7 +88,7 @@ public class UserController {
     @ApiOperation(value = "User Signup", notes = "유저 이메일 중복 체크 and 회원가입")
     public ResponseEntity<Map<String, Object>> signup(@RequestBody User user) {
         Map<String, Object> result = new HashMap<>();
-        int resNum = userService.signUp(user); // 결과 값) 1: 정상 회원가입 // 2: nickname 중복 // 3: email 중복
+        int resNum = userService.signUp(user); // 결과 값) 1: 정상 회원가입 // 2: nickname 중복
         HttpStatus status = null;
 
         if (resNum == 1) {
@@ -95,4 +100,23 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
+
+    @PutMapping("/gpt")
+    @ApiOperation(value = "Get User Prefer", notes = "유저의 개인 관심 키워드를 저장 (id, prefer 정보만 넘겨주기)")
+    public ResponseEntity<Map<String, Object>> updateUserPrefer(@RequestBody User user) {
+        Map<String, Object> result = new HashMap<>();
+        HttpStatus status = null;
+        if (userService.updatePrefer(user)) {
+            result.put("prefer1", user.getPrefer1());
+            result.put("prefer2", user.getPrefer2());
+            result.put("prefer3", user.getPrefer3());
+            result.put("message", SUCCESS);
+            status = HttpStatus.OK;
+        } else {
+            result.put("message", FAIL);
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<Map<String, Object>>(result, status);
+    }
+
 }
