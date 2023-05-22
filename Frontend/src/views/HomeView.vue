@@ -176,7 +176,7 @@
 
       <div class="fruit_container">
         <div class="box">
-          <img src="images/main2.jpg" alt="">
+          <img src="images/main3.jpg" alt="">
           <div class="link_box">
             <h5>
               Community
@@ -190,7 +190,7 @@
           </div>
         </div>
         <div class="box">
-          <img src="images/main1.jpg" alt="">
+          <img src="images/main2.jpg" alt="">
           <div class="link_box">
             <h5>
               Youtube
@@ -205,7 +205,7 @@
           </div>
         </div>
         <div class="box">
-          <img src="images/main3.jpg" alt="">
+          <img src="images/main1.jpg" alt="">
           <div class="link_box">
             <h5>
               Consultation
@@ -563,4 +563,5 @@ export default {
   font-size: 20px;
   border-bottom: none;
 }
+
 </style>
