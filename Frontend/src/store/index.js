@@ -133,7 +133,7 @@ export default new Vuex.Store({
             alert("로그아웃 되었습니다.");
         },
         setBoardList({ commit }) {
-            const API_URL = REST_API + `board/`;
+            const API_URL = REST_API + `board/1`;
             axios({
                 url: API_URL,
                 method: "GET",

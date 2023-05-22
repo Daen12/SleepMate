@@ -2,11 +2,11 @@
   <div class="comment_container">
     <div class="comment_header">
       <div
+        @click="checkLoginStatus"
         class="pointer writeBtn"
         v-if="!writemode"
-        @click="writemode = true"
       >
-        &nbsp;+&nbsp;
+        &nbsp;+&nbsp;글 등록&nbsp;
       </div>
     </div>
     <!-- 댓글 쓰는 창 -->
@@ -17,8 +17,8 @@
         <input type="text" @keyup.enter="commentWrite" v-model="c_content" placeholder="댓글을 입력해주세요."/>
       </dl>
       <dl class="date"></dl>
-      <dl class="pointer" @click="commentWrite">등록</dl>
-      <dl class="pointer" @click="writemode = false">취소</dl>
+      <dl class="pointer" @click="commentWrite">➕</dl>
+      <dl class="pointer" @click="writemode = 0">🗑</dl>
     </div>
     </div>
 
@@ -29,8 +29,8 @@
         <dl class="real">{{ comment.content }}</dl>
         <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
         <div class="hideUpdate">
-        <dl class="pointer" @click="updateComment(i)">수정</dl>
-        <dl class="pointer" @click="commentDelete(comment.idx)">삭제</dl>
+        <dl class="pointer" @click="updateComment(i)">✏️</dl>
+        <dl class="pointer" @click="commentDelete(comment.idx)">🗑</dl>
         </div>
       </div>
     </div>
@@ -40,11 +40,11 @@
       <div class="content" v-for="(comment, i) in comments" :key="i">
         <dl class="writer" >{{ comment.writer }}</dl>
         <dl class="real" v-show="!updateContentmode[i]">{{ comment.content }}</dl>
-        <dl class="real" v-if="updateContentmode[i]"><input type="text" /></dl>
+        <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="u_content"/></dl>
         <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
-        <dl class="pointer" v-if="updateContentmode[i]">수정하기</dl>
-        <dl class="pointer" v-if="!updateContentmode[i]" @click="updateComment(i)">수정</dl>
-        <dl class="pointer" v-if="!updateContentmode[i]" @click="commentDelete(comment.idx)">삭제</dl>
+        <dl class="pointer" v-if="updateContentmode[i]" @click="updateFinish(i+1)">✏️</dl>
+        <dl class="pointer" v-if="!updateContentmode[i]" @click="updateComment(i)">✏️</dl>
+        <dl class="pointer" v-if="!updateContentmode[i]" @click="commentDelete(comment.idx)">🗑</dl>
       </div>
     </div>
   </div>
@@ -60,18 +60,77 @@ export default {
   },
   data() {
     return {
-      writemode: false,
+      writemode: 0,
       updatemode: 0,
       nickName: "",
       c_content: "",
       e_content: [],
+      u_content : "",
       updateContentmode: [],
     }
   },
+  
   computed: {
     ...mapState(["loginUser", "comments"]),
   },
+  watch:{
+    writemode(){
+      axios({
+      url: `http://localhost:9999/api/comment/${this.idx}`,
+      method: "GET",
+    })
+      .then((res) => {
+        this.$store.commit("SET_COMMENTS", res.data.comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    updatemode(){
+      axios({
+      url: `http://localhost:9999/api/comment/${this.idx}`,
+      method: "GET",
+    })
+      .then((res) => {
+        this.$store.commit("SET_COMMENTS", res.data.comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  },
   methods: {
+    updateFinish(i){
+      let comment = {
+        articleIdx: this.idx,
+        content: this.u_content,
+        writer: this.nickName,
+        idx : i,
+      };
+      console.log(comment);
+      this.u_content = "";
+      const API_URL = `http://localhost:9999/api/comment/update`;
+      axios({
+        url: API_URL,
+        method: "PUT",
+        data : comment,
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+        },
+      }).then(()=>{
+        console.log("updated!");
+        this.updatemode = 0;
+        // this.u_content = "";
+      })
+
+    },
+    checkLoginStatus(){
+    if(sessionStorage.getItem("loginUser")){
+      this.writemode = 1
+    } else {
+      alert("로그인 후 이용해주세요.");
+    }
+  },
     commentUpdate() {},
     updateComment(idx) {
       this.updatemode = 1;
@@ -96,12 +155,14 @@ export default {
           alert("로그인 후 이용해주세요");
         });
     },
+    
     commentWrite() {
       let comment = {
         articleIdx: this.idx,
         content: this.c_content,
         writer: this.nickName,
       };
+      console.log(comment);
       const API_URL = `http://localhost:9999/api/comment/write`;
       axios({
         url: API_URL,
@@ -109,12 +170,17 @@ export default {
         data: comment,
       })
         .then((res) => {
+          // this.$router.go(0);
           this.$store.commit("CREATE_COMMENT", res.data);
-          this.writemode = false;
+          console.log("finished");
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(()=>{
+          this.writemode = 0;
+        }
+      )
     },
   },
   created() {
@@ -140,8 +206,12 @@ export default {
 </script>
 
 <style>
+/* .comment_header{
+  margin-bottom: 0px;
+} */
 .hideUpdate {
   display: inline-block;
+  flex: 3;
 }
 .writeBtn {
   display: inline-block;
@@ -156,7 +226,9 @@ export default {
 .pointer {
   cursor: pointer;
   margin-bottom: 20px;
+  margin-left: 20px;
 }
+
 .content input {
   width: 90%;
   border: none;
@@ -188,7 +260,7 @@ export default {
   font-size: 13px;
 }
 .content .writer {
-  flex: 2.1;
+  flex: 3;
   text-align: left;
   color: #666;
   font-size: 13px;
@@ -199,6 +271,8 @@ export default {
   color: #666;
   flex: 1;
   text-align: center;
+  display: inline;
+
 }
 .content dl :nth-child(0) {
   border-right: 1px dotted #9a9999;
