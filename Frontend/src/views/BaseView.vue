@@ -6,7 +6,7 @@
           <router-link to="/"> <span> YogaMate </span> </router-link>
         </a>
       </div>
-      <img class="header-img" src="images/header-img.jpg" alt="" />
+      <img class="header-img" src="images/slider3-h.jpg" alt="" />
 
       <div class="container">
         <div class="custom_nav2">
