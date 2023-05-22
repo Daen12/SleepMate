@@ -111,18 +111,18 @@
           </p>
         </div>
 
-        <look-around></look-around>
+        <look-around @click="checkLoginStatus"></look-around>
 
 
 
         <div class="img-box">
           <!-- <img src="images/shop-img.jpg" alt=""> -->
         </div>
-        <div class="btn-box">
+        <!-- <div class="btn-box">
           <a href="">
             Buy Now
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -198,9 +198,10 @@
             <h5>
               맞춤형 유튜브
             </h5>
-            <a href="">
+            <router-link class="" to="/youtube">
               Click
-            </a>
+            </router-link>
+            
           </div>
         </div>
         <div class="box">
@@ -505,6 +506,12 @@ export default {
     }
   },
   methods : {
+    checkLoginStatus(){
+      if(!sessionStorage.getItem("loginUser")){
+        alert("로그인 후 이용가능한 서비스입니다.");
+        return;
+      }
+    },
     logout() {
           console.log("trying to log out");
             this.$store.dispatch("logout");
@@ -551,5 +558,9 @@ export default {
 
 .contact-button {
   background-color: rgb(209, 199, 56);
+}
+.main_router {
+  border: none;
+
 }
 </style>
