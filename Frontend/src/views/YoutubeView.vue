@@ -75,6 +75,7 @@
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
       <button @click="verify">실험</button>
+
       <br />
       <br />
       <br />
@@ -92,38 +93,14 @@
         </div>
 
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
-        <div class="subTitle">키워드1</div>
-        <div class="slide_wrapper">
-          <ul class="slides">
-            <li>slide 01</li>
-            <li>slide 02</li>
-            <li>slide 03</li>
-            <!-- <li>slide 04</li>
-                <li>slide 05</li> -->
-          </ul>
-        </div>
+        <div class="subTitle">{{ Object.keys(this.prior1) }}</div>
+        <youtube-video-item v-for="(a, i) in this.prior1" :key="i"></youtube-video-item>
 
-        <div class="subTitle">키워드2</div>
-        <div class="slide_wrapper">
-          <ul class="slides">
-            <li>slide 01</li>
-            <li>slide 02</li>
-            <li>slide 03</li>
-            <!-- <li>slide 04</li>
-                <li>slide 05</li> -->
-          </ul>
-        </div>
+        <div class="subTitle">{{ Object.keys(this.prior2) }}</div>
+        <youtube-video-item></youtube-video-item>
 
-        <div class="subTitle">키워드3</div>
-        <div class="slide_wrapper">
-          <ul class="slides">
-            <li>slide 01</li>
-            <li>slide 02</li>
-            <li>slide 03</li>
-            <!-- <li>slide 04</li>
-                <li>slide 05</li> -->
-          </ul>
-        </div>
+        <div class="subTitle">{{ Object.keys(this.prior3) }}</div>
+        <youtube-video-item></youtube-video-item>
       </div>
     </div>
   </div>
@@ -131,12 +108,14 @@
 <script>
 import { mapState } from "vuex";
 import { Configuration, OpenAIApi } from "openai";
+import YoutubeVideoItem from "@/components/youtube/YoutubeVideoItem.vue";
+
 export default {
   data() {
     return {
-      prior1: {},
-      prior2: {},
-      prior3: {},
+      prior1: "",
+      prior2: "",
+      prior3: "",
     };
   },
   // mounted() {
@@ -151,7 +130,9 @@ export default {
   //     document.body.appendChild(recaptchaScript);
   //     console.log("updated")
   // },
-  components: {},
+  components: {
+    YoutubeVideoItem,
+  },
   computed: {
     ...mapState(["loginUser"]),
   },
@@ -160,15 +141,27 @@ export default {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
       this.$store.commit("SET_LOGIN_USER", loginUser);
     }
-    
-    setTimeout(() => {this.prior1 = this.openai(1)}, 3000);
-    setTimeout(() => {this.prior2 = this.openai(2)}, 6000);
-    setTimeout(() => {this.prior3 = this.openai(3)}, 9000);
 
+    setTimeout(() => {
+      this.openai(1).then((res) => {
+        this.prior1 = JSON.parse(res);
+      });
+    }, 0);
+
+    setTimeout(() => {
+      this.openai(2).then((res) => {
+        this.prior2 = JSON.parse(res);
+      });
+    }, 0);
+
+    setTimeout(() => {
+      this.openai(3).then((res) => {
+        this.prior3 = JSON.parse(res);
+      });
+    }, 0);
   },
   methods: {
     async openai(num) {
-
       const configuration = new Configuration({
         organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
         apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
@@ -181,14 +174,15 @@ export default {
           messages: [
             {
               role: "system",
-              content: "결과 값은 항상 Javascript 객체의 형식이다.",
+              content:
+                "결과 값은 항상 Javascript 객체의 형식만 반환하고, 다른 것은 안나오게 해줘",
             },
             {
               role: "user",
               content: `${this.loginUser.prefer1}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
             },
           ],
-          temperature: 0.7,
+          temperature: 0.3,
           max_tokens: 300,
         });
         return await completion.data.choices[0].message.content;
@@ -231,7 +225,6 @@ export default {
         });
         return await completion.data.choices[0].message.content;
       }
-
     },
     logout() {
       console.log("trying to log out");
@@ -242,10 +235,10 @@ export default {
       this.$router.push("/base");
     },
     verify() {
-    console.log(this.prior1);
-    console.log(this.prior2);
-    console.log(this.prior3);
-    }
+      console.log(this.prior1);
+      console.log(this.prior2);
+      console.log(this.prior3);
+    },
   },
 };
 </script>
@@ -328,40 +321,6 @@ export default {
 
 li {
   list-style: none;
-}
-.slide_wrapper {
-  position: relative;
-  width: 1260px;
-  margin: 0 auto;
-  height: 200px;
-  overflow: hidden;
-  border: 1px solid #222;
-}
-.slide_wrapper {
-  position: relative;
-  /* width: 1260px; */
-  margin: 0 auto;
-  height: 200px;
-  /* overflow: hidden; */
-  border: 1px solid #222;
-}
-.slides {
-  position: absolute;
-  /* left: 0; */
-  top: 0;
-}
-.slides.animated {
-  transition: 0.4s ease-out;
-}
-.slides li {
-  width: 400px;
-  height: 200px;
-  /* background: rgb(65, 146, 146); */
-  background: #0000008c;
-  float: left;
-}
-.slides li:not(:last-child) {
-  margin-right: 30px;
 }
 .controls {
   text-align: center;
