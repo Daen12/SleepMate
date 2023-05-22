@@ -13,8 +13,8 @@
       <br>
       <br>
     <board-table v-if="!detailopen && !createopen" @createOpen ="createOpen" @openDetail="openDetail" ></board-table>
-    <board-create v-if="createopen"></board-create>
-    <board-detail :idx="this.idx" :num="this.num" v-if="detailopen" @openDetail="openDetail"></board-detail>
+    <board-create v-if="createopen" @finishCreate="finishCreate"></board-create>
+    <board-detail :idx="this.idx" :num="this.num" v-if="detailopen" @finishDetail="finishDetail" @finishDelete="finishDelete"></board-detail>
   </div>
   
   </div>
@@ -45,17 +45,21 @@ export default {
   },
   methods : {
     openDetail(idx, num){
-      // this.$router.push(`/base/${idx}`)
       this.detailopen = true;
       this.idx = idx;
-      console.log(this.idx);
       this.num = num;
-      console.log("num : "+this.num);
-      console.log(num);
     },
     createOpen(){
       this.createopen = true;
-
+    },
+    finishDetail() {
+      this.detailopen = false;
+    },
+    finishDelete() {
+      this.detailopen = false;
+    },
+    finishCreate() {
+      this.createopen = false;
     }
   }
   
@@ -75,7 +79,7 @@ export default {
 .board-container {
   margin-bottom: -280px;
   position: inherit;
-  height: 1500px;
+  height: 1050px;
   background-color: #bdd0d218;
 }
 .parent {

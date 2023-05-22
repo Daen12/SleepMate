@@ -14,6 +14,7 @@ export default new Vuex.Store({
         loginUser: null,
         boardList: [],
         board: {},
+        comments: [],
     },
     getters: {},
     mutations: {
@@ -34,6 +35,19 @@ export default new Vuex.Store({
         },
         SET_BOARD(state, board) {
             state.board = board;
+        },
+        SET_COMMENTS(state, comments) {
+            state.comments = comments;
+        },
+        CREATE_COMMENT(state, comment) {
+            state.comments.push(comment);
+        },
+        DELETE_COMMENT(state, idx) {
+            for (let i=0; i<state.comments.length; i++) {
+                if (state.comments[i].idx === idx) {
+                    state.comments.splice(i, 1);
+                }
+            }
         },
     },
     actions: {

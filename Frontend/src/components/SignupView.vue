@@ -110,25 +110,16 @@ export default {
     list-style:none;
     box-sizing: border-box;
 }
-/* body{
-    font-family: 'Noto Sans KR', sans-serif;
+
+   .signin-background {
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background : url("./signup.jpg") no-repeat center;
-    background-size: cover;
+    background-size: 100;
     backdrop-filter: blur(2px);
-    background-color: rgba(0,0,0,0.3); 
-} */
-   .signin-background {
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background : url("./signup.jpg") no-repeat center;
-    background-size: cover;
-    backdrop-filter: blur(2px);
-    width: 2000px;
     }
 .signup-form {
     width: 400px;
