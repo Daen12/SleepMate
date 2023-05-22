@@ -5,14 +5,20 @@ public class User {
     private String password;
     private String name;
     private String nickname;
+    private String prefer1;
+    private String prefer2;
+    private String prefer3;
 
     public User() {}
 
-    public User(String id, String password, String name, String nickname) {
+    public User(String id, String password, String name, String nickname, String prefer1, String prefer2, String prefer3) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
+        this.prefer1 = prefer1;
+        this.prefer2 = prefer2;
+        this.prefer3 = prefer3;
     }
 
     public String getId() {
@@ -47,6 +53,30 @@ public class User {
         this.nickname = nickname;
     }
 
+    public String getPrefer1() {
+        return prefer1;
+    }
+
+    public void setPrefer1(String prefer1) {
+        this.prefer1 = prefer1;
+    }
+
+    public String getPrefer2() {
+        return prefer2;
+    }
+
+    public void setPrefer2(String prefer2) {
+        this.prefer2 = prefer2;
+    }
+
+    public String getPrefer3() {
+        return prefer3;
+    }
+
+    public void setPrefer3(String prefer3) {
+        this.prefer3 = prefer3;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -54,6 +84,9 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", prefer1='" + prefer1 + '\'' +
+                ", prefer2='" + prefer2 + '\'' +
+                ", prefer3='" + prefer3 + '\'' +
                 '}';
     }
 }

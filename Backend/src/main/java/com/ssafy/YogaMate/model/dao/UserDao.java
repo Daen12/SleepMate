@@ -11,4 +11,7 @@ public interface UserDao {
     int getUserId(String id);
     int getUserNickName(String nickname);
     int insertUser(User user);
+
+    // 회원의 선호 키워드 갱신
+    boolean updatePrefer(User user);
 }

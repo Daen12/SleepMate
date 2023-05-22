@@ -58,5 +58,10 @@ public class UserServiceImpl implements UserService {
     public int signUp(User user) {
         return userDao.insertUser(user);
     }
+
+    @Override
+    public boolean updatePrefer(User user) {
+        return userDao.updatePrefer(user);
+    }
 }
 

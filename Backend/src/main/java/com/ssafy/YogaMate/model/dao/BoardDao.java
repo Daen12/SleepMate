@@ -7,7 +7,7 @@ import java.util.List;
 public interface BoardDao {
     
     // 모든 게시글 가져오기
-    List<Board> selectAll();
+    List<Board> selectAll(int pageNum);
 
     // 게시판 글 쓰기
     boolean writeArticle(Board board);
