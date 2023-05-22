@@ -15,8 +15,13 @@ export default new Vuex.Store({
         boardList: [],
         board: {},
         comments: [],
+        category: 1,
     },
-    getters: {},
+    getters: {
+        // getCategory(state, num) {
+        //     state.category = num;
+        // },
+    },
     mutations: {
         DUPLICATE_CHECK_NICK(state, value) {
             state.dupNick = value;
@@ -49,6 +54,9 @@ export default new Vuex.Store({
                 }
             }
         },
+        ADD_BOARD(state, board) {
+            state.boardList.push(board);
+        },
     },
     actions: {
         setLoginUser: function ({ commit }, user) {
@@ -77,12 +85,12 @@ export default new Vuex.Store({
                     );
                     alert("로그인 성공!");
                     commit("SET_LOGIN_USER", loginUser);
+                    router.go(-1);
                 })
                 .catch((err) => {
                     console.log(err);
-                })
-                .finally(() => {
-                    router.go(-1);
+                    alert("등록된 회원이 아닙니다. 회원가입을 해주세요.");
+                    router.push("/signup");
                 });
         },
         dupcheckNick({ commit }, value) {
@@ -140,6 +148,16 @@ export default new Vuex.Store({
             }).then((res) => {
                 console.log(res.data.articles);
                 commit("SET_BOARD_LIST", res.data.articles);
+            });
+        },
+        writeBoard({ commit }, board) {
+            axios({
+                url: `http://localhost:9999/api/board/write`,
+                method: "POST",
+                data: board,
+            }).then((res) => {
+                commit("ADD_BOARD", res.data);
+                alert("등록되었습니다.");
             });
         },
         // deleteBoard({ commit }, idx) {

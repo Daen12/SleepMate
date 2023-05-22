@@ -1,7 +1,7 @@
 <template>
 <div class="lookAround">
   <!-- 처음 버튼이 나와요 -->
-    <button type="button" class="btn btn-primary btn-lg survey_start" data-toggle="modal" data-target="#startModal">
+    <button @click="checkLoginStatus" type="button" class="btn btn-primary btn-lg survey_start" data-toggle="modal" data-target="#startModal">
       Survey
     </button>
 
@@ -228,6 +228,12 @@ export default {
     }
   },
   methods : {
+    checkLoginStatus(){
+      if(!sessionStorage.getItem("loginUser")){
+        this.$router.go(0);
+        alert("로그인 후 이용가능한 서비스입니다.");
+      }
+    },
     ////
     async openai() {
       const configuration = new Configuration({
@@ -391,7 +397,7 @@ export default {
   border-radius: 10px;
   margin-top: 5px;
   color: #333;
-  border: solid 1px palevioletred;
+  border: solid 1px rgb(162, 112, 216);
   height: 50px;
   vertical-align: middle;
   line-height: 25px;
@@ -399,25 +405,28 @@ export default {
 
 }
 .select:hover{
-  color: #D76D77;
-  box-shadow: 700px 0 0 0 rgba(255, 182, 182, 0.5) inset;
+  color: #423260;
+  box-shadow: 700px 0 0 0 rgba(228, 182, 255, 0.325) inset;
 }
 
 .survey_start {
-  background: #3A1C71;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #FFAF7B, #D76D77, #3A1C71);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #FFAF7B, #D76D77, #3A1C71); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 70px;
+  width: 120px;
+ background: #159957;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #155799, #159957);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 border: none;
 }
 .survey_btn {
-  background-color: palevioletred;
-  border: 1px solid palevioletred;
+  background-color: rgb(162, 112, 216);
+  border: 1px solid rgb(162, 112, 216);
 
 }
 .empty {
-  border: 1px solid palevioletred;
+  border: 1px solid rgb(162, 112, 216);
   background-color: transparent;
-  color: palevioletred;
+  color: rgb(162, 112, 216);
 }
     .lookAround {
         margin-top : 90px;
@@ -425,9 +434,10 @@ border: none;
     }
 
     .modal_design {
-    background: #d9a7c7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #fffcdc, #d9a7c7);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #fffcdc, #d9a7c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #8360c3;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #cffff0, #e9deff);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #cffff0, #e9deff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
       border: none;
       border-radius: 10px;
     }

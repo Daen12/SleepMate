@@ -21,17 +21,10 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr>
-    <td class="tg-0lax">1</td>
-    <td class="tg-0lax">ed</td>
-    <td class="tg-0lax">제목제목</td>
-    <td class="tg-0lax">다영</td>
-    <td class="tg-0lax">2023-05-18</td>
-    <td class="tg-baqh">1</td>
-  </tr> -->
           <tr v-for="(board, i) in boardList" :key="i">
+            <div v-if="board.classnum == this.category">
             <td class="tg-0lax">{{ i + 1 }}</td>
-            <td class="tg-0lax">{{ board.classnum }}</td>
+            <td class="tg-0lax category">{{ categoryDecode[board.classnum-1]}}</td>
             <td class="tg-0lax">
               <button @click="goToDetail(board.idx, i + 1)">
                 {{ board.title }}
@@ -40,6 +33,7 @@
             <td class="tg-0lax">{{ board.writer }}</td>
             <td class="tg-0lax">{{ board.regdate.slice(0, 11) }}</td>
             <td class="tg-baqh">{{ board.viewcnt }}</td>
+            </div>
           </tr>
           <!-- <router-link :to="{name : 'BoardDetail', params : {idx : 2}}"></router-link>  -->
 
@@ -57,8 +51,8 @@
         <button
           :disabled="pageNum >= pageCount - 1"
           @click="nextPage"
-          class="page-btn"
-        >
+          class="page-btn">
+        
           &ensp; →
         </button>
       </div>
@@ -74,6 +68,7 @@ export default {
   data() {
     return {
       pageNum: 0,
+      categoryDecode : ["요가 용품", "자격증 정보", '요가원', '요가 영상'],
     };
   },
   props: {
@@ -87,7 +82,7 @@ export default {
       default: 5,
     },
   },
-  created() {
+  created() {/////
     this.$store.dispatch("setBoardList");
     console.log("create");
   },
@@ -112,7 +107,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["boardList"]),
+    ...mapState(["boardList", "category"]),
 
     pageCount() {
       let listLeng = this.boardList.length,
@@ -140,6 +135,9 @@ export default {
   border: none;
   font-weight: 500;
   background-color: transparent;
+}
+.category {
+  color: #333;
 }
 .writeboard_btn {
   height: 42px;
