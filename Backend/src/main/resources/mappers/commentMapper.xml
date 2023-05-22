@@ -8,6 +8,7 @@
         SELECT *
         FROM comment
         WHERE articleIdx = #{articleIdx}
+        ORDER BY regdate DESC
     </select>
 
     <!-- 댓글 작성 -->
