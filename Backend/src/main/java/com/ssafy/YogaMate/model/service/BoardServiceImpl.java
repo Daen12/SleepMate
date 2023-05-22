@@ -14,8 +14,8 @@ public class BoardServiceImpl implements BoardService{
     BoardDao boardDao;
 
     @Override
-    public List<Board> getAllArticles() {
-        return boardDao.selectAll();
+    public List<Board> getAllArticles(int pageNum){
+        return boardDao.selectAll(pageNum - 1);
     }
 
     @Override

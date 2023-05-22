@@ -7,7 +7,7 @@ import java.util.List;
 public interface BoardService {
 
     // 게시판의 모든 글 가져오기 (기본 값 : 날짜 순)
-    List<Board> getAllArticles();
+    List<Board> getAllArticles(int pageNum);
 
     // 게시판에 글 쓰기
     boolean writeArticle(Board board);

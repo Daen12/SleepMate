@@ -21,11 +21,11 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
-    @GetMapping("/")
-    @ApiOperation(value = "Get All Board Article", notes = "게시판 모든 글 가져오기")
-    public ResponseEntity<Map<String, Object>> getAllArticles() {
+    @GetMapping("/{pageNum}")
+    @ApiOperation(value = "Get All Board Article", notes = "게시판 모든 글 중 10개 가져오기")
+    public ResponseEntity<Map<String, Object>> getAllArticles(@PathVariable int pageNum) {
         Map<String, Object> result = new HashMap<>();
-        List<Board> boardList = boardService.getAllArticles();
+        List<Board> boardList = boardService.getAllArticles(pageNum);
         HttpStatus status = null;
 
         if (boardList == null && boardList.size() == 0) {

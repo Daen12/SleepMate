@@ -25,4 +25,10 @@
         INSERT INTO users
         VALUES(#{id}, #{password}, #{name}, #{nickname})
     </insert>
+
+    <update id="updatePrefer" parameterType="User">
+        UPDATE users
+        SET prefer1 = #{prefer1}, prefer2 = #{prefer2}, prefer3 = #{prefer3}
+        WHERE id = #{id}
+    </update>
 </mapper>
