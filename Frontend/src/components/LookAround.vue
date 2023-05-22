@@ -203,6 +203,7 @@
 
 <script>
 import { Configuration, OpenAIApi } from "openai";
+import axios from "axios";
 export default {
   name : "SurveyView",
   data(){
@@ -254,6 +255,8 @@ export default {
 
       this.gptAnswer = await completion.data.choices[0].message.content;
       console.log(this.answer);
+      // this.sendToGPT = [];
+
     },
     ////
     closeModal(){
@@ -299,9 +302,24 @@ export default {
         console.log(this.sendToGPT);
         this.index = "last";
         this.step = 0;
-        // this.sendToGPT = [];
         this.openai();
-        
+
+        //유저 정보를 db에 저장
+        let id = JSON.parse(sessionStorage.getItem("loginUser")).userId;
+        const API_URL = "http://localhost:9999/api/gpt";
+        axios({
+          url : API_URL,
+          method : "PUT",
+          data : {
+            id : id,
+            prefer1 : this.sendToGPT[0],
+            prefer2 : this.sendToGPT[1],
+            prefer3 : this.sendToGPT[2],
+          }
+        }).then(()=>{
+          console.log("preference saved.");
+          sessionStorage.setItem("gptPreference", this.sendToGPT);
+        })
       } else {
         this.index = this.seqWord[this.seq[this.step]];
         this.step++;

@@ -1,12 +1,15 @@
-let slides = document.querySelector(".youtubes .slides");
-let slide = document.querySelectorAll(".slide_wrapper .slides li"),
+// window.onload = function () {
+// document.addEventListener("DOMContentLoaded", () => {
+// let name = 5;
+
+let slides = document.querySelector(".youtubes .slides"),
+    slide = document.querySelectorAll(".slide_wrapper .slides li"),
     currentIdx = 0,
     slideCount = slide.length,
     slideWidth = 400,
     slideMargin = 30,
     prevBtn = document.querySelector(".prev"),
     nextBtn = document.querySelector(".next");
-
 makeClone();
 
 function makeClone() {
@@ -83,3 +86,5 @@ slides.addEventListener("mouseenter", function () {
 slides.addEventListener("mouseleave", function () {
     autoSlide();
 });
+// });
+// };

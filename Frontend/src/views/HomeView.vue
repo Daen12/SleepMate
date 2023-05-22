@@ -104,7 +104,7 @@
         </div>
         <div v-if="loginUser" class="detail-box">
           <h2>
-            Good {{time}}, {{loginUser.userNickname}}
+            좋은 {{time}}, {{loginUser.userNickname}}님
           </h2>
           <p>
             로그인 했을때 나오는 글 
@@ -520,12 +520,12 @@ export default {
   },
   created(){
     let hours = new Date().getHours();
-    if (hours < 12 && hours > 0) {
-     this.time = "Morning";
+   if (hours < 12 && hours > 0) {
+     this.time = "아침이에요";
   } else if (hours > 12 && hours < 18) {
-     this.time = "afternoon";
+     this.time = "오후에요";
   } else {
-     this.time = "night";
+     this.time = "저녁이에요";
   }
       console.log("created");
       if(sessionStorage.getItem("loginUser")){

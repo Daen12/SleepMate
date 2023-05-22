@@ -82,17 +82,11 @@
     <br>
     <br>
     <div class="youtubes">
-        <div v-if="loginUser" class="welcome">
-          {{loginUser.userNickname}}님을 위한 맞춤형 유튜브입니다.
+        <div class="welcome">
+          ___ 님을 위한 맞춤형 유튜브입니다.
         </div>
-        <div v-if="loginUser" class="desc">
+        <div class="desc">
             요가도 더욱 스마트하게, 지금 필요한 영상을 만나보세요. 
-        </div>
-        <div v-if="!loginUser" class="welcome">
-          환영합니다!
-        </div>
-        <div v-if="!loginUser" class="desc">
-          요가 관련 최근 영상을 한 눈에 확인해보세요. 멤버십 가입으로 더욱 차별화된 맞춤 영상을 확인하실 수 있습니다.
         </div>
 
         <div class="subTitle">키워드1</div>
@@ -147,6 +141,7 @@ export default {
   components: {
   },
   created() {
+    // console.log(slides);
     if (sessionStorage.getItem("loginUser")) {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
       this.$store.commit("SET_LOGIN_USER", loginUser);

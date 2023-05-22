@@ -43,7 +43,7 @@ export default new Vuex.Store({
             state.comments.push(comment);
         },
         DELETE_COMMENT(state, idx) {
-            for (let i=0; i<state.comments.length; i++) {
+            for (let i = 0; i < state.comments.length; i++) {
                 if (state.comments[i].idx === idx) {
                     state.comments.splice(i, 1);
                 }
@@ -63,6 +63,9 @@ export default new Vuex.Store({
                     let loginUser = {
                         userId: res.data.userId,
                         userNickname: res.data.userNickName,
+                        prefer1: res.data.prefer1,
+                        prefer2: res.data.prefer2,
+                        prefer3: res.data.prefer3,
                     };
                     sessionStorage.setItem(
                         "loginUser",
