@@ -6,7 +6,7 @@
         class="pointer writeBtn"
         v-if="!writemode"
       >
-        &nbsp;+&nbsp;글 등록&nbsp;
+        &nbsp;+&nbsp;댓글 등록&nbsp;
       </div>
     </div>
     <!-- 댓글 쓰는 창 -->

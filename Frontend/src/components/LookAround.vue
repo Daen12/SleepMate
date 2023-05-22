@@ -1,7 +1,7 @@
 <template>
 <div class="lookAround">
   <!-- 처음 버튼이 나와요 -->
-    <button type="button" class="btn btn-primary btn-lg survey_start" data-toggle="modal" data-target="#startModal">
+    <button @click="checkLoginStatus" type="button" class="btn btn-primary btn-lg survey_start" data-toggle="modal" data-target="#startModal">
       Survey
     </button>
 
@@ -28,7 +28,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary survey_btn empty" data-dismiss="modal" @click="closeModal">Close</button>
-        <button type="button" class="btn btn-primary survey_btn" data-toggle="modal" :data-target="'#'+index" data-dismiss = "modal" @click="turn" >next</button>
+        <button type="button" class="btn btn-warning survey_btn" data-toggle="modal" :data-target="'#'+index" data-dismiss = "modal" @click="turn" >next</button>
       </div>
     </div>
   </div>
@@ -228,6 +228,12 @@ export default {
     }
   },
   methods : {
+    checkLoginStatus(){
+      if(!sessionStorage.getItem("loginUser")){
+        this.$router.go(0);
+        alert("로그인 후 이용가능한 서비스입니다.");
+      }
+    },
     ////
     async openai() {
       const configuration = new Configuration({
@@ -374,7 +380,8 @@ export default {
   width: 100%;
   margin-right: 0px;
   font-size: 20px;
-  color: #222;
+  /* color: #222; */
+  color: #fff;
   text-align: center;
 
 }
@@ -387,37 +394,41 @@ export default {
   cursor:pointer;
   font-size: 15px;
   font-weight: bolder;
-  background-color: aliceblue;
+  background-color: rgba(255, 255, 255, 0.648);
   border-radius: 10px;
   margin-top: 5px;
   color: #333;
-  border: solid 1px palevioletred;
+  border: solid 1px #159957;
   height: 50px;
-  vertical-align: middle;
   line-height: 25px;
   transition: all 0.7s, color 0.3;
 
 }
 .select:hover{
-  color: #D76D77;
-  box-shadow: 700px 0 0 0 rgba(255, 182, 182, 0.5) inset;
+  color: #32605b;
+  box-shadow: 700px 0 0 0 rgba(88, 159, 100, 0.325) inset;
 }
 
 .survey_start {
-  background: #3A1C71;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #FFAF7B, #D76D77, #3A1C71);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #FFAF7B, #D76D77, #3A1C71); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 70px;
+  width: 120px;
+ background: #159957;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #155799, #159957);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 border: none;
 }
 .survey_btn {
-  background-color: palevioletred;
-  border: 1px solid palevioletred;
+  background-color: #159957;
+  border: 1px solid #159957;
 
 }
 .empty {
-  border: 1px solid palevioletred;
+  border: 1px solid #555;
+  /* border: 1px solid #159957; */
   background-color: transparent;
-  color: palevioletred;
+  /* color: #159957; */
+  color: #333;
 }
     .lookAround {
         margin-top : 90px;
@@ -425,9 +436,10 @@ border: none;
     }
 
     .modal_design {
-    background: #d9a7c7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #fffcdc, #d9a7c7);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #fffcdc, #d9a7c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #73b35ac0;  /* fallback for old browsers */
+/* background: -webkit-linear-gradient(to right, #33ae87, #41bb57);  Chrome 10-25, Safari 5.1-6 */
+/* background: linear-gradient(to right, #33ae87, #41bb57); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
       border: none;
       border-radius: 10px;
     }

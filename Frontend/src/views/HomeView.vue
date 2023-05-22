@@ -16,17 +16,17 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="img-box">
-              <img src="images/slider-img1.jpg" alt="">
+              <img src="images/slider3.jpg" alt="">
             </div>
           </div>
           <div class="carousel-item">
             <div class="img-box">
-              <img src="images/slider-img2.jpg" alt="">
+              <img src="images/slider2.jpg" alt="">
             </div>
           </div>
           <div class="carousel-item">
             <div class="img-box">
-              <img src="images/slider-img3.jpg" alt="">
+              <img src="images/slider5.jpg" alt="">
             </div>
           </div>
         </div>
@@ -106,8 +106,8 @@
           <h2>
             좋은 {{time}}, {{loginUser.userNickname}}님
           </h2>
-          <p>
-            로그인 했을때 나오는 글 
+          <p class="info">
+            오늘은 무엇이 알고싶으신가요? 아래 설문 버튼을 눌러 맞춤형 키워드를 설정해주세요.
           </p>
         </div>
 
@@ -150,9 +150,9 @@
             <p>
                설명설명
             </p>
-            <a href="">
+            <!-- <a href="">
               Read More
-            </a>
+            </a> -->
           </div>
         </div>
       </div>
@@ -176,7 +176,7 @@
 
       <div class="fruit_container">
         <div class="box">
-          <!-- <img src="images/f-1.jpg" alt=""> -->
+          <img src="images/main3.jpg" alt="">
           <div class="link_box">
             <h5>
               Community
@@ -190,7 +190,7 @@
           </div>
         </div>
         <div class="box">
-          <img src="" alt="">
+          <img src="images/main2.jpg" alt="">
           <div class="link_box">
             <h5>
               Youtube
@@ -205,7 +205,7 @@
           </div>
         </div>
         <div class="box">
-          <img src="images/f-3.jpg" alt="">
+          <img src="images/main1.jpg" alt="">
           <div class="link_box">
             <h5>
               Consultation
@@ -506,12 +506,7 @@ export default {
     }
   },
   methods : {
-    checkLoginStatus(){
-      if(!sessionStorage.getItem("loginUser")){
-        alert("로그인 후 이용가능한 서비스입니다.");
-        return;
-      }
-    },
+    
     logout() {
           console.log("trying to log out");
             this.$store.dispatch("logout");
@@ -563,4 +558,10 @@ export default {
   border: none;
 
 }
+.detail-box .info {
+  margin-top: 20px;
+  font-size: 20px;
+  border-bottom: none;
+}
+
 </style>
