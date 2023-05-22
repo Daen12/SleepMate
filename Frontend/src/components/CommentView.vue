@@ -3,54 +3,49 @@
     <div class="comment_header">
       <div
         class="pointer writeBtn"
-        v-if="loginUser && !writemode"
+        v-if="!writemode"
         @click="writemode = true"
       >
         &nbsp;+&nbsp;
       </div>
     </div>
     <!-- 댓글 쓰는 창 -->
-    <div class="content" v-if="writemode">
+    <div v-if="writemode">
+    <div class="content">
       <dl class="writer">{{ nickName }}</dl>
       <dl class="real">
-        <input
-          type="text"
-          @keyup.enter="commentWrite"
-          v-model="c_content"
-          placeholder="댓글을 입력해주세요."
-        />
+        <input type="text" @keyup.enter="commentWrite" v-model="c_content" placeholder="댓글을 입력해주세요."/>
       </dl>
       <dl class="date"></dl>
       <dl class="pointer" @click="commentWrite">등록</dl>
       <dl class="pointer" @click="writemode = false">취소</dl>
     </div>
-    <!-- 댓글 수정 창 -->
-    <!-- <div class="content">
-        <dl class="writer">{{nickName}}</dl>
-        <dl class="real"><input type="text" v-model="e_content"> </dl>
-        <dl class="date"></dl>
-        <dl class="pointer" @click="commentWrite">수정</dl> 
-        <dl class="pointer" @click="cancelWrite">취소</dl> 
-
-    </div> -->
+    </div>
 
     <!-- 기존 댓글 창 -->
-    <div class="content" v-for="(comment, i) in comments" :key="i">
-      <!-- <div v-if="updatemode">
-        <dl class="writer">{{comment.writer}}</dl>
-        <dl class="real">{{comment.content}}</dl>
-        <dl class="date">{{comment.regdate.slice(0,11)}}</dl>
-        <dl class="pointer" @click="updateComment(comment.content, comment.idx)">수정</dl> 
+    <div v-if="updatemode == 0">
+      <div class="content" v-for="(comment, i) in comments" :key="i">
+        <dl class="writer">{{ comment.writer }}</dl>
+        <dl class="real">{{ comment.content }}</dl>
+        <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
+        <div class="hideUpdate">
+        <dl class="pointer" @click="updateComment(i)">수정</dl>
         <dl class="pointer" @click="commentDelete(comment.idx)">삭제</dl>
-      </div> -->
+        </div>
+      </div>
+    </div>
 
-      <dl class="writer">{{ comment.writer }}</dl>
-      <dl class="real" v-if="!updateContentmode[i]">{{ comment.content }} {{updateContentmode[i]}}</dl>
-      <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="e_content[i]" /></dl>
-      <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
-      <dl class="pointer" v-if="!updateContentmode[i]" @click="updateComment(i)">수정</dl>
-      <dl class="pointer" v-if="!updateContentmode[i]" @click="commentDelete(comment.idx)">삭제</dl>
-      <dl class="pointer" v-if="updateContentmode[i]">수정완료</dl>
+    <!-- 댓글 수정 창 -->
+    <div v-if="updatemode == 1">
+      <div class="content" v-for="(comment, i) in comments" :key="i">
+        <dl class="writer" >{{ comment.writer }}</dl>
+        <dl class="real" v-show="!updateContentmode[i]">{{ comment.content }}</dl>
+        <dl class="real" v-if="updateContentmode[i]"><input type="text" /></dl>
+        <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
+        <dl class="pointer" v-if="updateContentmode[i]">수정하기</dl>
+        <dl class="pointer" v-if="!updateContentmode[i]" @click="updateComment(i)">수정</dl>
+        <dl class="pointer" v-if="!updateContentmode[i]" @click="commentDelete(comment.idx)">삭제</dl>
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +61,7 @@ export default {
   data() {
     return {
       writemode: false,
+      updatemode: 0,
       nickName: "",
       c_content: "",
       e_content: [],
@@ -78,8 +74,9 @@ export default {
   methods: {
     commentUpdate() {},
     updateComment(idx) {
-      this.updateContentmode[idx] = true;
-      console.log(this.updateContentmode);
+      this.updatemode = 1;
+      this.$set(this.updateContentmode, idx, true);
+      console.log(this.updatemode);
     },
     commentDelete(idx) {
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
@@ -128,20 +125,24 @@ export default {
     for (let i = 0; i < this.comments.length; i++) {
       this.updateContentmode[i] = false;
     }
+    console.log(this.updateContentmode);
   },
-  beforeUpdate() {
-    if (sessionStorage.getItem("loginUser")) {
-      this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
-    }
-    for (let i = 0; i < this.comments.length; i++) {
-      this.updateContentmode[i] = false;
-    }
-    this.e_content = this.comments.content;
-  }
+  // beforeUpdate() {
+  //   if (sessionStorage.getItem("loginUser")) {
+  //     this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
+  //   }
+  //   for (let i = 0; i < this.comments.length; i++) {
+  //     this.updateContentmode[i] = false;
+  //   }
+  //   this.e_content = this.comments.content;
+  // },
 }
 </script>
 
 <style>
+.hideUpdate {
+  display: inline-block;
+}
 .writeBtn {
   display: inline-block;
   margin: auto;

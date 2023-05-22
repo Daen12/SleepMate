@@ -26,7 +26,7 @@
           </dl>
           <dl>
             <dt>작성일</dt>
-            <dd>{{ board.regdate.slice(0, 11) }}</dd>
+            <dd>{{ sliceRegdate(board.regdate) }}</dd>
           </dl>
           <dl>
             <dt>조회</dt>
@@ -130,6 +130,12 @@ export default {
         this.updatemode = false;
       });
     },
+    sliceRegdate(data) {
+      if (data === undefined) {
+        console.log(data);
+      }
+      return data.slice(0, 11);
+    }
   },
   data() {
     return {
