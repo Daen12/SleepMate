@@ -5,6 +5,7 @@ import BoardView from "../views/BoardView.vue";
 import BaseView from "../views/BaseView.vue";
 import SignupView from "../components/SignupView.vue";
 import LoginView from "../components/LoginView.vue";
+import YoutubeView from "../views/YoutubeView.vue";
 import BoardDetail from "@/components/BoardDetail.vue";
 
 Vue.use(VueRouter);
@@ -24,6 +25,11 @@ const routes = [
         path: "/login",
         name: "LoginView",
         component: LoginView,
+    },
+    {
+        path: "/youtube",
+        name: "YoutubeView",
+        component: YoutubeView,
     },
     {
         path: "/base",

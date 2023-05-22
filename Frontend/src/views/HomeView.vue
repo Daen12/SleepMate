@@ -104,25 +104,25 @@
         </div>
         <div v-if="loginUser" class="detail-box">
           <h2>
-            Good {{time}}, {{loginUser.userNickname}}
+            좋은 {{time}}, {{loginUser.userNickname}}님
           </h2>
           <p>
             로그인 했을때 나오는 글 
           </p>
         </div>
 
-        <look-around></look-around>
+        <look-around @click="checkLoginStatus"></look-around>
 
 
 
         <div class="img-box">
           <!-- <img src="images/shop-img.jpg" alt=""> -->
         </div>
-        <div class="btn-box">
+        <!-- <div class="btn-box">
           <a href="">
             Buy Now
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -181,6 +181,9 @@
             <h5>
               Community
             </h5>
+            <h5>
+              커뮤니티
+            </h5>
             <router-link to="/base">
               Click
            </router-link>
@@ -190,21 +193,28 @@
           <img src="" alt="">
           <div class="link_box">
             <h5>
-              Blueberry
+              Youtube
             </h5>
-            <a href="">
-              Buy Now
-            </a>
+            <h5>
+              맞춤형 유튜브
+            </h5>
+            <router-link class="" to="/youtube">
+              Click
+            </router-link>
+            
           </div>
         </div>
         <div class="box">
           <img src="images/f-3.jpg" alt="">
           <div class="link_box">
             <h5>
-              Banana
+              Consultation
+            </h5>
+            <h5>
+              전문가 상담
             </h5>
             <a href="">
-              Buy Now
+              Click
             </a>
           </div>
         </div>
@@ -496,6 +506,12 @@ export default {
     }
   },
   methods : {
+    checkLoginStatus(){
+      if(!sessionStorage.getItem("loginUser")){
+        alert("로그인 후 이용가능한 서비스입니다.");
+        return;
+      }
+    },
     logout() {
           console.log("trying to log out");
             this.$store.dispatch("logout");
@@ -504,12 +520,12 @@ export default {
   },
   created(){
     let hours = new Date().getHours();
-    if (hours < 12 && hours > 0) {
-     this.time = "Morning";
+   if (hours < 12 && hours > 0) {
+     this.time = "아침이에요";
   } else if (hours > 12 && hours < 18) {
-     this.time = "afternoon";
+     this.time = "오후에요";
   } else {
-     this.time = "night";
+     this.time = "저녁이에요";
   }
       console.log("created");
       if(sessionStorage.getItem("loginUser")){
@@ -542,5 +558,9 @@ export default {
 
 .contact-button {
   background-color: rgb(209, 199, 56);
+}
+.main_router {
+  border: none;
+
 }
 </style>
