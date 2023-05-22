@@ -76,17 +76,17 @@
 
     <router-view></router-view>
 
-    <footer-view></footer-view>
+    <!-- <footer-view></footer-view> -->
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import FooterView from "@/components/common/FooterView.vue";
+// import FooterView from "@/components/common/FooterView.vue";
 
 export default {
   components: {
-    FooterView,
+    // FooterView,
   },
   created() {
     if (sessionStorage.getItem("loginUser")) {

@@ -128,6 +128,7 @@ export default {
         data: this.board,
       }).then(() => {
         this.updatemode = false;
+        alert("수정되었습니다.");
       });
     },
     sliceRegdate(data) {
