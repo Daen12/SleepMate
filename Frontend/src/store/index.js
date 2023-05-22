@@ -77,12 +77,12 @@ export default new Vuex.Store({
                     );
                     alert("로그인 성공!");
                     commit("SET_LOGIN_USER", loginUser);
+                    router.go(-1);
                 })
                 .catch((err) => {
                     console.log(err);
-                })
-                .finally(() => {
-                    router.go(-1);
+                    alert("등록된 회원이 아닙니다. 회원가입을 해주세요.");
+                    router.push("/signup");
                 });
         },
         dupcheckNick({ commit }, value) {
@@ -133,7 +133,7 @@ export default new Vuex.Store({
             alert("로그아웃 되었습니다.");
         },
         setBoardList({ commit }) {
-            const API_URL = REST_API + `board/`;
+            const API_URL = REST_API + `board/1`;
             axios({
                 url: API_URL,
                 method: "GET",
