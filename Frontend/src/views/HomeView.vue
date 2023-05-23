@@ -523,7 +523,10 @@ export default {
       emailjs.send('service_vocd9kn', 'template_m511lr7', data, 'EQ-0HYTiP50d3clZ1')
       .then((result)=>{
         console.log("성공!", result.text);
-
+        this.e_name = "";
+        this.e_email = "";
+        this.e_contact = "";
+        this.e_content = "";
       }, (error) =>{
         console.log(error.text);
       })

@@ -38,10 +38,15 @@
           </div>
           <div class="modal-body body_design">
             <div class="survey_wrapper">
-              <div class="select" @click="zero(1)">1. 요가 동작</div>
-              <div class="select" @click="zero(2)">2. 요가원</div>
-              <div class="select" @click="zero(3)">3. 요가 자격증</div>
-              <div class="select" @click="zero(4)">4. 요가 용품</div>
+              <div class="select" v-if="!toggle[0][0]" @click="zero(1)">1. 요가 동작</div>
+              <div class="select_ed" v-if="toggle[0][0]" @click="zero(1)">1. 요가 동작</div>
+              <div class="select" v-if="!toggle[0][1]" @click="zero(2)">2. 요가원</div>
+              <div class="select_ed" v-if="toggle[0][1]" @click="zero(2)">2. 요가원</div>
+              <div class="select" v-if="!toggle[0][2]" @click="zero(3)">3. 요가 자격증</div>
+              <div class="select_ed" v-if="toggle[0][2]" @click="zero(3)">3. 요가 자격증</div>
+              <div class="select" v-if="!toggle[0][3]" @click="zero(4)">4. 요가 용품</div>
+              <div class="select_ed" v-if="toggle[0][3]" @click="zero(4)">4. 요가 용품</div>
+              <!-- :class="{select_ed : toggle[0][0]}" -->
             </div>
           </div>
           <div class="modal-footer">
@@ -82,7 +87,7 @@
           <div class="modal-header">
             <h5 class="modal-title survey_q" id="exampleModalLongTitle">
               {{ this.step }}번째 선택 문항 - 어떤 요가 동작을 찾고 계신가요?
-              (택1)
+             
             </h5>
             <button
               type="button"
@@ -95,13 +100,22 @@
           </div>
           <div class="modal-body body_design">
             <div class="survey_wrapper">
-              <div class="select" @click="firstQ(0)">
+              <div class="select" v-if="!toggle[1][0]" @click="firstQ(0)">
                 1. 가볍게 몸 풀기를 하고 싶어요
               </div>
-              <div class="select" @click="firstQ(1)">
+              <div class="select_ed" v-if="toggle[1][0]" @click="firstQ(0)">
+                1. 가볍게 몸 풀기를 하고 싶어요
+              </div>
+              <div class="select" v-if="!toggle[1][1]" @click="firstQ(1)">
                 2. 목, 어깨가 뻐근해요
               </div>
-              <div class="select" @click="firstQ(2)">
+              <div class="select_ed" v-if="toggle[1][1]" @click="firstQ(1)">
+                2. 목, 어깨가 뻐근해요
+              </div>
+              <div class="select" v-if="!toggle[1][2]" @click="firstQ(2)">
+                3. 상급자용 심화 동작을 배우고 싶어요
+              </div>
+              <div class="select_ed" v-if="toggle[1][2]" @click="firstQ(2)">
                 3. 상급자용 심화 동작을 배우고 싶어요
               </div>
             </div>
@@ -157,8 +171,12 @@
           </div>
           <div class="modal-body body_design">
             <div class="survey_wrapper">
-              <div class="select" @click="secondQ(0)">1. 요가원 고르는 법</div>
-              <div class="select" @click="secondQ(1)">
+              <div class="select" v-if="!toggle[2][0]" @click="secondQ(0)">1. 요가원 고르는 법</div>
+              <div class="select_ed" v-if="toggle[2][0]" @click="secondQ(0)">1. 요가원 고르는 법</div>
+              <div class="select" v-if="!toggle[2][1]" @click="secondQ(1)">
+                2. 내가 사는 지역의 요가원 추천
+              </div>
+              <div class="select_ed" v-if="toggle[2][1]" @click="secondQ(1)">
                 2. 내가 사는 지역의 요가원 추천
               </div>
               <span v-if="openregion"
@@ -209,7 +227,7 @@
           <div class="modal-header">
             <h5 class="modal-title survey_q" id="exampleModalLongTitle">
               {{ this.step }}번째 선택 문항 - 요가 자격증에 대해 어떤 것이
-              궁금하신가요? (택1)
+              궁금하신가요? 
             </h5>
             <button
               type="button"
@@ -222,16 +240,24 @@
           </div>
           <div class="modal-body body_design">
             <div class="survey_wrapper">
-              <div class="select" @click="thirdQ(0)">
+              <div class="select" v-if="!toggle[3][0]" @click="thirdQ(0)">
                 1. 요가 뉴비에요. 자격증 A-Z가 궁금해요
               </div>
-              <div class="select" @click="thirdQ(1)">
+              <div class="select_ed" v-if="toggle[3][0]" @click="thirdQ(0)">
+                1. 요가 뉴비에요. 자격증 A-Z가 궁금해요
+              </div>
+              <div class="select" v-if="!toggle[3][1]" @click="thirdQ(1)">
                 2. 국제 요가 자격증에 대해 알고 싶어요
               </div>
-              <div class="select" @click="thirdQ(2)">
+              <div class="select_ed" v-if="toggle[3][1]" @click="thirdQ(1)">
+                2. 국제 요가 자격증에 대해 알고 싶어요
+              </div>
+              <div class="select" v-if="!toggle[3][2]" @click="thirdQ(2)">
                 3. 국내 요가 자격증에 대해 알고 싶어요
               </div>
-              <!-- <div class="select" @click="firstQ(2)">3. 상급자용 심화 동작을 배우고 싶어요</div> -->
+              <div class="select_ed" v-if="toggle[3][2]" @click="thirdQ(2)">
+                3. 국내 요가 자격증에 대해 알고 싶어요
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -285,9 +311,12 @@
           </div>
           <div class="modal-body body_design">
             <div class="survey_wrapper">
-              <div class="select" @click="fourthQ(0)">1. 요가 매트</div>
-              <div class="select" @click="fourthQ(1)">2. 요가 블럭</div>
-              <div class="select" @click="fourthQ(2)">3. 요가복</div>
+              <div class="select" v-if="!toggle[4][0]"  @click="fourthQ(0)">1. 요가 매트</div>
+              <div class="select_ed" v-if="toggle[4][0]" @click="fourthQ(0)">1. 요가 매트</div>
+              <div class="select" v-if="!toggle[4][1]"  @click="fourthQ(1)">2. 요가 블럭</div>
+              <div class="select_ed" v-if="toggle[4][1]"  @click="fourthQ(1)">2. 요가 블럭</div>
+              <div class="select" v-if="!toggle[4][2]" @click="fourthQ(2)">3. 요가복</div>
+              <div class="select_ed" v-if="toggle[4][2]" @click="fourthQ(2)">3. 요가복</div>
               <input
                 type="text"
                 class="select"
@@ -343,8 +372,14 @@
             <div class="survey_wrapper">
               <div class="last_page">
                 <p>설문이 끝났어요!</p>
-                <div>Chat GPT가 최적화 키워드를 분석 중입니다...</div>
-                <div>{{ gptAnswer }}</div>
+                <hr>
+                <!-- type="button"
+              class="btn btn-secondary survey_btn empty"
+              data-dismiss="modal" -->
+                <div v-if="!goYoutube">Chat GPT가 최적화 키워드를 분석 중입니다...</div>
+                <div v-if="goYoutube">분석이 완료되었습니다. <br>지금 바로 유튜브 페이지로 이동해보세요!</div>
+                <router-link to="/youtube"><div id="youtubeBtn" v-if="goYoutube" data-dismiss="modal">Youtube</div></router-link>
+                <!-- <div>{{ gptAnswer }}</div> -->
               </div>
             </div>
           </div>
@@ -371,29 +406,7 @@
       </div>
     </div>
 
-    <!-- 2번째 모달 등장 -->
-    <!-- <div class="modal fade" id="whatever" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        내용2입니다.
-        내용2입니다.
-        내용2입니다.
-        내용2입니다.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary survey_btn empty" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary survey_btn" data-toggle="modal" data-target="#thirdModal" >next</button>
-      </div>
-    </div>
-  </div>
-</div> -->
+    
   </div>
 </template>
 
@@ -403,7 +416,11 @@ import axios from "axios";
 export default {
   name: "SurveyView",
   data() {
+    // this.$set(this.testArr, 4, 'Z')
+    // this.$set(<변수 명>,<변수 타입>,<값>)
     return {
+      toggle : [[0,0,0,0],[0,0,0],[0,0],[0,0,0],[0,0,0,0]],
+      goYoutube : false,
       gptAnswer: "",
       fourthQFreeType: false,
       secondQFreeType: false,
@@ -429,6 +446,12 @@ export default {
       material: "",
     };
   },
+  watch : {
+    gptAnswer(){
+      this.goYoutube = true;
+      this.sendToGPT = []; //sendToGPT 배열 초기화
+    }
+  },
   methods: {
     checkLoginStatus() {
       if (!sessionStorage.getItem("loginUser")) {
@@ -440,7 +463,8 @@ export default {
     async openai() {
       const configuration = new Configuration({
         organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
-        apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
+        // apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
+        apiKey: "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",
       });
       const openai = new OpenAIApi(configuration);
 
@@ -462,7 +486,6 @@ export default {
 
       this.gptAnswer = await completion.data.choices[0].message.content;
       console.log(this.answer);
-      // this.sendToGPT = [];
     },
     ////
     closeModal() {
@@ -471,12 +494,16 @@ export default {
     },
     zero(keywordNum) {
       this.seq.push(keywordNum);
+      this.$set(this.toggle[0], keywordNum-1, 1);
     },
     firstQ(answerNum) {
+      this.$set(this.toggle[1], answerNum, 1);
+
       console.log(this.first[answerNum]);
       this.sendToGPT.push(this.first[answerNum]);
     },
     secondQ(answerNum) {
+      this.$set(this.toggle[2], answerNum, 1);
       if (answerNum === 1) {
         this.openregion = true;
         this.secondQFreeType = true;
@@ -488,11 +515,13 @@ export default {
       // this.turnNext();
     },
     thirdQ(answerNum) {
+      this.$set(this.toggle[3], answerNum, 1);
       let send = this.third[answerNum];
       console.log(send);
       this.sendToGPT.push(send);
     },
     fourthQ(answerNum) {
+      this.$set(this.toggle[4], answerNum, 1);
       let send;
       if (answerNum === 3) {
         this.fourthQFreeType = true;
@@ -503,12 +532,14 @@ export default {
       }
     },
     turn() {
+      //마지막 모달이라면 
       if (this.step === 3) {
         console.log("finished!");
         console.log(this.sendToGPT);
-        this.index = "last";
-        this.step = 0;
-        this.openai();
+        this.index = "last"; //마지막 페이지로 이동시킴
+        this.step = 0; //step 초기화
+        this.toggle = [[0,0,0,0],[0,0,0],[0,0],[0,0,0],[0,0,0,0]],//toggle 초기화
+        this.openai(); //API 가동
 
         //유저 정보를 db에 저장
         let id = JSON.parse(sessionStorage.getItem("loginUser")).userId;
@@ -524,7 +555,13 @@ export default {
           },
         }).then(() => {
           console.log("preference saved.");
-          sessionStorage.setItem("gptPreference", this.sendToGPT);
+          //직접 세션에 preference 넣어주기
+          let loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+          loginUser.prefer1 = this.sendToGPT[0];
+          loginUser.prefer2 = this.sendToGPT[1];
+          loginUser.prefer3 = this.sendToGPT[2];
+          sessionStorage.setItem("loginUser", JSON.stringify(loginUser));
+          // sessionStorage.setItem("gptPreference", this.sendToGPT);
         });
       } else {
         this.index = this.seqWord[this.seq[this.step]];
@@ -540,6 +577,7 @@ export default {
         console.log(send);
       }
       this.turn();
+      this.fourthQFreeType = false; //초기화
     },
 
     // 요가원 지역 정보
@@ -550,12 +588,25 @@ export default {
         console.log(send);
       }
       this.turn();
+      this.secondQFreeType = false; //초기화
+
     },
   },
 };
 </script>
 
 <style>
+#youtubeBtn {
+  margin-top: 35px;
+  display: inline-block;
+  width : 120px;
+  height: 45px;
+  background-color: rgba(194, 52, 52, 0.912);
+  border: solid 1px rgba(185, 35, 35, 0.946);
+  color: #fff;
+  line-height: 45px;
+  border-radius: 10px;
+}
 .last_page p {
   font-size: 20px;
   font-weight: bolder;
@@ -566,6 +617,11 @@ export default {
   font-size: 18px;
   color: #333;
 }
+/* .last_page div .youtubeBtn{
+  font-size: 20px;
+  color: #fff;
+  line-height: 20px;
+} */
 .survey_wrapper input {
   width: 100%;
   padding: 0px 25px;
@@ -579,7 +635,7 @@ export default {
   margin-right: 0px;
   font-size: 20px;
   /* color: #222; */
-  color: #fff;
+  color: #222;
   text-align: center;
 }
 .survey_wrapper {
@@ -597,9 +653,26 @@ export default {
   color: #333;
   border: solid 1px #159957;
   height: 50px;
-  line-height: 25px;
+  line-height: 50px;
   transition: all 0.7s, color 0.3;
 }
+.select_ed {
+  display: block;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bolder;
+  background-color: rgba(88, 159, 100, 0.428);
+  border-radius: 10px;
+  margin-top: 5px;
+  color: #FFF;
+  border: solid 1px #159957;
+  height: 50px;
+  line-height: 50px;
+  transition: all 0.7s, color 0.3;
+}
+/* .select_ed {
+  background-color: rgba(88, 159, 100, 0.428);
+} */
 .select:hover {
   color: #32605b;
   box-shadow: 700px 0 0 0 rgba(88, 159, 100, 0.325) inset;
@@ -639,7 +712,7 @@ export default {
 }
 
 .modal_design {
-  background: #73b35ac0; /* fallback for old browsers */
+  background: #feffe4ce; /* fallback for old browsers */
   /* background: -webkit-linear-gradient(to right, #33ae87, #41bb57);  Chrome 10-25, Safari 5.1-6 */
   /* background: linear-gradient(to right, #33ae87, #41bb57); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
