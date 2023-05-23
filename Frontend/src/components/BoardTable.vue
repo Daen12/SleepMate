@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr v-for="(board, i) in boardList" :key="i">
-            <div v-if="board.classnum == this.category">
+            <div v-if="board.classnum == category">
             <td class="tg-0lax">{{ i + 1 }}</td>
             <td class="tg-0lax category">{{ categoryDecode[board.classnum-1]}}</td>
             <td class="tg-0lax">
