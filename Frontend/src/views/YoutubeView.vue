@@ -85,14 +85,19 @@
         </div>
         <div v-if="loginUser" class="desc">
           요가도 더욱 스마트하게, 지금 필요한 영상을 만나보세요.
+          <br>
+          <hr>
         </div>
         <div v-if="!loginUser" class="welcome">환영합니다!</div>
         <div v-if="!loginUser" class="desc">
           요가 관련 최근 영상을 한 눈에 확인해보세요. 멤버십 가입으로 더욱
           차별화된 맞춤 영상을 확인하실 수 있습니다.
+          <br>
+          <hr>
         </div>
 
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
+        <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
         <div class="subTitle">{{ loginUser.prefer1 }} 관련 유튜브 영상</div>
         <youtube-video-item
           v-for="(keyword, i) in prior1"
@@ -156,12 +161,13 @@ export default {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
       this.$store.commit("SET_LOGIN_USER", loginUser);
     }
-
+    //openai() : n순위 관심사에 대해 chat gpt가 검색 키워드를 두개씩 반환. ['첫번째', '두번째'] 형태로!
     this.openai(1).then((res) => {
-      if (res.substring(0, 1) !== '[') {
+      if (res.substring(0, 1) !== '[') { //배열형태가 아니면 새로고침 후 다시
         this.$router.go(0);
       } else {
         this.prior1 = JSON.parse(res);
+        console.log(this.prior1);
       }
     });
     this.openai(2).then((res) => {
@@ -169,6 +175,8 @@ export default {
         this.$router.go(0);
       } else {
         this.prior2 = JSON.parse(res);
+        console.log(this.prior2);
+
       }
     });
     this.openai(3).then((res) => {
@@ -176,6 +184,8 @@ export default {
         this.$router.go(0);
       } else {
         this.prior3 = JSON.parse(res);
+        console.log(this.prior3);
+
       }
     });
   },
@@ -274,13 +284,14 @@ export default {
 }
 .youtubes .welcome {
   color: white;
-  font-size: 35px;
+  font-size: 40px;
+  padding-left: 30px;
 }
 .youtubes .desc {
   padding-left: 30px;
-  margin-top: 15px;
+  margin-top: 5px;
   margin-bottom: 30px;
-  font-size: 20px;
+  font-size: 25px;
   color: #ffffffcb;
 }
 .youtube_body {

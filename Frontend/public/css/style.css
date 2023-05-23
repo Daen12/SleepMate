@@ -80,7 +80,7 @@ a:focus {
 }
 
 .custom_nav-container {
-  z-index: 99999;
+  z-index: 1;
   padding: 15px 0;
 }
 

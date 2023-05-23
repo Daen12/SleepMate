@@ -399,7 +399,7 @@
               data-dismiss="modal"
               @click="turnFourth"
             >
-              next
+              Finish
             </button>
           </div>
         </div>
@@ -463,8 +463,8 @@ export default {
     async openai() {
       const configuration = new Configuration({
         organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
-        // apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
-        apiKey: "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",
+        apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
+        // apiKey: "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",
       });
       const openai = new OpenAIApi(configuration);
 
@@ -494,16 +494,15 @@ export default {
     },
     zero(keywordNum) {
       this.seq.push(keywordNum);
-      this.$set(this.toggle[0], keywordNum-1, 1);
+      this.toggle[0][keywordNum-1] = 1;
     },
     firstQ(answerNum) {
-      this.$set(this.toggle[1], answerNum, 1);
-
+      this.toggle[1][answerNum] = 1;
       console.log(this.first[answerNum]);
       this.sendToGPT.push(this.first[answerNum]);
     },
     secondQ(answerNum) {
-      this.$set(this.toggle[2], answerNum, 1);
+      this.toggle[2][answerNum] = 1;
       if (answerNum === 1) {
         this.openregion = true;
         this.secondQFreeType = true;
@@ -515,13 +514,13 @@ export default {
       // this.turnNext();
     },
     thirdQ(answerNum) {
-      this.$set(this.toggle[3], answerNum, 1);
+      this.toggle[3][answerNum] = 1;
       let send = this.third[answerNum];
       console.log(send);
       this.sendToGPT.push(send);
     },
     fourthQ(answerNum) {
-      this.$set(this.toggle[4], answerNum, 1);
+      this.toggle[4][answerNum] = 1;
       let send;
       if (answerNum === 3) {
         this.fourthQFreeType = true;
@@ -696,7 +695,8 @@ export default {
   border: none;
 }
 .survey_btn {
-  background-color: #159957;
+  color: white;
+  background-color: rgba(56, 139, 70, 0.736);
   border: 1px solid #159957;
 }
 .empty {
