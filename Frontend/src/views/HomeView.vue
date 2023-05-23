@@ -372,19 +372,19 @@
               <div class="contact_form-container">
                 <div>
                   <div>
-                    <input type="text" placeholder="이름" />
+                    <input type="text" v-model="e_name" placeholder="이름" />
                   </div>
                   <div>
-                    <input type="email" placeholder="이메일" />
+                    <input type="email" v-model="e_email" placeholder="이메일" />
                   </div>
                   <div>
-                    <input type="text" placeholder="연락처" />
+                    <input type="text" v-model="e_contact" placeholder="연락처" />
                   </div>
                   <div>
-                    <input type="text" class="message_input" placeholder="문의하실 내용을 적어주세요" />
+                    <input type="text" v-model="e_content" class="message_input" placeholder="문의하실 내용을 적어주세요" />
                   </div>
                   <div >
-                    <button class="contact-button" type="submit">
+                    <button @click="sendEmail"  class="contact-button" type="submit">
                       Send
                     </button>
                   </div>
@@ -496,6 +496,7 @@
 </template>
 
 <script>
+import emailjs from 'emailjs-com';
 import LookAround from "@/components/LookAround.vue"
 import { mapState } from 'vuex';
 export default {
@@ -503,11 +504,62 @@ export default {
   data(){
     return {
       time : "",
+
+      e_name : "",
+      e_email : "",
+      e_contact : "",
+      e_content : "",
     }
   },
   methods : {
+    sendEmail(){
+      let data = {
+        from_name : this.e_name,
+          email_id : this.e_email,
+          from_contact : this. e_contact,
+          from_content : this.e_content,
+      }
+      emailjs.sendForm('service_vocd9kn', 'template_m511lr7', data, 'EQ-0HYTiP50d3clZ1')
+      .then((result)=>{
+        console.log("성공!", result.text);
+
+      }, (error) =>{
+        console.log(error.text);
+      })
+      
+      
+      
+      // let data = {
+      //   service_id: 'service_vocd9kn',
+      //   template_id:'template_m511lr7', //I L 체크!!
+      //   user_id : 'EQ-0HYTiP50d3clZ1',
+      //   template_params:{
+      //     from_name : this.e_name,
+      //     email_id : this.e_email,
+      //     from_contact : this. e_contact,
+      //     from_content : this.e_content,
+      //   }
+      // };
+
+      // axios({
+      //   url : "https://api.emailjs.com/api/v1.0/email/send",
+      //   method : "POST",
+      //   data : JSON.stringify(data),
+      //   headers : {
+      //     'Content-type' : 'application/json'
+      //   }
+      // }).then(()=>{
+      //   console.log("here2");
+
+      //   alert("메세지가 발송되었습니다.");
+      // }).catch(() =>{
+      //   alert("메세지 전송에 실패하였습니다.");
+      //   console.log("here3");
+      // })
+
+    },
     
-    logout() {
+  logout() {
           console.log("trying to log out");
             this.$store.dispatch("logout");
             this.$router.go(0);
