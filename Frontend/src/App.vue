@@ -4,6 +4,10 @@
   </div>
 </template>
 
-<style>
+<script>
+export default {
+  name: "App",
+};
+</script>
 
-</style>
+<style></style>

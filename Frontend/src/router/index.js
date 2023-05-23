@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import BoardView from "../views/BoardView.vue";
 import BaseView from "../views/BaseView.vue";
@@ -7,8 +6,6 @@ import SignupView from "../components/SignupView.vue";
 import LoginView from "../components/LoginView.vue";
 import YoutubeView from "../views/YoutubeView.vue";
 import BoardDetail from "@/components/BoardDetail.vue";
-
-Vue.use(VueRouter);
 
 const routes = [
     {
@@ -52,10 +49,9 @@ const routes = [
     },
 ];
 
-const router = new VueRouter({
-    mode: "history",
-    base: process.env.BASE_URL,
+const router = createRouter({
+    history: createWebHistory(),
     routes,
-});
+  });
 
 export default router;
