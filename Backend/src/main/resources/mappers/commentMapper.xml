@@ -12,7 +12,7 @@
     </select>
 
     <!-- 댓글 작성 -->
-    <insert id="writeComment" parameterType="Comment">
+    <insert id="writeComment" parameterType="Comment" useGeneratedKeys="true" keyProperty="idx">
         INSERT INTO comment (articleIdx, content, writer)
         VALUES (#{articleIdx}, #{content}, #{writer})
     </insert>
@@ -28,6 +28,12 @@
     <delete id="deleteComment" parameterType="Integer">
         DELETE FROM comment
         WHERE idx = #{idx}
+    </delete>
+
+    <!-- 게시글 삭제 시 관련 댓글 모두 삭제 -->
+    <delete id="deleteCommentByArticleIdx" parameterType="Integer">
+        DELETE FROM comment
+        WHERE articleIdx = #{articleIdx}
     </delete>
 
 </mapper>

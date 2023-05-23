@@ -32,4 +32,10 @@ public class CommentServiceImpl implements CommentService{
     public boolean deleteComment(int idx) {
         return commentDao.deleteComment(idx);
     }
+
+    @Override
+    public boolean deleteCommentByArticleIdx(int articleIdx) {
+        return commentDao.deleteCommentByArticleIdx(articleIdx);
+    }
+
 }

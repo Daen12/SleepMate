@@ -132,10 +132,11 @@ export default {
       });
     },
     sliceRegdate(data) {
+      let regdate = '' + data;
       if (data === undefined) {
         console.log(data);
       }
-      return data.slice(0, 11);
+      return regdate.substring(0, 11);
     }
   },
   data() {

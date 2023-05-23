@@ -18,7 +18,7 @@
       </dl>
       <dl class="date"></dl>
       <dl class="pointer" @click="commentWrite">➕</dl>
-      <dl class="pointer" @click="writemode = 0">🗑</dl>
+      <dl class="pointer" @click="writemode = 0">❌</dl>
     </div>
     </div>
 
@@ -27,10 +27,10 @@
       <div class="content" v-for="(comment, i) in comments" :key="i">
         <dl class="writer">{{ comment.writer }}</dl>
         <dl class="real">{{ comment.content }}</dl>
-        <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
+        <dl class="date">{{ sliceRegdate(comment.regdate) }}</dl>
         <div class="hideUpdate">
-        <dl class="pointer" @click="updateComment(i)">✏️</dl>
-        <dl class="pointer" @click="commentDelete(comment.idx)">🗑</dl>
+        <dl class="pointer" v-if="nickName === comment.writer" @click="changeUpdateMode(i)">✏️</dl>
+        <dl class="pointer" v-if="nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
         </div>
       </div>
     </div>
@@ -41,10 +41,11 @@
         <dl class="writer" >{{ comment.writer }}</dl>
         <dl class="real" v-show="!updateContentmode[i]">{{ comment.content }}</dl>
         <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="u_content"/></dl>
-        <dl class="date">{{ comment.regdate.slice(0, 11) }}</dl>
-        <dl class="pointer" v-if="updateContentmode[i]" @click="updateFinish(i+1)">✏️</dl>
-        <dl class="pointer" v-if="!updateContentmode[i]" @click="updateComment(i)">✏️</dl>
-        <dl class="pointer" v-if="!updateContentmode[i]" @click="commentDelete(comment.idx)">🗑</dl>
+        <dl class="date">{{ comment.regdate.substring(0, 11) }}</dl>
+        <dl class="pointer" v-if="updateContentmode[i]" @click="commentUpdate({ idx: i, commentIdx: comment.idx})">✏️</dl>
+        <dl class="pointer" v-if="updateContentmode[i]" @click="cancelUpdate(i)">❌</dl>
+        <dl class="pointer" v-show="!updateContentmode[i] && nickName === comment.writer"  @click="changeUpdateMode(i)">✏️</dl>
+        <dl class="pointer" v-show="!updateContentmode[i] && nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
       </div>
     </div>
   </div>
@@ -69,7 +70,6 @@ export default {
       updateContentmode: [],
     }
   },
-  
   computed: {
     ...mapState(["loginUser", "comments"]),
   },
@@ -100,14 +100,75 @@ export default {
     }
   },
   methods: {
-    updateFinish(i){
+    checkLoginStatus(){
+      if(sessionStorage.getItem("loginUser")){
+        this.writemode = 1
+      } else {
+        alert("로그인 후 이용해주세요.");
+      }
+    },
+    sliceRegdate(data) {
+      var today = new Date();
+
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
+      let dateString = year + '-' + month  + '-' + day;
+
+      let regdate = '' + data;
+      let result = "";
+      if (regdate.substring(0, 10) === dateString) {
+        result = regdate.substring(11);
+      } else {
+        result = regdate.substring(0, 10);
+      }
+      return result;
+    },
+
+    // CREATE
+    commentWrite() {
+      let comment = {
+        articleIdx: this.idx,
+        content: this.c_content,
+        writer: this.nickName,
+      };
+      console.log(comment);
+      const API_URL = `http://localhost:9999/api/comment/write`;
+      axios({
+        url: API_URL,
+        method: "POST",
+        data: comment,
+      })
+        .then((res) => {
+          // this.$router.go(0);
+          this.$store.commit("CREATE_COMMENT", res.data);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(()=>{
+          this.writemode = 0;
+        }
+      )
+    },
+
+    // UPDATE
+    cancelUpdate(idx) {
+      this.updatemode = 0;
+      this.updateContentmode[idx] = false;
+    },
+    changeUpdateMode(idx) {
+      this.updatemode = 1;
+      this.updateContentmode[idx] = true;
+    },
+    commentUpdate(obj) {
       let comment = {
         articleIdx: this.idx,
         content: this.u_content,
         writer: this.nickName,
-        idx : i,
+        idx : obj.commentIdx,
       };
-      console.log(comment);
       this.u_content = "";
       const API_URL = `http://localhost:9999/api/comment/update`;
       axios({
@@ -120,23 +181,11 @@ export default {
       }).then(()=>{
         console.log("updated!");
         this.updatemode = 0;
-        // this.u_content = "";
+        this.updateContentmode[obj.idx] = false;
       })
+    },
 
-    },
-    checkLoginStatus(){
-    if(sessionStorage.getItem("loginUser")){
-      this.writemode = 1
-    } else {
-      alert("로그인 후 이용해주세요.");
-    }
-  },
-    commentUpdate() {},
-    updateComment(idx) {
-      this.updatemode = 1;
-      this.$set(this.updateContentmode, idx, true);
-      console.log(this.updatemode);
-    },
+    // DELETE
     commentDelete(idx) {
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
       axios({
@@ -155,53 +204,18 @@ export default {
           alert("로그인 후 이용해주세요");
         });
     },
-    
-    commentWrite() {
-      let comment = {
-        articleIdx: this.idx,
-        content: this.c_content,
-        writer: this.nickName,
-      };
-      console.log(comment);
-      const API_URL = `http://localhost:9999/api/comment/write`;
-      axios({
-        url: API_URL,
-        method: "POST",
-        data: comment,
-      })
-        .then((res) => {
-          // this.$router.go(0);
-          this.$store.commit("CREATE_COMMENT", res.data);
-          console.log("finished");
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(()=>{
-          this.writemode = 0;
-        }
-      )
-    },
   },
   created() {
     if (sessionStorage.getItem("loginUser")) {
       this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
     }
     this.e_content = this.comments.content;
+    console.log(this.e_content);
+
     for (let i = 0; i < this.comments.length; i++) {
       this.updateContentmode[i] = false;
     }
-    console.log(this.updateContentmode);
   },
-  // beforeUpdate() {
-  //   if (sessionStorage.getItem("loginUser")) {
-  //     this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
-  //   }
-  //   for (let i = 0; i < this.comments.length; i++) {
-  //     this.updateContentmode[i] = false;
-  //   }
-  //   this.e_content = this.comments.content;
-  // },
 }
 </script>
 

@@ -12,4 +12,6 @@ public interface CommentService {
     boolean updateComment(Comment comment);
 
     boolean deleteComment(int idx);
+
+    boolean deleteCommentByArticleIdx(int articleIdx);
 }
