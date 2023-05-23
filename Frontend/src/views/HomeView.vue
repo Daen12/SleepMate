@@ -368,7 +368,7 @@
       <div class="layout_padding2-top">
         <div class="row">
           <div class="col-lg-4 offset-lg-2 col-md-5 offset-md-1">
-            <form action="">
+            <!-- <form action=""> -->
               <div class="contact_form-container">
                 <div>
                   <div>
@@ -390,7 +390,7 @@
                   </div>
                 </div>
               </div>
-            </form>
+            <!-- </form> -->
           </div>
           <div class="col-md-6 px-0">
             <div class="map_container">
@@ -513,13 +513,14 @@ export default {
   },
   methods : {
     sendEmail(){
+      console.log("");
       let data = {
         from_name : this.e_name,
           email_id : this.e_email,
           from_contact : this. e_contact,
           from_content : this.e_content,
       }
-      emailjs.sendForm('service_vocd9kn', 'template_m511lr7', data, 'EQ-0HYTiP50d3clZ1')
+      emailjs.send('service_vocd9kn', 'template_m511lr7', data, 'EQ-0HYTiP50d3clZ1')
       .then((result)=>{
         console.log("성공!", result.text);
 
