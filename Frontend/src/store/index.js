@@ -155,16 +155,6 @@ actions: {
             alert("등록되었습니다.");
         });
     },
-    // deleteBoard({ commit }, idx) {
-    //     const API_URL = REST_API + `board/`;
-    //     axios({
-    //         url: API_URL,
-    //         method: "GET",
-    //     }).then((res) => {
-    //         console.log(res.data.articles);
-    //         commit("SET_BOARD_LIST", res.data.articles);
-    //     });
-    // },
 },
 modules: {},
 })

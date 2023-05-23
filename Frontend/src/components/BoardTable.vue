@@ -22,22 +22,17 @@
         </thead>
         <tbody>
           <tr v-for="(board, i) in boardList" :key="i">
-            <div v-if="board.classnum == category">
-            <td class="tg-0lax">{{ i + 1 }}</td>
-            <td class="tg-0lax category">{{ categoryDecode[board.classnum-1]}}</td>
-            <td class="tg-0lax">
+            <td class="tg-0lax" v-if="board.classnum == category">{{ i + 1 }}</td>
+            <td class="tg-0lax category" v-if="board.classnum == category">{{ categoryDecode[board.classnum-1]}}</td>
+            <td class="tg-0lax" v-if="board.classnum == category">
               <button @click="goToDetail(board.idx, i + 1)">
                 {{ board.title }}
               </button>
             </td>
-            <td class="tg-0lax">{{ board.writer }}</td>
-            <td class="tg-0lax">{{ board.regdate.slice(0, 11) }}</td>
-            <td class="tg-baqh">{{ board.viewcnt }}</td>
-            </div>
+            <td class="tg-0lax" v-if="board.classnum == category">{{ board.writer }}</td>
+            <td class="tg-0lax" v-if="board.classnum == category">{{ sliceRegdate(board.regdate) }}</td>
+            <td class="tg-baqh" v-if="board.classnum == category">{{ board.viewcnt }}</td>
           </tr>
-          <!-- <router-link :to="{name : 'BoardDetail', params : {idx : 2}}"></router-link>  -->
-
-          <!-- -->
         </tbody>
       </table>
       <!-- 여기서부터 pagination -->
@@ -87,6 +82,10 @@ export default {
     console.log("create");
   },
   methods: {
+    sliceRegdate(data) {
+      let regdate = '' + data;
+      return regdate.substring(0, 11);
+    },
     nextPage() {
       this.pageNum += 1;
     },
