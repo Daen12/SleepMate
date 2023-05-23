@@ -93,14 +93,22 @@
         </div>
 
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
-        <div class="subTitle">{{ Object.keys(this.prior1) }}</div>
-        <youtube-video-item v-for="(a, i) in this.prior1" :key="i"></youtube-video-item>
+        <div class="subTitle">{{ Object.keys(this.prior1)[0] }}</div>
+        <youtube-video-item
+          v-for="(keyword, i) in Object.values(this.prior1)[0]"
+          :key="i"
+          :keyword="keyword"
+        ></youtube-video-item>
 
-        <div class="subTitle">{{ Object.keys(this.prior2) }}</div>
-        <youtube-video-item></youtube-video-item>
+        <div class="subTitle">{{ Object.keys(this.prior2)[0] }}</div>
+        <youtube-video-item
+          v-for="(keyword, i) in Object.values(this.prior2)[0]"
+          :key="i"
+          :keyword="keyword"
+        ></youtube-video-item>
 
-        <div class="subTitle">{{ Object.keys(this.prior3) }}</div>
-        <youtube-video-item></youtube-video-item>
+        <!-- <div class="subTitle">{{ Object.keys(this.prior3)[0] }}</div>
+        <youtube-video-item v-for="(keyword, i) in Object.values(this.prior3)[0]" :key="i" :keyword="keyword"></youtube-video-item> -->
       </div>
     </div>
   </div>
@@ -142,23 +150,19 @@ export default {
       this.$store.commit("SET_LOGIN_USER", loginUser);
     }
 
-    setTimeout(() => {
-      this.openai(1).then((res) => {
-        this.prior1 = JSON.parse(res);
-      });
-    }, 0);
+    this.openai(1).then((res) => {
+      this.prior1 = JSON.parse(res);
+    });
 
-    setTimeout(() => {
-      this.openai(2).then((res) => {
-        this.prior2 = JSON.parse(res);
-      });
-    }, 0);
+    this.openai(2).then((res) => {
+      this.prior2 = JSON.parse(res);
+    });
 
-    setTimeout(() => {
-      this.openai(3).then((res) => {
-        this.prior3 = JSON.parse(res);
-      });
-    }, 0);
+    // setTimeout(() => {
+    //   this.openai(3).then((res) => {
+    //     this.prior3 = JSON.parse(res);
+    //   });
+    // }, 0);
   },
   methods: {
     async openai(num) {
@@ -175,14 +179,14 @@ export default {
             {
               role: "system",
               content:
-                "결과 값은 항상 Javascript 객체의 형식만 반환하고, 다른 것은 안나오게 해줘",
+                "결과 값은 항상 Javascript Object Notation 형식만 반환하고, 다른 것은 안나오게 해줘",
             },
             {
               role: "user",
-              content: `${this.loginUser.prefer1}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+              content: `${this.loginUser.prefer1}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value) Javascript Object Notation형식으로 반환해줘`,
             },
           ],
-          temperature: 0.3,
+          temperature: 0.4,
           max_tokens: 300,
         });
         return await completion.data.choices[0].message.content;
@@ -194,14 +198,15 @@ export default {
           messages: [
             {
               role: "system",
-              content: "결과 값은 항상 Javascript 객체의 형식이다.",
+              content:
+                "결과 값은 항상 Javascript Object Notation 형식만 반환하고, 다른 것은 안나오게 해줘",
             },
             {
               role: "user",
-              content: `${this.loginUser.prefer2}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+              content: `${this.loginUser.prefer2}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value) Javascript Object Notation형식으로 반환해줘`,
             },
           ],
-          temperature: 0.7,
+          temperature: 0.4,
           max_tokens: 300,
         });
         return await completion.data.choices[0].message.content;
@@ -213,14 +218,15 @@ export default {
           messages: [
             {
               role: "system",
-              content: "결과 값은 항상 Javascript 객체의 형식이다.",
+              content:
+                "결과 값은 항상 Javascript Object Notation 형식만 반환하고, 다른 것은 안나오게 해줘",
             },
             {
               role: "user",
-              content: `${this.loginUser.prefer3}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+              content: `${this.loginUser.prefer3}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 1개(value) Javascript Object Notation형식으로 반환해줘`,
             },
           ],
-          temperature: 0.7,
+          temperature: 0.3,
           max_tokens: 300,
         });
         return await completion.data.choices[0].message.content;
@@ -235,9 +241,11 @@ export default {
       this.$router.push("/base");
     },
     verify() {
+      console.log(Object.values(this.prior1)[0]);
       console.log(this.prior1);
+      console.log(Object.values(this.prior2)[0]);
       console.log(this.prior2);
-      console.log(this.prior3);
+      // console.log(Object.values(this.prior3)[0]);
     },
   },
 };

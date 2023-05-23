@@ -111,7 +111,7 @@
           </p>
         </div>
 
-        <look-around @click="checkLoginStatus"></look-around>
+        <look-around></look-around>
 
 
 
