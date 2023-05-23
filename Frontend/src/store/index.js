@@ -18,9 +18,6 @@ export default new Vuex.Store({
         category: 1,
     },
     getters: {
-        // getCategory(state, num) {
-        //     state.category = num;
-        // },
     },
     mutations: {
         DUPLICATE_CHECK_NICK(state, value) {
