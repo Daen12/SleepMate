@@ -1,16 +1,17 @@
 <template>
   <div class="slide_wrapper">
     <ul class="slides">
+      <!-- 비디오 3개씩 반환하므로 idx는 3까지 -->
       <li v-for="(video, idx) in this.videos" :key="idx">
         <button
           type="button"
           data-toggle="modal"
           :data-target="`#youtubeModal${preidx}${preidx2}${idx}`"
         >
-          <img
+          <!-- <img
             class="youtubeThumbnail"
             :src="`https://img.youtube.com/vi/${video.id.videoId}/0.jpg`"
-          />
+          /> -->
         </button>
 
         <!-- 유튜브 사진을 클릭하면 나오는 Modal 창 -->
@@ -83,7 +84,7 @@ export default {
 <style>
 .slide_wrapper {
   position: relative;
-  width: 1740px;
+  width: 100%;
   margin: 0 auto;
   height: 315px;
   overflow: hidden;
