@@ -93,22 +93,41 @@
         </div>
 
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
-        <div class="subTitle">{{ Object.keys(this.prior1)[0] }}</div>
+        <div class="subTitle">{{ loginUser.prefer1 }} 관련 유튜브 영상</div>
         <youtube-video-item
-          v-for="(keyword, i) in Object.values(this.prior1)[0]"
+          v-for="(keyword, i) in prior1"
           :key="i"
           :keyword="keyword"
+          :preidx=1
+          :preidx2="i"
         ></youtube-video-item>
+        <br>
+        <br>
+        <br>
 
-        <div class="subTitle">{{ Object.keys(this.prior2)[0] }}</div>
+        <div class="subTitle">{{ loginUser.prefer2 }} 관련 유튜브 영상</div>
         <youtube-video-item
-          v-for="(keyword, i) in Object.values(this.prior2)[0]"
+          v-for="(keyword, i) in prior2"
           :key="i"
           :keyword="keyword"
+          :preidx=2
+          :preidx2="i"
         ></youtube-video-item>
+        <br>
+        <br>
+        <br>
 
-        <!-- <div class="subTitle">{{ Object.keys(this.prior3)[0] }}</div>
-        <youtube-video-item v-for="(keyword, i) in Object.values(this.prior3)[0]" :key="i" :keyword="keyword"></youtube-video-item> -->
+        <div class="subTitle">{{ loginUser.prefer3 }} 관련 유튜브 영상</div>
+        <youtube-video-item
+          v-for="(keyword, i) in prior3"
+          :key="i"
+          :keyword="keyword"
+          :preidx=3
+          :preidx2="i"
+        ></youtube-video-item>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
   </div>
@@ -126,18 +145,6 @@ export default {
       prior3: "",
     };
   },
-  // mounted() {
-  //     const recaptchaScript = document.createElement('script');
-  //     recaptchaScript.setAttribute(
-  //         "src",
-  //         "./js/youtubeScript.js"
-  //     );
-  //     recaptchaScript.setAttribute(
-  //         "defer", "defer"
-  //     );
-  //     document.body.appendChild(recaptchaScript);
-  //     console.log("updated")
-  // },
   components: {
     YoutubeVideoItem,
   },
@@ -151,18 +158,26 @@ export default {
     }
 
     this.openai(1).then((res) => {
-      this.prior1 = JSON.parse(res);
+      if (res.substring(0, 1) !== '[') {
+        this.$router.go(0);
+      } else {
+        this.prior1 = JSON.parse(res);
+      }
     });
-
     this.openai(2).then((res) => {
-      this.prior2 = JSON.parse(res);
+      if (res.substring(0, 1) !== '[') {
+        this.$router.go(0);
+      } else {
+        this.prior2 = JSON.parse(res);
+      }
     });
-
-    // setTimeout(() => {
-    //   this.openai(3).then((res) => {
-    //     this.prior3 = JSON.parse(res);
-    //   });
-    // }, 0);
+    this.openai(3).then((res) => {
+      if (res.substring(0, 1) !== '[') {
+        this.$router.go(0);
+      } else {
+        this.prior3 = JSON.parse(res);
+      }
+    });
   },
   methods: {
     async openai(num) {
@@ -179,16 +194,17 @@ export default {
             {
               role: "system",
               content:
-                "결과 값은 항상 Javascript Object Notation 형식만 반환하고, 다른 것은 안나오게 해줘",
+                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
             },
             {
               role: "user",
-              content: `${this.loginUser.prefer1}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value) Javascript Object Notation형식으로 반환해줘`,
+              content: `${this.loginUser.prefer1}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
             },
           ],
-          temperature: 0.4,
+          temperature: 0.8,
           max_tokens: 300,
         });
+        console.log(completion.data.choices[0].message.content);
         return await completion.data.choices[0].message.content;
       }
 
@@ -199,16 +215,17 @@ export default {
             {
               role: "system",
               content:
-                "결과 값은 항상 Javascript Object Notation 형식만 반환하고, 다른 것은 안나오게 해줘",
+                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
             },
             {
               role: "user",
-              content: `${this.loginUser.prefer2}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 2개(value) Javascript Object Notation형식으로 반환해줘`,
+              content: `${this.loginUser.prefer2}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
             },
           ],
-          temperature: 0.4,
+          temperature: 0.8,
           max_tokens: 300,
         });
+        console.log(completion.data.choices[0].message.content);
         return await completion.data.choices[0].message.content;
       }
 
@@ -219,16 +236,17 @@ export default {
             {
               role: "system",
               content:
-                "결과 값은 항상 Javascript Object Notation 형식만 반환하고, 다른 것은 안나오게 해줘",
+                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
             },
             {
               role: "user",
-              content: `${this.loginUser.prefer3}(key)에 대한 사람들이 많이 검색한 한국어 유튜브 검색 키워드 1개(value) Javascript Object Notation형식으로 반환해줘`,
+              content: `${this.loginUser.prefer3}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
             },
           ],
-          temperature: 0.3,
+          temperature: 0.8,
           max_tokens: 300,
         });
+        console.log(completion.data.choices[0].message.content);
         return await completion.data.choices[0].message.content;
       }
     },
@@ -241,11 +259,9 @@ export default {
       this.$router.push("/base");
     },
     verify() {
-      console.log(Object.values(this.prior1)[0]);
       console.log(this.prior1);
-      console.log(Object.values(this.prior2)[0]);
       console.log(this.prior2);
-      // console.log(Object.values(this.prior3)[0]);
+      console.log(this.prior3);
     },
   },
 };
