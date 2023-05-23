@@ -11,9 +11,10 @@ export default createStore({
     dupId: 1,
     loginUser: null,
     boardList: [],
+    boardListSize: 0,
     board: {},
     comments: [],
-    category: 1,
+    category: 0,
 },
 getters: {
 },
@@ -51,6 +52,9 @@ mutations: {
     },
     ADD_BOARD(state, board) {
         state.boardList.push(board);
+    },
+    CHANGE_CATEGORY(state, classnum) {
+        state.category = classnum;
     },
 },
 actions: {
@@ -135,15 +139,25 @@ actions: {
         sessionStorage.removeItem("access-token");
         alert("로그아웃 되었습니다.");
     },
-    setBoardList({ commit }) {
-        const API_URL = REST_API + `board/1`;
-        axios({
-            url: API_URL,
-            method: "GET",
-        }).then((res) => {
-            console.log(res.data.articles);
-            commit("SET_BOARD_LIST", res.data.articles);
-        });
+    setBoardList({ commit }, payload) {
+        if (payload.category == 0) {
+            const API_URL = REST_API + `board/${payload.pagenum}`;
+            axios({
+                url: API_URL,
+                method: "GET",
+            }).then((res) => {
+                commit("SET_BOARD_LIST", res.data.articles);
+            });
+        }
+        else {
+            const API_URL = REST_API + `board/class/${payload.category}/${payload.pagenum}`;
+            axios({
+                url: API_URL,
+                method: "GET",
+            }).then((res) => {
+                commit("SET_BOARD_LIST", res.data.articles);
+            });
+        }
     },
     writeBoard({ commit }, board) {
         axios({

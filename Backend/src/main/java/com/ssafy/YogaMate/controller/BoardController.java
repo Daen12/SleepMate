@@ -21,22 +21,52 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
+    @GetMapping("/")
+    @ApiOperation(value = "Get Board Articles Number", notes = "게시판 글의 총 개수 가져오기")
+    public ResponseEntity<Integer> getArticlesNum() {
+        int articleNum = boardService.getArticlesNum();
+        return new ResponseEntity<Integer>(articleNum, HttpStatus.OK);
+    }
+
     @GetMapping("/{pageNum}")
-    @ApiOperation(value = "Get All Board Article", notes = "게시판 모든 글 중 10개 가져오기")
-    public ResponseEntity<Map<String, Object>> getAllArticles(@PathVariable int pageNum) {
+    @ApiOperation(value = "Get 10 Board Articles", notes = "게시판 모든 글 중 10개 가져오기")
+    public ResponseEntity<Map<String, Object>> getArticles(@PathVariable int pageNum) {
         Map<String, Object> result = new HashMap<>();
-        List<Board> boardList = boardService.getAllArticles(pageNum);
+        List<Board> boardList = boardService.getArticles(pageNum);
         HttpStatus status = null;
 
         if (boardList == null && boardList.size() == 0) {
             result.put("Article Number", 0);
             status = HttpStatus.ACCEPTED;
         } else {
-            result.put("Article Number", boardList.size());
             result.put("articles", boardList);
             status = HttpStatus.OK;
         }
 
+        return new ResponseEntity<Map<String, Object>>(result, status);
+    }
+
+    @GetMapping("/class/{classnum}")
+    @ApiOperation(value = "Get Classified Board Articles Number", notes = "특정 카테고리에 해당하는 글의 총 개수 가져오기")
+    public ResponseEntity<Integer> getClassifiedArticlesNum(@PathVariable int classnum) {
+        int classifiedArticleNum = boardService.getClassifiedArticlesNum(classnum);
+        return new ResponseEntity<Integer>(classifiedArticleNum, HttpStatus.OK);
+    }
+
+    @GetMapping("/class/{classnum}/{pageNum}")
+    @ApiOperation(value = "Get 10 Classified Board Articles", notes = "게시판 모든 카테고리에 해당하는 글 중 10개 가져오기")
+    public ResponseEntity<Map<String, Object>> getClassifiedArticles(@PathVariable int classnum,  @PathVariable int pageNum) {
+        Map<String, Object> result = new HashMap<>();
+        List<Board> boardList = boardService.getClassifiedArticles(classnum, pageNum);
+        HttpStatus status = null;
+
+        if (boardList == null && boardList.size() == 0) {
+            result.put("Article Number", 0);
+            status = HttpStatus.ACCEPTED;
+        } else {
+            result.put("articles", boardList);
+            status = HttpStatus.OK;
+        }
         return new ResponseEntity<Map<String, Object>>(result, status);
     }
 

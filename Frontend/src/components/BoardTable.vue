@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div>
+    <div class="boardtable">
       <table class="tg" style="undefined;table-layout: fixed; width: 546px">
         <colgroup>
           <col style="width: 50px" />
-          <col style="width: 100px" />
+          <col style="width: 120px" />
           <col style="width: 330px" />
           <col style="width: 150px" />
           <col style="width: 150px" />
@@ -22,75 +22,84 @@
         </thead>
         <tbody>
           <tr v-for="(board, i) in boardList" :key="i">
-            <td class="tg-0lax" v-if="board.classnum == category">{{ i + 1 }}</td>
-            <td class="tg-0lax category" v-if="board.classnum == category">{{ categoryDecode[board.classnum-1]}}</td>
-            <td class="tg-0lax" v-if="board.classnum == category">
+            <td class="tg-0lax" v-if="board.classnum == category || category == 0">{{ i + 1 }}</td>
+            <td class="tg-0lax category" v-if="board.classnum == category || category == 0">{{ categoryDecode[ board.classnum - 1 ]}}</td>
+            <td class="tg-0lax" v-if="board.classnum == category || category == 0">
               <button @click="goToDetail(board.idx, i + 1)">
                 {{ board.title }}
               </button>
             </td>
-            <td class="tg-0lax" v-if="board.classnum == category">{{ board.writer }}</td>
-            <td class="tg-0lax" v-if="board.classnum == category">{{ sliceRegdate(board.regdate) }}</td>
-            <td class="tg-baqh" v-if="board.classnum == category">{{ board.viewcnt }}</td>
+            <td class="tg-0lax" v-if="board.classnum == category || category == 0">{{ board.writer }}</td>
+            <td class="tg-0lax" v-if="board.classnum == category || category == 0">{{ sliceRegdate(board.regdate) }}</td>
+            <td class="tg-baqh" v-if="board.classnum == category || category == 0">{{ board.viewcnt }}</td>
           </tr>
         </tbody>
       </table>
       <!-- 여기서부터 pagination -->
+      <!-- 여기까지 pagination -->
+    </div>
+    <div>
       <div class="btn-cover">
         <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">
           ← &ensp;
         </button>
         <span class="page-count"
-          >{{ pageNum + 1 }} / {{ pageCount }} 페이지</span
+          >{{ pageNum + 1 }} / {{ pageSize }} 페이지</span
         >
         <button
-          :disabled="pageNum >= pageCount - 1"
+          :disabled="pageNum + 1 === pageSize"
           @click="nextPage"
           class="page-btn">
-        
           &ensp; →
         </button>
       </div>
-      <!-- 여기까지 pagination -->
-    </div>
     <button @click="writeBoard" class="writeboard_btn">글 작성</button>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import { mapState } from "vuex";
 export default {
   data() {
     return {
       pageNum: 0,
-      categoryDecode : ["요가 용품", "자격증 정보", '요가원', '요가 영상'],
+      pageSize: 0,
+      categoryDecode : ["요가 용품", "요가 자격증", '요가 센터', '요가 영상'],
     };
   },
-  props: {
-    // reviews: {
-    //   type: Array,
-    //   required: true,
-    // },
-    pageSize: {
-      type: Number,
-      required: false,
-      default: 5,
-    },
+  computed: {
+    ...mapState(["boardList", "category"]),
   },
-  created() {/////
-    this.$store.dispatch("setBoardList");
-    console.log("create");
+  created() {
+    this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
   },
   methods: {
     sliceRegdate(data) {
+      var today = new Date();
+
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
+      let dateString = year + '-' + month  + '-' + day;
+
       let regdate = '' + data;
-      return regdate.substring(0, 11);
+      let result = "";
+      if (regdate.substring(0, 10) === dateString) {
+        result = regdate.substring(11);
+      } else {
+        result = regdate.substring(0, 10);
+      }
+      return result;
     },
     nextPage() {
       this.pageNum += 1;
+      this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
     prevPage() {
       this.pageNum -= 1;
+      this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
     goToDetail(idx, num) {
       console.log(num);
@@ -105,27 +114,23 @@ export default {
       }
     },
   },
-  computed: {
-    ...mapState(["boardList", "category"]),
-
-    pageCount() {
-      let listLeng = this.boardList.length,
-        listSize = this.pageSize,
-        page = Math.floor(listLeng / listSize);
-      if (listLeng % listSize > 0) page += 1;
-
-      /*
-      아니면 page = Math.floor((listLeng - 1) / listSize) + 1;
-      이런식으로 if 문 없이 고칠 수도 있다!
-      */
-      return page;
-    },
-    paginatedData() {
-      const start = this.pageNum * this.pageSize,
-        end = start + this.pageSize;
-      return this.boardList.slice(start, end);
-    },
-  },
+  updated() {
+    if (this.category === 0){
+      axios({
+        url: `http://localhost:9999/api/board/`,
+        method: "GET",
+      }).then((res) => {
+        this.pageSize = Math.floor(res.data / 10 + 1);
+      })
+    } else {
+      axios({
+        url: `http://localhost:9999/api/board/class/${this.category}`,
+        method: "GET",
+      }).then((res) => {
+        this.pageSize = Math.floor(res.data / 10 + 1);
+      })
+    }
+  }
 };
 </script>
 
@@ -153,6 +158,9 @@ export default {
   margin-top: -40px;
 }
 /* board */
+.boardtable {
+  height: 560px;
+}
 .board-intro {
   margin-top: 10px;
   margin-left: 20px;

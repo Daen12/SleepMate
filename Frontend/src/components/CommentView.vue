@@ -108,8 +108,21 @@ export default {
       }
     },
     sliceRegdate(data) {
+      var today = new Date();
+
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
+      let dateString = year + '-' + month  + '-' + day;
+
       let regdate = '' + data;
-      return regdate.substring(0, 11);
+      let result = "";
+      if (regdate.substring(0, 10) === dateString) {
+        result = regdate.substring(11);
+      } else {
+        result = regdate.substring(0, 10);
+      }
+      return result;
     },
 
     // CREATE
