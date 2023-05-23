@@ -2,7 +2,11 @@
   <div class="slide_wrapper">
     <ul class="slides">
       <li v-for="(video, idx) in this.videos" :key="idx">
-        <button type="button" data-toggle="modal" data-target="#youtubeModal">
+        <button
+          type="button"
+          data-toggle="modal"
+          :data-target="`#youtubeModal${preidx}${preidx2}${idx}`"
+        >
           <img
             class="youtubeThumbnail"
             :src="`https://img.youtube.com/vi/${video.id.videoId}/0.jpg`"
@@ -12,7 +16,7 @@
         <!-- 유튜브 사진을 클릭하면 나오는 Modal 창 -->
         <div
           class="modal fade"
-          id="youtubeModal"
+          :id="`youtubeModal${preidx}${preidx2}${idx}`"
           tabindex="-1"
           role="dialog"
           aria-labelledby="exampleModalCenterTitle"
@@ -43,6 +47,8 @@ export default {
   name: "YoutubeVideoItem",
   props: {
     keyword: String,
+    preidx: Number,
+    preidx2: Number,
   },
   data() {
     return {
@@ -52,7 +58,7 @@ export default {
   created() {
     setTimeout(() => {
       const URL = "https://www.googleapis.com/youtube/v3/search";
-      const API_KEY = "AIzaSyAF3NfqZsK6C5D0TOTzVXp6vxdg4VTVn7Q";
+      const API_KEY = "AIzaSyAeDLOfelmCge_e4KDv9jqhVr5W6WgDOeI";
       axios({
         url: URL,
         method: "GET",
