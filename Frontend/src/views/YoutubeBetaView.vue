@@ -88,7 +88,7 @@
         <youtube-search-view v-if="showSearch" @keywordSent="keywordSent"></youtube-search-view>
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
-        <div v-if="!showSearch">
+        <div class="video_wrapper"  v-if="!showSearch">
         <div class="subTitle">{{ this.keyword }} 관련 유튜브 영상</div>
         <youtube-video-item
           v-for="(keyword, i) in prior"
@@ -192,6 +192,10 @@ export default {
             console.log(e);
             if(e.response.status == 429){
                 this.burst = true;
+                this.loading = false;
+                setTimeout(()=>{
+                    this.$router.go(0);
+                }, 4000)
             }
       }
     },
@@ -211,6 +215,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+.video_wrapper {
+    padding-left: 100px;
+    /* margin: auto; */
 }
 .youtubes .welcome {
   color: white;

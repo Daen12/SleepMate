@@ -10,7 +10,7 @@
         >
           <img
             class="youtubeThumbnail"
-            :src="`https://img.youtube.com/vi/${video.id.videoId}/sddefault.jpg`"
+            :src="`https://img.youtube.com/vi/${video.id.videoId}/maxresdefault.jpg`"
           />
         </button>
 
