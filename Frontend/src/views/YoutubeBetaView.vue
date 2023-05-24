@@ -88,8 +88,8 @@
         <youtube-search-view v-if="showSearch" @keywordSent="keywordSent"></youtube-search-view>
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
+        <div v-if="!showSearch">
         <div class="subTitle">{{ this.keyword }} 관련 유튜브 영상</div>
-       
         <youtube-video-item
           v-for="(keyword, i) in prior"
           :key="i"
@@ -97,6 +97,7 @@
           :preidx=1
           :preidx2="i"
         ></youtube-video-item>
+        </div>
         <br>
         <br>
         <br>
@@ -142,19 +143,19 @@ export default {
   },
   methods: {
     keywordSent(keyword){
+        this.loading = true;
         this.keyword = keyword;
-      this.showSearch = false;
+        this.showSearch = false;
+      
       this.openai(keyword).then((res) => {
         if (res.substring(0, 1) !== '[') { //배열형태가 아니면 새로고침 후 다시
             this.$router.go(0);
         } else { //맞는 형태라면
             this.prior = JSON.parse(res);
-            // this.search = true;
             console.log(this.prior);
-            this.loading = true;
             //7초뒤에 loaded 실행
             setTimeout(() => {
-                this.loaded = true;
+                // this.loaded = true;
                 this.loading = false;
             }, 7000);
         }

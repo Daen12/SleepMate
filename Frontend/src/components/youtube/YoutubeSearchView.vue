@@ -4,7 +4,7 @@
           무엇을 알고 싶으신가요? 키워드를 입력해주세요.
           <br>
           <br>
-          <input  v-model="keyword" type="text" placeholder="">
+          <input  @keyup.enter="sendKeyword" v-model="keyword" type="text" placeholder="">
           <button @click="sendKeyword">Go</button>
         </div>
       </div>

@@ -10,7 +10,7 @@
         >
           <img
             class="youtubeThumbnail"
-            :src="`https://img.youtube.com/vi/${video.id.videoId}/maxresdefault.jpg`"
+            :src="`https://img.youtube.com/vi/${video.id.videoId}/sddefault.jpg`"
           />
         </button>
 
@@ -25,6 +25,7 @@
         >
           <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-header">
+
               <iframe
                 width="1000"
                 height="563"
@@ -34,6 +35,8 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
               ></iframe>
+
+
             </div>
           </div>
         </div>
@@ -59,7 +62,7 @@ export default {
   created() {
     setTimeout(() => {
       const URL = "https://www.googleapis.com/youtube/v3/search";
-      const API_KEY = "AIzaSyAzSMuzqGB4XEep7aKs5auaW9jRZQFdOp4";
+      const API_KEY = "AIzaSyB_00m2oGsSGpPohlyp_BC0Isr5EZR7hj8";
       axios({
         url: URL,
         method: "GET",
