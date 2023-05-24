@@ -376,7 +376,7 @@
                 <!-- type="button"
               class="btn btn-secondary survey_btn empty"
               data-dismiss="modal" -->
-                <div v-if="!goYoutube">Chat GPT가 최적화 키워드를 분석 중입니다...</div>
+                <div v-if="!goYoutube">Chat GPT가 최적화 키워드를 분석 중입니다... <img src="images/loading.gif" alt=""></div>
                 <div v-if="goYoutube">분석이 완료되었습니다. <br>지금 바로 유튜브 페이지로 이동해보세요!</div>
                 <router-link to="/youtube"><div id="youtubeBtn" v-if="goYoutube" data-dismiss="modal">Youtube</div></router-link>
                 <!-- <div>{{ gptAnswer }}</div> -->
@@ -411,7 +411,7 @@
 </template>
 
 <script>
-import { Configuration, OpenAIApi } from "openai";
+// import { Configuration, OpenAIApi } from "openai";
 import axios from "axios";
 export default {
   name: "SurveyView",
@@ -421,7 +421,7 @@ export default {
     return {
       toggle : [[0,0,0,0],[0,0,0],[0,0],[0,0,0],[0,0,0,0]],
       goYoutube : false,
-      gptAnswer: "",
+      // gptAnswer: "",
       fourthQFreeType: false,
       secondQFreeType: false,
       region: "",
@@ -436,7 +436,7 @@ export default {
         "목 어깨 풀어주는 요가",
         "요가 상급 동작",
       ],
-      second: ["요가원 고르는 법"],
+      second: ["요가스튜디오 고르는 법"],
       third: [
         "요가 지도자 자격증 정보",
         "국제 요가 자격증",
@@ -447,10 +447,10 @@ export default {
     };
   },
   watch : {
-    gptAnswer(){
-      this.goYoutube = true;
-      this.sendToGPT = []; //sendToGPT 배열 초기화
-    }
+    // gptAnswer(){
+    //   this.goYoutube = true;
+    //   this.sendToGPT = []; //sendToGPT 배열 초기화
+    // }
   },
   methods: {
     checkLoginStatus() {
@@ -460,33 +460,33 @@ export default {
       }
     },
     ////
-    async openai() {
-      const configuration = new Configuration({
-        organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
-        apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
-        // apiKey: "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",
-      });
-      const openai = new OpenAIApi(configuration);
+    // async openai() {
+    //   const configuration = new Configuration({
+    //     organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
+    //     apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
+    //     // apiKey: "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",
+    //   });
+    //   const openai = new OpenAIApi(configuration);
 
-      const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "javascript에 대해 잘 아는 사람",
-          },
-          {
-            role: "user",
-            content: `${this.sendToGPT[0]}, ${this.sendToGPT[1]}, ${this.sendToGPT[2]} 주제(key)에 대한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 700,
-      });
+    //   const completion = await openai.createChatCompletion({
+    //     model: "gpt-3.5-turbo",
+    //     messages: [
+    //       {
+    //         role: "system",
+    //         content: "javascript에 대해 잘 아는 사람",
+    //       },
+    //       {
+    //         role: "user",
+    //         content: `${this.sendToGPT[0]}, ${this.sendToGPT[1]}, ${this.sendToGPT[2]} 주제(key)에 대한 한국어 유튜브 검색 키워드 2개(value)를 Javascript Object Notation형식으로 반환해줘`,
+    //       },
+    //     ],
+    //     temperature: 0.7,
+    //     max_tokens: 700,
+    //   });
 
-      this.gptAnswer = await completion.data.choices[0].message.content;
-      console.log(this.answer);
-    },
+    //   this.gptAnswer = await completion.data.choices[0].message.content;
+    //   console.log(this.answer);
+    // },
     ////
     closeModal() {
       this.step = 0;
@@ -537,9 +537,11 @@ export default {
         console.log(this.sendToGPT);
         this.index = "last"; //마지막 페이지로 이동시킴
         this.step = 0; //step 초기화
-        this.toggle = [[0,0,0,0],[0,0,0],[0,0],[0,0,0],[0,0,0,0]],//toggle 초기화
-        this.openai(); //API 가동
-
+        this.toggle = [[0,0,0,0],[0,0,0],[0,0],[0,0,0],[0,0,0,0]];//toggle 초기화
+        // this.openai(); //API 가동
+        setTimeout(()=>{
+          this.goYoutube = true;
+        },4000)
         //유저 정보를 db에 저장
         let id = JSON.parse(sessionStorage.getItem("loginUser")).userId;
         const API_URL = "http://localhost:9999/api/gpt";
@@ -571,7 +573,7 @@ export default {
     },
     turnFourth() {
       if (this.fourthQFreeType) {
-        let send = this.material + " 추천";
+        let send = this.material + ""; //"추천 다시 넣기"
         this.sendToGPT.push(send);
         console.log(send);
       }
@@ -582,7 +584,7 @@ export default {
     // 요가원 지역 정보
     turnSecond() {
       if (this.secondQFreeType) {
-        let send = this.region + "요가원 추천";
+        let send = this.region + "요가 스튜디오 추천";
         this.sendToGPT.push(send);
         console.log(send);
       }
@@ -595,6 +597,10 @@ export default {
 </script>
 
 <style>
+.last_page img {
+  height: 50px;
+  width : 90px;
+}
 #youtubeBtn {
   margin-top: 35px;
   display: inline-block;

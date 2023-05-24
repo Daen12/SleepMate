@@ -76,7 +76,7 @@
       <!-- <router-view></router-view> -->
       <button @click="verify">실험</button>
         <youtube-wait-view v-if="!loaded"></youtube-wait-view>
-    <hr>
+        <youtube-not-found-view v-if="burst"></youtube-not-found-view>
 <div v-if="loaded"> 
       <br />
       <br />
@@ -145,8 +145,8 @@
 import { mapState } from "vuex";
 import { Configuration, OpenAIApi } from "openai";
 import YoutubeVideoItem from "@/components/youtube/YoutubeVideoItem.vue";
-
 import YoutubeWaitView from '@/components/youtube/YoutubeWaitView.vue';
+import YoutubeNotFoundView from '@/components/youtube/YoutubeNotFoundView.vue';
 export default {
   data() {
     return {
@@ -154,11 +154,13 @@ export default {
       prior2: "",
       prior3: "",
       loaded : false,
+      burst : false,
     };
   },
   components: {
     YoutubeVideoItem,
     YoutubeWaitView,
+    YoutubeNotFoundView,
   },
   computed: {
     ...mapState(["loginUser"]),
@@ -196,11 +198,21 @@ export default {
       } else {
         this.prior3 = JSON.parse(res);
         console.log(this.prior3);
+        res;
 
       }
     });
   },
   methods: {
+    // async openai(num){
+    //     const configuration = new Configuration({
+    //     organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
+    //     apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
+    //   });
+    //   const openai = new OpenAIApi(configuration);
+    //   let preference = `this.login.prefer${num}`;
+    // }
+    ////////////////////////
     async openai(num) {
       const configuration = new Configuration({
         organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
@@ -209,66 +221,87 @@ export default {
       const openai = new OpenAIApi(configuration);
 
       if (num === 1) {
-        const completion = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content:
-                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-            },
-            {
-              role: "user",
-              content: `${this.loginUser.prefer1}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-            },
-          ],
-          temperature: 0.8,
-          max_tokens: 300,
-        });
-        console.log(completion.data.choices[0].message.content);
-        return await completion.data.choices[0].message.content;
+        try{
+            const completion = await openai.createChatCompletion({
+              model: "gpt-3.5-turbo",
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
+                },
+                {
+                  role: "user",
+                  content: `${this.loginUser.prefer1}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+                },
+              ],
+              temperature: 0.8,
+              max_tokens: 50,
+            });
+            console.log(completion.data.choices[0].message.content);
+            return completion.data.choices[0].message.content;
+        } catch(e){
+            console.log(e);
+            if(e.response.status == 429){
+                this.burst = true;
+            }
+        }
       }
 
       if (num === 2) {
-        const completion = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content:
-                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-            },
-            {
-              role: "user",
-              content: `${this.loginUser.prefer2}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-            },
-          ],
-          temperature: 0.8,
-          max_tokens: 300,
-        });
-        console.log(completion.data.choices[0].message.content);
-        return await completion.data.choices[0].message.content;
+        try{
+            const completion = await openai.createChatCompletion({
+              model: "gpt-3.5-turbo",
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
+                },
+                {
+                  role: "user",
+                  content: `${this.loginUser.prefer2}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+                },
+              ],
+              temperature: 0.8,
+              max_tokens: 50,
+            });
+            console.log(completion.data.choices[0].message.content);
+            return completion.data.choices[0].message.content;
+        } catch(e){
+            console.log(e.response.status);
+            if(e.response.status == 429){
+                this.burst = true;
+            }
+        }
       }
 
       if (num === 3) {
-        const completion = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content:
-                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-            },
-            {
-              role: "user",
-              content: `${this.loginUser.prefer3}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-            },
-          ],
-          temperature: 0.8,
-          max_tokens: 300,
-        });
-        console.log(completion.data.choices[0].message.content);
-        return await completion.data.choices[0].message.content;
+        try{
+            const completion = await openai.createChatCompletion({
+              model: "gpt-3.5-turbo",
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
+                },
+                {
+                  role: "user",
+                  content: `${this.loginUser.prefer3}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+                },
+              ],
+              temperature: 0.8,
+              max_tokens: 50,
+            });
+            console.log(completion.data.choices[0].message.content);
+            return completion.data.choices[0].message.content;
+        } catch(e){
+            console.log(e);
+            if(e.response.status == 429){
+                this.burst = true;
+            }
+        }
       }
     },
     logout() {
