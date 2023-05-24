@@ -1,7 +1,7 @@
 <template>
   <div class="youtubes">
         <div class="desc">
-          로딩중입니다. 잠시만 기다려주세요...
+          GPT가 딴소리중....
             <img class="loading" src="images/loading.gif" alt="">
         </div>
       </div>

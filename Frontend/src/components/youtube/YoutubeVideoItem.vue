@@ -76,8 +76,11 @@ export default {
           console.log(this.videos[0]);
         })
         .catch((err) => console.log(err));
-    }, 5000);
-  },
+     
+    },5000)
+
+
+  }
 };
 </script>
 
