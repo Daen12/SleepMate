@@ -165,9 +165,9 @@ export default {
     ...mapState(["loginUser"]),
   },
   created() {
-    setTimeout(() => {
-      this.loaded = true;
-    }, 7000);
+    // setTimeout(() => {
+    //   this.loaded = true;
+    // }, 7000);
 
     if (sessionStorage.getItem("loginUser")) {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
@@ -198,6 +198,10 @@ export default {
         this.prior3 = JSON.parse(res);
         console.log(this.prior3);
         res;
+        
+        setTimeout(()=>{
+          this.loaded = true;
+        },5000);
       }
     });
   },
@@ -304,6 +308,10 @@ export default {
             console.log(e);
             if(e.response.status == 429){
                 this.burst = true;
+                setTimeout(()=>{
+                  this.burst = false;
+                  this.$router.go(0);
+                })
             }
         }
       }
