@@ -3,13 +3,6 @@
     <!-- 여기서부터 네비게이션 바 입니다 -->
     <div>
       <section class="nav_section">
-        <!-- <div class="brand_box">
-        <a class="navbar-brand">
-          <router-link to="/"> <span> YogaMate </span> </router-link>
-        </a>
-      </div>
-      <img class="header-img" src="images/header-img.jpg" alt="" /> -->
-
         <div class="container">
           <div class="custom_nav2">
             <nav class="navbar navbar-expand custom_nav-container">
@@ -75,6 +68,7 @@
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
       <!-- <button @click="verify">실험</button> -->
+        
         <youtube-wait-view v-if="!loaded"></youtube-wait-view>
         <youtube-not-found-view v-if="burst"></youtube-not-found-view>
 
@@ -86,18 +80,22 @@
         <div v-if="loginUser" class="welcome">
           {{ loginUser.userNickname }}님을 위한 맞춤형 유튜브입니다.
         </div>
+          <hr>
         <div v-if="loginUser" class="desc">
           요가도 더욱 스마트하게, 지금 필요한 영상을 만나보세요.
           <br>
-          <hr>
         </div>
-        <div v-if="!loginUser" class="welcome">환영합니다!</div>
+        <div class="refresh">
+          결과가 마음에 들지 않으세요?
+          <button @click="refresh" >Refresh</button>
+        </div>
+        <!-- <div v-if="!loginUser" class="welcome">환영합니다!</div>
         <div v-if="!loginUser" class="desc">
           요가 관련 최근 영상을 한 눈에 확인해보세요. 멤버십 가입으로 더욱
           차별화된 맞춤 영상을 확인하실 수 있습니다.
           <br>
           <hr>
-        </div>
+        </div> -->
 
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
@@ -204,6 +202,9 @@ export default {
     });
   },
   methods: {
+    refresh(){
+      this.$router.go(0);
+    },
     // async openai(num){
     //     const configuration = new Configuration({
     //     organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
@@ -244,6 +245,9 @@ export default {
             console.log(e);
             if(e.response.status == 429){
                 this.burst = true;
+                setTimeout(()=>{
+                  this.burst = false;
+                },5000);
             }
         }
       }
@@ -322,6 +326,7 @@ export default {
 </script>
 
 <style scoped>
+
 * {
   margin: 0;
   padding: 0;
@@ -330,6 +335,23 @@ export default {
   color: white;
   font-size: 40px;
   padding-left: 30px;
+}
+.youtubes .refresh {
+  padding-left: 30px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  color: #ffffff6d;
+  text-align: right;
+  font-size: 20px;
+}
+
+.youtubes .refresh button {
+  margin-left: 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background-color: rgba(255, 0, 0, 0.541);
+  color: #333;
+  font-size: 17px;
 }
 .youtubes .desc {
   padding-left: 30px;
@@ -410,4 +432,6 @@ li {
   padding: 5px 10px;
   cursor: pointer;
 }
+
+
 </style>

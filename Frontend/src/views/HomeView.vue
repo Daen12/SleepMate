@@ -200,7 +200,7 @@
             </h5>
             <!-- <router-link class="" to="/youtube"> -->
             <!-- <a> -->
-              <div @click="loginCheck">Click</div>
+              <div class="youtubeClick" @click="loginCheck">Click</div>
             <!-- </a> -->
             <!-- </router-link> -->
             
@@ -478,12 +478,15 @@ export default {
   },
   methods : {
     loginCheck(){
-      if(this.loginUser){
+      if(this.loginUser){ //로그인유저가 있다면
         console.log("clicked")
-        this.$store.state.showBeta = true;
         this.$router.push("/youtube");
+      } else { //없다면
+      if(confirm("멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?")){
+        this.$router.push("/youtubebeta");
       } else {
-        this.$router.push("/");
+        this.$router.go(0);
+      }
       }
     },
     sendEmail(){
@@ -574,6 +577,10 @@ export default {
 </script>
 
 <style scoped>
+.youtubeClick {
+  border: 1px solid white;
+  padding: 8px 30px;
+}
 .logoutButton {
   background-color: transparent;
   border : 0px;
