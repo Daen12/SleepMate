@@ -71,10 +71,11 @@
             </div>
           </nav>
         </div>
+        <div></div>
       </div>
     </section>
 
-    <router-view></router-view>
+    <router-view id="custom-target"></router-view>
 
     <!-- <footer-view></footer-view> -->
   </div>
@@ -82,6 +83,7 @@
 
 <script>
 import { mapState } from "vuex";
+import Swal from 'sweetalert2';
 // import FooterView from "@/components/common/FooterView.vue";
 
 export default {
@@ -99,9 +101,22 @@ export default {
   },
   methods: {
     logout() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,   
+      });
       console.log("trying to log out");
       this.$store.dispatch("logout");
-      this.$router.go(0);
+      setTimeout(() => {
+        this.$router.go(0);
+      }, 1500);
+      Toast.fire({
+          icon: 'info',
+          title: '로그아웃 되었습니다.'
+      });
     },
     goToCommun() {
       this.$router.go(0);
@@ -136,4 +151,14 @@ export default {
   border : 0px;
 }
 
+  #custom-target {
+    position: fixed;
+    width: 600px;
+    height: 300px;
+    border-style: solid;
+  }
+
+  .position-absolute {
+    position: fixed !important;
+  }
 </style>

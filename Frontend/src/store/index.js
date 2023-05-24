@@ -1,8 +1,16 @@
 import { createStore } from "vuex";
 import router from "../router/index.js";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 const REST_API = "http://localhost:9999/api/";
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+})
 
 export default createStore({
     state: {
@@ -92,9 +100,12 @@ export default createStore({
                         "access-token",
                         res.data["access-token"]
                     );
-                    alert("로그인 성공!");
                     commit("SET_LOGIN_USER", loginUser);
                     router.go(-1);
+                    Toast.fire({
+                        icon: 'success',
+                        title: '로그인 성공!!'
+                    })
                 })
                 .catch((err) => {
                     console.log(err);
@@ -147,7 +158,6 @@ export default createStore({
             //local storage 비우기
             sessionStorage.removeItem("loginUser");
             sessionStorage.removeItem("access-token");
-            alert("로그아웃 되었습니다.");
         },
         setBoardList({ commit }, payload) {
             if (payload.category == 0) {
