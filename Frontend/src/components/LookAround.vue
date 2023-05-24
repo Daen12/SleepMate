@@ -413,6 +413,7 @@
 <script>
 // import { Configuration, OpenAIApi } from "openai";
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "SurveyView",
   data() {
@@ -454,9 +455,19 @@ export default {
   },
   methods: {
     checkLoginStatus() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       if (!sessionStorage.getItem("loginUser")) {
         this.$router.go(0);
-        alert("로그인 후 이용가능한 서비스입니다.");
+        Toast.fire({
+          icon: "warning",
+          title: "로그인 후 이용가능한 서비스입니다.",
+        });
       }
     },
     ////

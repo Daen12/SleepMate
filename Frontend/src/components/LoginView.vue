@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -51,8 +52,18 @@ export default {
   },
   methods: {
     login() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       if (this.id === "" || this.password === "") {
-        alert("모든 내용을 입력해주세요");
+        Toast.fire({
+          icon: "error",
+          title: "모든 내용을 입력해주세요",
+        });
         return;
       }
 
@@ -98,7 +109,6 @@ export default {
   background-size: 100%;
   overflow: hidden;
   backdrop-filter: blur(2px);
-  
 }
 .signup-form {
   width: 400px;

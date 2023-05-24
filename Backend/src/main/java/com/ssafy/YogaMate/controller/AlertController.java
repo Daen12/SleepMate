@@ -39,11 +39,11 @@ public class AlertController {
         HttpStatus status = null;
 
         if (alertList == null && alertList.size() == 0) {
-            result.put("Alert Number", 0);
+            result.put("AlertNum", 0);
             status = HttpStatus.ACCEPTED;
         } else {
             result.put("Alerts", alertList);
-            result.put("Alert Number", alertList.size());
+            result.put("AlertNum", alertList.size());
             status = HttpStatus.OK;
         }
         return new ResponseEntity<Map<String, Object>>(result, status);

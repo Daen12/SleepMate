@@ -43,7 +43,7 @@
 
 <script>
 import { mapState } from 'vuex';
-
+import Swal from "sweetalert2";
 export default {
     data() {
     return {
@@ -74,12 +74,25 @@ export default {
 
     },
     regist() {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       if (this.id === "" || this.password === "" || this.name === "" || this.nickname==="") {
-        alert("모든 내용을 입력해주세요");
+        Toast.fire({
+          icon: "error",
+          title: "모든 내용을 입력해주세요.",
+        });
         return;
       }
       if(this.dupId == 0 || this.dupNick==0){
-        alert("아이디 또는 닉네임 중복확인을 해주세요");
+        Toast.fire({
+          icon: "error",
+          title: "아이디 또는 닉네임 중복확인을 해주세요.",
+        });
         return;
       }
 

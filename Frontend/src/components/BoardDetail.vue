@@ -37,10 +37,7 @@
           {{ board.content }}
         </div>
 
-        <comment-view
-          v-if="!updatemode"
-          :idx="board.idx"
-        ></comment-view>
+        <comment-view v-if="!updatemode" :idx="board.idx"></comment-view>
 
         <textarea v-if="updatemode" v-model="board.content" class="update cont">
         </textarea>
@@ -76,6 +73,7 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import CommentView from "@/components/CommentView.vue";
+import Swal from "sweetalert2";
 export default {
   methods: {
     showComment() {
@@ -85,8 +83,19 @@ export default {
       this.$emit("finishDetail");
     },
     deleteBoard() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
       if (!sessionStorage.getItem("loginUser")) {
-        alert("로그인 후 이용 가능합니다.");
+        Toast.fire({
+          icon: "warning",
+          title: "로그인 후 이용 가능합니다.",
+        });
         return;
       } else {
         if (confirm("정말로 삭제하시겠습니까?")) {
@@ -99,25 +108,49 @@ export default {
             },
           }).then(() => {
             console.log("deleted");
-            alert("삭제되었습니다.");
+            Toast.fire({
+              icon: "success",
+              title: "삭제되었습니다.",
+            });
             this.$emit("finishDelete");
           });
         }
       }
     },
     updateBoard() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
       if (!sessionStorage.getItem("loginUser")) {
-        alert("로그인 후 이용 가능합니다");
+        Toast.fire({
+          icon: "warning",
+          title: "로그인 후 이용 가능합니다.",
+        });
       } else if (
         this.board.writer !==
         JSON.parse(sessionStorage.getItem("loginUser")).userNickname
       ) {
-        alert("본인이 작성한 글만 수정 가능합니다");
+        Toast.fire({
+          icon: "error",
+          title: "본인이 작성한 글만 수정 가능합니다.",
+        });
       } else {
         this.updatemode = true;
       }
     },
     updateFinish() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       const API_URL = `http://localhost:9999/api/board/update`;
       axios({
         url: API_URL,
@@ -128,16 +161,19 @@ export default {
         data: this.board,
       }).then(() => {
         this.updatemode = false;
-        alert("수정되었습니다.");
+        Toast.fire({
+          icon: "success",
+          title: "수정되었습니다.",
+        });
       });
     },
     sliceRegdate(data) {
-      let regdate = '' + data;
+      let regdate = "" + data;
       if (data === undefined) {
         console.log(data);
       }
       return regdate.substring(0, 11);
-    }
+    },
   },
   data() {
     return {
@@ -187,9 +223,7 @@ export default {
   components: {
     CommentView,
   },
-  unmounted() {
-    
-  }
+  unmounted() {},
 };
 </script>
 
