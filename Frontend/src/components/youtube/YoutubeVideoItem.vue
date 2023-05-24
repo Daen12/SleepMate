@@ -2,16 +2,16 @@
   <div class="slide_wrapper">
     <ul class="slides">
       <!-- 비디오 3개씩 반환하므로 idx는 3까지 -->
-      <li v-for="(video, idx) in this.videos" :key="idx">
+      <li v-for="(video, idx) in videos" :key="idx">
         <button
           type="button"
           data-toggle="modal"
           :data-target="`#youtubeModal${preidx}${preidx2}${idx}`"
         >
-          <!-- <img
+          <img
             class="youtubeThumbnail"
-            :src="`https://img.youtube.com/vi/${video.id.videoId}/0.jpg`"
-          /> -->
+            :src="`https://img.youtube.com/vi/${video.id.videoId}/maxresdefault.jpg`"
+          />
         </button>
 
         <!-- 유튜브 사진을 클릭하면 나오는 Modal 창 -->
@@ -59,7 +59,7 @@ export default {
   created() {
     setTimeout(() => {
       const URL = "https://www.googleapis.com/youtube/v3/search";
-      const API_KEY = "AIzaSyAeDLOfelmCge_e4KDv9jqhVr5W6WgDOeI";
+      const API_KEY = "AIzaSyAzSMuzqGB4XEep7aKs5auaW9jRZQFdOp4";
       axios({
         url: URL,
         method: "GET",
@@ -82,37 +82,55 @@ export default {
 </script>
 
 <style>
+button {
+  border: none;
+}
 .slide_wrapper {
   position: relative;
   width: 100%;
-  margin: 0 auto;
-  height: 315px;
-  overflow: hidden;
-  border: 1px solid #222;
+  margin: 10px auto;
+  height: 300px;
+  /* overflow: hidden; */
+  /* border: 1px solid #222; */
 }
 .slides {
   position: absolute;
   /* left: 0; */
   top: 0;
+  left: 0;
+  margin-bottom: 10px;
 }
 .slides.animated {
   transition: 0.4s ease-out;
 }
 .slides li {
-  width: 560px;
-  height: 315px;
+  margin-bottom: 10px;
+  margin-top: 0px;
+  /* border: 2px solid peru; */
+  width: 500px;
+  height: 300px;
   /* background: rgb(65, 146, 146); */
   background: #0000008c;
   float: left;
 }
+.slides li img {
+  background-color: transparent;
+  border-radius: 10px;
+  width: 500px;
+  height: 300px;
+  /* margin: 10px; */
+}
 .slides li:not(:last-child) {
   margin-right: 30px;
 }
+.slides li:first-child {
+  margin-left: 30px;
+}
 
-.youtubeThumbnail {
+/* .youtubeThumbnail {
   width: 560px;
   height: 315px;
-}
+} */
 .modal-header {
   color: white;
 }

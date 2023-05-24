@@ -75,7 +75,7 @@
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
       <button @click="verify">실험</button>
-
+        <youtube-wait-view></youtube-wait-view>
       <br />
       <br />
       <br />
@@ -142,6 +142,7 @@ import { mapState } from "vuex";
 import { Configuration, OpenAIApi } from "openai";
 import YoutubeVideoItem from "@/components/youtube/YoutubeVideoItem.vue";
 
+import YoutubeWaitView from '@/components/youtube/YoutubeWaitView.vue';
 export default {
   data() {
     return {
@@ -152,6 +153,7 @@ export default {
   },
   components: {
     YoutubeVideoItem,
+    YoutubeWaitView,
   },
   computed: {
     ...mapState(["loginUser"]),
@@ -346,7 +348,7 @@ export default {
 }
 
 .youtubes {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin: auto;
   width: 85%;
   height: 100%;
