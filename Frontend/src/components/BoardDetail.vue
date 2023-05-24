@@ -87,7 +87,7 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
 
@@ -122,7 +122,7 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
 
@@ -148,7 +148,7 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
       const API_URL = `http://localhost:9999/api/board/update`;

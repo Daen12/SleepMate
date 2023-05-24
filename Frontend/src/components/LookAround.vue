@@ -459,7 +459,7 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
       if (!sessionStorage.getItem("loginUser")) {
