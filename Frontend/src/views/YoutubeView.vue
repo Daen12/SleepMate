@@ -74,9 +74,10 @@
       </section>
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
-      <button @click="verify">실험</button>
+      <!-- <button @click="verify">실험</button> -->
         <youtube-wait-view v-if="!loaded"></youtube-wait-view>
         <youtube-not-found-view v-if="burst"></youtube-not-found-view>
+
 <div v-if="loaded"> 
       <br />
       <br />
@@ -199,7 +200,6 @@ export default {
         this.prior3 = JSON.parse(res);
         console.log(this.prior3);
         res;
-
       }
     });
   },
