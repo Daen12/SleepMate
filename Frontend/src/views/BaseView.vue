@@ -71,11 +71,10 @@
             </div>
           </nav>
         </div>
-        <div></div>
       </div>
     </section>
 
-    <router-view id="custom-target"></router-view>
+    <router-view></router-view>
 
     <!-- <footer-view></footer-view> -->
   </div>
@@ -151,14 +150,4 @@ export default {
   border : 0px;
 }
 
-  #custom-target {
-    position: fixed;
-    width: 600px;
-    height: 300px;
-    border-style: solid;
-  }
-
-  .position-absolute {
-    position: fixed !important;
-  }
 </style>

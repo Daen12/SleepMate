@@ -58,6 +58,7 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
+import Swal from "sweetalert2";
 export default {
   name: "CommentView",
   props: {
@@ -103,10 +104,20 @@ export default {
   },
   methods: {
     checkLoginStatus(){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       if(sessionStorage.getItem("loginUser")){
         this.writemode = 1
       } else {
-        alert("로그인 후 이용해주세요.");
+        Toast.fire({
+          icon: "warning",
+          title: "로그인 후 이용 가능합니다.",
+        });
       }
     },
     sliceRegdate(data) {
@@ -170,6 +181,14 @@ export default {
       }
     },
     commentUpdate(obj) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
       let comment = {
         articleIdx: this.idx,
         content: obj.updateContent,
@@ -188,15 +207,25 @@ export default {
             "access-token": sessionStorage.getItem("access-token"),
           },
         }).then(()=>{
-            alert("수정되었습니다.");
-            this.updatemode = 0;
-            this.updateContentmode[obj.idx] = false;
+          Toast.fire({
+          icon: "success",
+          title: "수정되었습니다.",
+        });
+          this.updatemode = 0;
+          this.updateContentmode[obj.idx] = false;
         })
       }
     },
 
     // DELETE
     commentDelete(idx) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
       var result = confirm("댓글을 삭제하시겠습니까?")
       if (result) {
@@ -208,12 +237,18 @@ export default {
           },
         })
           .then(() => {
-            alert("삭제되었습니다.");
-            this.$store.commit("DELETE_COMMENT", idx);
+          Toast.fire({
+            icon: "success",
+            title: "삭제되었습니다.",
+          });
+          this.$store.commit("DELETE_COMMENT", idx);
           })
           .catch((err) => {
             console.log(err);
-            alert("로그인 후 이용해주세요");
+            Toast.fire({
+            icon: "warning",
+            title: "로그인 후 이용해주세요",
+          });
           });
       }
     },

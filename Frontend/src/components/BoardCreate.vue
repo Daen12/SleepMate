@@ -47,6 +47,7 @@
 
 <script>
 import router from "@/router";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -70,10 +71,23 @@ export default {
     },
     createBoard() {
       //axios 요청 보내기
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       if (this.title === "") {
-        alert("제목을 입력하세요!");
+        Toast.fire({
+          icon: "warning",
+          title: "제목을 입력하세요!",
+        });
       } else if (this.content === "") {
-        alert("내용을 입력하세요!");
+        Toast.fire({
+          icon: "warning",
+          title: "내용을 입력하세요!",
+        });
       } else {
         let board = {
           classnum: this.category,

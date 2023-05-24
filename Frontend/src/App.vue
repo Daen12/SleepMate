@@ -10,4 +10,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+  #custom-target {
+    position: fixed;
+    width: 600px;
+    height: 300px;
+    border-style: solid;
+  }
+
+  .position-absolute {
+    position: fixed !important;
+  }
+</style>
