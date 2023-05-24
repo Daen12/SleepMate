@@ -53,9 +53,26 @@ PRIMARY KEY (`idx`)
 
 insert into `comment` (articleIdx, content, writer)
 values (1, "댓글 테스트 내용입니다 ㅎㅎ", "ssafy");
+
+-- -----------------------------------------------------
+-- Table `commentAlert`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `commentAlert` (
+`idx` BIGINT AUTO_INCREMENT,
+`nickname` VARCHAR(20) NOT NULL,
+`articleIdx` BIGINT NOT NULL,
+`content` VARCHAR(50) NOT NULL,
+`writer` VARCHAR(10) NOT NULL,
+`regdate` TIMESTAMP DEFAULT now(),
+PRIMARY KEY (`idx`)
+);
+
+insert into `commentAlert` (nickname, articleIdx, content, writer)
+values ("Daen", 1, "잘 보고 갑니다", "Daen");
 -- -----------------------------------------------------
 -- Verify Table
 -- -----------------------------------------------------
 SELECT * FROM users;
 SELECT * FROM board;
 SELECT * FROM comment;
+SELECT * FROM commentAlert;

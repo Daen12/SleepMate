@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.YogaMate.model.dao.AlertDao">
+    <insert id="writeAlert" parameterType="Alert" useGeneratedKeys="true" keyProperty="idx">
+        INSERT INTO commentAlert (nickname, articleIdx, content, writer)
+        VALUES (#{nickname}, #{articleIdx}, #{content}, #{writer})
+    </insert>
+
+    <select id="getAllAlerts" parameterType="String" resultType="Alert">
+        SELECT *
+        FROM commentAlert
+        WHERE nickname = #{nickname}
+    </select>
+
+    <delete id="deleteOneAlert" parameterType="Integer">
+        DELETE FROM commentAlert
+        WHERE idx = #{idx}
+    </delete>
+
+    <delete id="deleteAllAlert" parameterType="String">
+        DELETE FROM commentAlert
+        WHERE nickname = #{nickname}
+    </delete>
+
+    <delete id="deleteArticleAlert">
+        DELETE FROM commentAlert
+        WHERE nickname = #{nickname} AND articleIdx = #{articleIdx}
+    </delete>
+</mapper>

@@ -101,7 +101,6 @@ export default {
       this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
     goToDetail(idx, num) {
-      console.log(num);
       this.$emit("openDetail", idx, num);
     },
     writeBoard() {
