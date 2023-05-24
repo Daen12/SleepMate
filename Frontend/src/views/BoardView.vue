@@ -63,8 +63,12 @@ export default {
     finishCreate() {
       this.createopen = false;
     }
+  },
+  created() {
+    // if (this.$state.verifyAlarm !== 0) {
+    //   this.detailopen
+    // }
   }
-  
 }
 </script>
 

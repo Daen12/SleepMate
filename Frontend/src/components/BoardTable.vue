@@ -61,6 +61,7 @@
 <script>
 import axios from 'axios';
 import { mapState } from "vuex";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -101,12 +102,21 @@ export default {
       this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
     goToDetail(idx, num) {
-      console.log(num);
       this.$emit("openDetail", idx, num);
     },
     writeBoard() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
       if (!sessionStorage.getItem("loginUser")) {
-        alert("로그인 후 이용 가능한 서비스입니다.");
+        Toast.fire({
+          icon: "warning",
+          title: "로그인 후 이용 가능한 서비스입니다.",
+        });
         return;
       } else {
         this.$emit("createOpen");
