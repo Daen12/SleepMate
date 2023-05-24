@@ -393,7 +393,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-warning survey_btn"
+              class="btn btn-warning survey_btn last"
               data-toggle="modal"
               :data-target="'#' + index"
               data-dismiss="modal"
@@ -491,6 +491,8 @@ export default {
     closeModal() {
       this.step = 0;
       this.sendToGPT = [];
+      this.goYoutube = false;
+      this.toggle = [[0,0,0,0],[0,0,0],[0,0],[0,0,0],[0,0,0,0]];
     },
     zero(keywordNum) {
       this.seq.push(keywordNum);
@@ -590,13 +592,15 @@ export default {
       }
       this.turn();
       this.secondQFreeType = false; //초기화
-
     },
   },
 };
 </script>
 
 <style>
+.last {
+  padding: 8px 10px;
+}
 .last_page img {
   height: 50px;
   width : 90px;

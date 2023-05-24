@@ -5,6 +5,7 @@ import BaseView from "../views/BaseView.vue";
 import SignupView from "../components/SignupView.vue";
 import LoginView from "../components/LoginView.vue";
 import YoutubeView from "../views/YoutubeView.vue";
+import YoutubeBetaView from "../views/YoutubeBetaView.vue";
 import BoardDetail from "@/components/BoardDetail.vue";
 
 const routes = [
@@ -27,6 +28,11 @@ const routes = [
         path: "/youtube",
         name: "YoutubeView",
         component: YoutubeView,
+    },
+    {
+        path: "/youtubebeta",
+        name: "YoutubeBetaView",
+        component: YoutubeBetaView,
     },
     {
         path: "/base",
@@ -52,6 +58,6 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
-  });
+});
 
 export default router;

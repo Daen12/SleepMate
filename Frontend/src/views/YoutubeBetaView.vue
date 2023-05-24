@@ -66,43 +66,32 @@
         </div>
       </section>
       <!-- 여기까지 네비게이션바입니다. -->
-      <!-- <router-view></router-view> -->
-      <!-- <button @click="verify">실험</button> -->
         
-        <youtube-wait-view v-if="!loaded"></youtube-wait-view>
+        <youtube-wait-view v-if="loading"></youtube-wait-view>
         <youtube-not-found-view v-if="burst"></youtube-not-found-view>
 
-<div v-if="loaded"> 
+<div> 
       <br />
       <br />
       <br />
       <div class="youtubes">
-        <div v-if="loginUser" class="welcome">
-          {{ loginUser.userNickname }}님을 위한 맞춤형 유튜브입니다.
-        </div>
+        <div class="welcome">환영합니다!</div>
           <hr>
-        <div v-if="loginUser" class="desc">
-          요가도 더욱 스마트하게, 지금 필요한 영상을 만나보세요.
-          <br>
-        </div>
-        <div class="refresh">
-          결과가 마음에 들지 않으세요?
-          <button @click="refresh" >Refresh</button>
-        </div>
-        <!-- <div v-if="!loginUser" class="welcome">환영합니다!</div>
-        <div v-if="!loginUser" class="desc">
+        <div class="desc">
           요가 관련 최근 영상을 한 눈에 확인해보세요. 멤버십 가입으로 더욱
           차별화된 맞춤 영상을 확인하실 수 있습니다.
           <br>
-          <hr>
-        </div> -->
+        </div>
+    </div>
 
+        <!-- 유저 직접 검색 창 -->
+        <youtube-search-view v-if="showSearch" @keywordSent="keywordSent"></youtube-search-view>
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
-        <div class="subTitle">{{ loginUser.prefer1 }} 관련 유튜브 영상</div>
+        <div class="subTitle">{{ this.keyword }} 관련 유튜브 영상</div>
        
         <youtube-video-item
-          v-for="(keyword, i) in prior1"
+          v-for="(keyword, i) in prior"
           :key="i"
           :keyword="keyword"
           :preidx=1
@@ -112,31 +101,8 @@
         <br>
         <br>
 
-        <div class="subTitle">{{ loginUser.prefer2 }} 관련 유튜브 영상</div>
-        <youtube-video-item
-          v-for="(keyword, i) in prior2"
-          :key="i"
-          :keyword="keyword"
-          :preidx=2
-          :preidx2="i"
-        ></youtube-video-item>
-        <br>
-        <br>
-        <br>
-
-        <div class="subTitle">{{ loginUser.prefer3 }} 관련 유튜브 영상</div>
-        <youtube-video-item
-          v-for="(keyword, i) in prior3"
-          :key="i"
-          :keyword="keyword"
-          :preidx=3
-          :preidx2="i"
-        ></youtube-video-item>
-        <br>
-        <br>
-        <br>
-      </div>
 </div>
+
     </div>
   </div>
 </template>
@@ -145,83 +111,63 @@ import { mapState } from "vuex";
 import { Configuration, OpenAIApi } from "openai";
 import YoutubeVideoItem from "@/components/youtube/YoutubeVideoItem.vue";
 import YoutubeWaitView from '@/components/youtube/YoutubeWaitView.vue';
+import YoutubeSearchView from '@/components/youtube/YoutubeSearchView.vue';
 import YoutubeNotFoundView from '@/components/youtube/YoutubeNotFoundView.vue';
 export default {
   data() {
     return {
-      prior1: "",
-      prior2: "",
-      prior3: "",
-      loaded : false,
+    keyword : "",
+      loading : false,
+      showSearch : true,
+      prior: "",
+      loaded : true,
       burst : false,
+    //   search : false,
     };
   },
   components: {
     YoutubeVideoItem,
     YoutubeWaitView,
     YoutubeNotFoundView,
+    YoutubeSearchView,
   },
   computed: {
     ...mapState(["loginUser"]),
   },
   created() {
-    setTimeout(() => {
-      this.loaded = true;
-    }, 7000);
-
     if (sessionStorage.getItem("loginUser")) {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
       this.$store.commit("SET_LOGIN_USER", loginUser);
     }
-    //openai() : n순위 관심사에 대해 chat gpt가 검색 키워드를 두개씩 반환. ['첫번째', '두번째'] 형태로!
-    this.openai(1).then((res) => {
-      if (res.substring(0, 1) !== '[') { //배열형태가 아니면 새로고침 후 다시
-        this.$router.go(0);
-      } else {
-        this.prior1 = JSON.parse(res);
-        console.log(this.prior1);
-      }
-    });
-    this.openai(2).then((res) => {
-      if (res.substring(0, 1) !== '[') {
-        this.$router.go(0);
-      } else {
-        this.prior2 = JSON.parse(res);
-        console.log(this.prior2);
-
-      }
-    });
-    this.openai(3).then((res) => {
-      if (res.substring(0, 1) !== '[') {
-        this.$router.go(0);
-      } else {
-        this.prior3 = JSON.parse(res);
-        console.log(this.prior3);
-        res;
-      }
-    });
   },
   methods: {
-    refresh(){
-      this.$router.go(0);
+    keywordSent(keyword){
+        this.keyword = keyword;
+      this.showSearch = false;
+      this.openai(keyword).then((res) => {
+        if (res.substring(0, 1) !== '[') { //배열형태가 아니면 새로고침 후 다시
+            this.$router.go(0);
+        } else { //맞는 형태라면
+            this.prior = JSON.parse(res);
+            // this.search = true;
+            console.log(this.prior);
+            this.loading = true;
+            //7초뒤에 loaded 실행
+            setTimeout(() => {
+                this.loaded = true;
+                this.loading = false;
+            }, 7000);
+        }
+        });
     },
-    // async openai(num){
-    //     const configuration = new Configuration({
-    //     organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
-    //     apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
-    //   });
-    //   const openai = new OpenAIApi(configuration);
-    //   let preference = `this.login.prefer${num}`;
-    // }
-    ////////////////////////
-    async openai(num) {
+
+    async openai(keyword) {
       const configuration = new Configuration({
         organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
         apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
       });
       const openai = new OpenAIApi(configuration);
 
-      if (num === 1) {
         try{
             const completion = await openai.createChatCompletion({
               model: "gpt-3.5-turbo",
@@ -233,66 +179,7 @@ export default {
                 },
                 {
                   role: "user",
-                  content: `${this.loginUser.prefer1}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-                },
-              ],
-              temperature: 0.8,
-              max_tokens: 50,
-            });
-            console.log(completion.data.choices[0].message.content);
-            return completion.data.choices[0].message.content;
-        } catch(e){
-            console.log(e);
-            if(e.response.status == 429){
-                this.burst = true;
-                setTimeout(()=>{
-                  this.burst = false;
-                },5000);
-            }
-        }
-      }
-
-      if (num === 2) {
-        try{
-            const completion = await openai.createChatCompletion({
-              model: "gpt-3.5-turbo",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-                },
-                {
-                  role: "user",
-                  content: `${this.loginUser.prefer2}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-                },
-              ],
-              temperature: 0.8,
-              max_tokens: 50,
-            });
-            console.log(completion.data.choices[0].message.content);
-            return completion.data.choices[0].message.content;
-        } catch(e){
-            console.log(e.response.status);
-            if(e.response.status == 429){
-                this.burst = true;
-            }
-        }
-      }
-
-      if (num === 3) {
-        try{
-            const completion = await openai.createChatCompletion({
-              model: "gpt-3.5-turbo",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-                },
-                {
-                  role: "user",
-                  content: `${this.loginUser.prefer3}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+                  content: `${keyword}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
                 },
               ],
               temperature: 0.8,
@@ -305,7 +192,6 @@ export default {
             if(e.response.status == 429){
                 this.burst = true;
             }
-        }
       }
     },
     logout() {
@@ -316,17 +202,11 @@ export default {
     goToCommun() {
       this.$router.push("/base");
     },
-    verify() {
-      console.log(this.prior1);
-      console.log(this.prior2);
-      console.log(this.prior3);
-    },
   },
 };
 </script>
 
 <style scoped>
-
 * {
   margin: 0;
   padding: 0;
@@ -335,23 +215,6 @@ export default {
   color: white;
   font-size: 40px;
   padding-left: 30px;
-}
-.youtubes .refresh {
-  padding-left: 30px;
-  margin-top: 5px;
-  margin-bottom: 30px;
-  color: #ffffff6d;
-  text-align: right;
-  font-size: 20px;
-}
-
-.youtubes .refresh button {
-  margin-left: 10px;
-  padding: 7px 10px;
-  border-radius: 10px;
-  background-color: rgba(255, 0, 0, 0.541);
-  color: #333;
-  font-size: 17px;
 }
 .youtubes .desc {
   padding-left: 30px;
@@ -432,6 +295,4 @@ li {
   padding: 5px 10px;
   cursor: pointer;
 }
-
-
 </style>

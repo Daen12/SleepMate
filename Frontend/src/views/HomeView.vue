@@ -198,9 +198,11 @@
             <h5>
               맞춤형 유튜브
             </h5>
-            <router-link class="" to="/youtube">
-              Click
-            </router-link>
+            <!-- <router-link class="" to="/youtube"> -->
+            <!-- <a> -->
+              <div class="youtubeClick" @click="loginCheck">Click</div>
+            <!-- </a> -->
+            <!-- </router-link> -->
             
           </div>
         </div>
@@ -218,45 +220,9 @@
             </a>
           </div>
         </div>
-        <!-- <div class="box">
-          <img src="images/f-4.jpg" alt="">
-          <div class="link_box">
-            <h5>
-              Apple
-            </h5>
-            <a href="">
-              Buy Now
-            </a>
-          </div>
-        </div>
-        <div class="box">
-          <img src="images/f-5.jpg" alt="">
-          <div class="link_box">
-            <h5>
-              Mango
-            </h5>
-            <a href="">
-              Buy Now
-            </a>
-          </div>
-        </div>
-        <div class="box">
-          <img src="images/f-6.jpg" alt="">
-          <div class="link_box">
-            <h5>
-              Strawberry
-            </h5>
-            <a href="">
-              Buy Now
-            </a>
-          </div>
-        </div> -->
       </div>
     </div>
   </section>
-
-  <!-- end fruit section -->
-
 
   <!-- client section -->
 
@@ -504,7 +470,6 @@ export default {
   data(){
     return {
       time : "",
-
       e_name : "",
       e_email : "",
       e_contact : "",
@@ -512,6 +477,18 @@ export default {
     }
   },
   methods : {
+    loginCheck(){
+      if(this.loginUser){ //로그인유저가 있다면
+        console.log("clicked")
+        this.$router.push("/youtube");
+      } else { //없다면
+      if(confirm("멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?")){
+        this.$router.push("/youtubebeta");
+      } else {
+        this.$router.go(0);
+      }
+      }
+    },
     sendEmail(){
       console.log("");
       let data = {
@@ -570,12 +547,13 @@ export default {
         },
   },
   created(){
+    //0-23사이의 정수
     let hours = new Date().getHours();
    if (hours < 12 && hours > 0) {
      this.time = "아침이에요";
   } else if (hours > 12 && hours < 18) {
      this.time = "오후에요";
-  } else {
+  } else if (19 < hours && hours <24){
      this.time = "저녁이에요";
   }
       console.log("created");
@@ -599,6 +577,10 @@ export default {
 </script>
 
 <style scoped>
+.youtubeClick {
+  border: 1px solid white;
+  padding: 8px 30px;
+}
 .logoutButton {
   background-color: transparent;
   border : 0px;
