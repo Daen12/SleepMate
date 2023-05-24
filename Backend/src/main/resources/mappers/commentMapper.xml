@@ -20,7 +20,7 @@
     <!-- 댓글 수정 -->
     <update id="updateComment" parameterType="Comment">
         UPDATE comment
-        SET content = #{content}, regdate = now()
+        SET content = #{content}
         WHERE idx = #{idx}
     </update>
 
