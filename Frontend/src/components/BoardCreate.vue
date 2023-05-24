@@ -1,94 +1,99 @@
 <template>
-<div class="board_container">
-  <!-- 여기서부터 상세페이지가 시작돼요 -->
-  <!-- 상세페이지 입체적인 css 부여 -->
+  <div class="board_container">
+    <!-- 여기서부터 상세페이지가 시작돼요 -->
+    <!-- 상세페이지 입체적인 css 부여 -->
     <div class="board_view_wrap">
-        <div class="board_view">
-            <!-- <div class="title">
+      <div class="board_view">
+        <!-- <div class="title">
                 {{board.title}}
             </div> -->
-            <input v-model="title" type="text" class="title" placeholder="제목을 입력하세요">
-        </div>
-        <div class="info">
-            <dl>
-                <dt>작성자</dt>
-                <dd>{{nickName}}</dd>
-            </dl>
-            <dl>
-                <dt>카테고리</dt>
-                <dd>
-                    <select name="" id="" v-model="category" class="category">
-                        <option value="1">요가 용품</option>
-                        <option value="2">자격증 정보</option>
-                        <option value="3">요가원 추천</option>
-                        <option value="4">영상 후기</option>
-                    </select>
-                </dd>
-            </dl> 
-            
-        </div>
-        <!-- <div class="cont">
+        <input
+          v-model="title"
+          type="text"
+          class="title"
+          placeholder="제목을 입력하세요"
+        />
+      </div>
+      <div class="info">
+        <dl>
+          <dt>작성자</dt>
+          <dd>{{ nickName }}</dd>
+        </dl>
+        <dl>
+          <dt>카테고리</dt>
+          <dd>
+            <select name="" id="" v-model="category" class="category">
+              <option value="1">요가 용품</option>
+              <option value="2">요가 자격증</option>
+              <option value="3">요가 센터</option>
+              <option value="4">요가 영상 후기</option>
+            </select>
+          </dd>
+        </dl>
+      </div>
+      <!-- <div class="cont">
             {{board.content}}
         </div> -->
-        <textarea v-model="content" class="cont" placeholder="내용을 입력하세요">
-           
-        </textarea>
+      <textarea v-model="content" class="cont" placeholder="내용을 입력하세요">
+      </textarea>
     </div>
 
     <div class="bt_wrap">
-        <button class="btn" @click="goback">목록으로</button> 
-        <button class="btn" @click="createBoard">등록</button>
+      <button class="btn" @click="goback">목록으로</button>
+      <button class="btn" @click="createBoard">등록</button>
     </div>
-
-    </div>
+  </div>
 </template>
 
 <script>
-import router from '@/router'
+import router from "@/router";
 export default {
-
-    methods : {
-        goback(){
-            router.go(0);
-        },
-        createBoard(){
-            //axios 요청 보내기
-            let board = {
-                classnum : this.category,
-                title : this.title,
-                content : this.content,
-                writer : this.nickName,
-            };
-            this.$store.dispatch("writeBoard", board);
-            setTimeout(()=>{
-                this.$emit("finishCreate");
-            },200)
-
-           
-
-        }
+  data() {
+    return {
+      board: null,
+      comments: [],
+      updatemode: false,
+      title: "",
+      content: "",
+      // updateText : "",
+      nickName: "",
+      category: "1",
+    };
+  },
+  props: {
+    idx: Number,
+    num: Number,
+  },
+  methods: {
+    goback() {
+      router.go(0);
     },
-    data (){
-        return {
-            board : null,
-            comments : [],
-            updatemode : false,
-            title : "",
-            content : "",
-            // updateText : "",
-            nickName : "",
-            category : "1",
-        }
+    createBoard() {
+      //axios 요청 보내기
+      if (this.title === "") {
+        alert("제목을 입력하세요!");
+      } else if (this.content === "") {
+        alert("내용을 입력하세요!");
+      } else {
+        let board = {
+          classnum: this.category,
+          title: this.title,
+          content: this.content,
+          writer: this.nickName,
+        };
+        this.$store.dispatch("writeBoard", board);
+        setTimeout(() => {
+          this.$emit("finishCreate");
+        }, 200);
+      }
     },
-    props : {
-        idx : Number,
-        num : Number,
-    },
-   created(){
-    this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
-   },
-}
-
+  },
+  created() {
+    this.nickName = JSON.parse(
+      sessionStorage.getItem("loginUser")
+    ).userNickname;
+  },
+};
 </script>
 
 <style>
@@ -109,133 +114,130 @@ export default {
 .board_view {
     height : 30px;
     padding: 5px, 10px;
-} */ 
-
+} */
 
 /*** */
 dd .category {
-    outline: none;
-    border: transparent;
-    background-color: #ffffff8e;
+  outline: none;
+  border: transparent;
+  background-color: #ffffff8e;
 }
 .title {
-    color: #222;
-    background-color: transparent;
-    border : transparent;
-    width: 600px;
-    font-size: 17px;
-    outline: none;
+  color: #222;
+  background-color: transparent;
+  border: transparent;
+  width: 600px;
+  font-size: 17px;
+  outline: none;
 }
 
-.update{
-    background-color: #ffffffcb;
+.update {
+  background-color: #ffffffcb;
 }
 .board_container {
-    margin-top: -50px;
-    margin-left: 20px;
+  margin-top: -50px;
+  margin-left: 20px;
 }
 .board_view_wrap {
-    /* border: 1px solid white; */
-    border-radius: 7px;
-    background-color: #ffffff75;
-    border-bottom: 1px solid #000;
-    width: 90%;
+  /* border: 1px solid white; */
+  border-radius: 7px;
+  background-color: #ffffff75;
+  border-bottom: 1px solid #000;
+  width: 90%;
 }
 .board_view {
-    height : 63px;
-    border-bottom: 1px solid gray;
-    border-top : 1.5px solid black;
-    padding-left: 30px;
-    padding-top: 20px;
-    font-weight: bold;
-    font-size: larger;
-    
+  height: 63px;
+  border-bottom: 1px solid gray;
+  border-top: 1.5px solid black;
+  padding-left: 30px;
+  padding-top: 20px;
+  font-weight: bold;
+  font-size: larger;
 }
 .info {
-    padding-left: 30px;
-    height: 35px;
-    border-bottom: 1px solid #999;
-    margin-top : 15px;
+  padding-left: 30px;
+  height: 35px;
+  border-bottom: 1px solid #999;
+  margin-top: 15px;
 }
 .info dl {
-    /* 부모를 relative로 설정해주면 그에 맞게 자식이 dl:before이 position absolute 설정 가능하다 */
-    position: relative;
-    display: inline-block;
-    padding: 0 20px;
+  /* 부모를 relative로 설정해주면 그에 맞게 자식이 dl:before이 position absolute 설정 가능하다 */
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
 }
 .info dl:first-child {
-    padding-left: 0px;
+  padding-left: 0px;
 }
 
 .info dl::before {
-    /* display inline이라 자신만의 영역을 갖고잇지 않으므로 block으로 바꿔야함 */
-    display: block; 
-    top: 1px;
-    left: 0px;
-    content: "";
-    position: absolute;
-    width: 1px;
-    height: 17px;
-    background: gray ;
+  /* display inline이라 자신만의 영역을 갖고잇지 않으므로 block으로 바꿔야함 */
+  display: block;
+  top: 1px;
+  left: 0px;
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 17px;
+  background: gray;
 }
 .info dl:first-child::before {
-    display: none;
-    /* 첫번째 가상선택자는 보이지 않게 */
+  display: none;
+  /* 첫번째 가상선택자는 보이지 않게 */
 }
 
-.info dl dt, 
+.info dl dt,
 .info dl dd {
-    display: inline-block;
-    font-size: 13px;
+  display: inline-block;
+  font-size: 13px;
 }
 
 /* .info dl dt {
 } */
 .info dl dd {
-    display: inline-block;
-    color: #777;
-    margin-left: 10px;
+  display: inline-block;
+  color: #777;
+  margin-left: 10px;
 }
 .cont {
-    padding: 30px;
-    height: 230px;
-    width: 100%;
-    line-height: 160%;
-    font-size: 17px;
-    color: #222;
-    border: transparent;
-    background-color: transparent;
-    outline: none;
+  padding: 30px;
+  height: 230px;
+  width: 100%;
+  line-height: 160%;
+  font-size: 17px;
+  color: #222;
+  border: transparent;
+  background-color: transparent;
+  outline: none;
 }
 .bt_wrap {
-    margin-top: 10px;
-    /* text-align: center; */
-    font-size: 0;
-    height: 40px;
+  margin-top: 10px;
+  /* text-align: center; */
+  font-size: 0;
+  height: 40px;
 }
 
 .bt_wrap button {
-    height: 42px;
-    background-color: #000;
-    color: #fff;
-    display: inline-block;
-    min-width: 80px;
-    margin-left: 10px;
-    /* padding: 10px; */
-    border : 1px solid black;
-    border-radius : 2px;
+  height: 42px;
+  background-color: #000;
+  color: #fff;
+  display: inline-block;
+  min-width: 80px;
+  margin-left: 10px;
+  /* padding: 10px; */
+  border: 1px solid black;
+  border-radius: 2px;
 }
 .bt_wrap button:first-child {
-    margin-left: 0;
-    background-color: #fff;
-    color: #000;
+  margin-left: 0;
+  background-color: #fff;
+  color: #000;
 }
 .bt_wrap .updateFinish {
-    background-color: rosybrown;
+  background-color: rosybrown;
 }
 .bt_wrap button.on {
-    background : #000;
-    color: #fff;
+  background: #000;
+  color: #fff;
 }
-
 </style>

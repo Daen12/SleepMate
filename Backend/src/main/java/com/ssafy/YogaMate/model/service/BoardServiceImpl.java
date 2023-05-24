@@ -1,6 +1,7 @@
 package com.ssafy.YogaMate.model.service;
 
 import com.ssafy.YogaMate.model.dao.BoardDao;
+import com.ssafy.YogaMate.model.dao.CommentDao;
 import com.ssafy.YogaMate.model.dto.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,27 @@ public class BoardServiceImpl implements BoardService{
     @Autowired
     BoardDao boardDao;
 
+    @Autowired
+    CommentDao commentDao;
+
     @Override
-    public List<Board> getAllArticles(int pageNum){
-        return boardDao.selectAll(pageNum - 1);
+    public int getArticlesNum() {
+        return boardDao.selectAll();
+    }
+
+    @Override
+    public List<Board> getArticles(int pageNum){
+        return boardDao.select10(10 * (pageNum - 1));
+    }
+
+    @Override
+    public int getClassifiedArticlesNum(int classnum) {
+        return boardDao.selectClassifiedAll(classnum);
+    }
+
+    @Override
+    public List<Board> getClassifiedArticles(int classnum, int pageNum) {
+        return boardDao.selectClassified10(classnum, 10 * (pageNum - 1));
     }
 
     @Override
@@ -36,6 +55,10 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public boolean deleteArticle(int idx) {
+        commentDao.deleteCommentByArticleIdx(idx);
         return boardDao.deleteArticle(idx);
     }
+
+
+
 }

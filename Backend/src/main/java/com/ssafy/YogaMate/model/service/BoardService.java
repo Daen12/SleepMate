@@ -6,8 +6,17 @@ import java.util.List;
 
 public interface BoardService {
 
-    // 게시판의 모든 글 가져오기 (기본 값 : 날짜 순)
-    List<Board> getAllArticles(int pageNum);
+    // 게시글의 총 개수 반환
+    int getArticlesNum();
+
+    // 게시판의 글 10개씩 가져오기 (기본 값 : 날짜 순)
+    List<Board> getArticles(int pageNum);
+
+    // 게시판의 카테고리에 해당하는 글 총 개수 반환
+    int getClassifiedArticlesNum(int classnum);
+
+    // 게시판의 카테고리에 해당하는 글 10개씩 가져오기
+    List<Board> getClassifiedArticles(int classnum, int pageNum);
 
     // 게시판에 글 쓰기
     boolean writeArticle(Board board);
@@ -19,6 +28,6 @@ public interface BoardService {
     boolean updateArticle(Board board);
 
     // 게시판 글 삭제
-
     boolean deleteArticle(int idx);
+
 }

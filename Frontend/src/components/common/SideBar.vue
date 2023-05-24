@@ -3,29 +3,34 @@
     <ul
       class="menu-hover-fill flex flex-col items-start leading-none text-2xl uppercase space-y-4 board-sidebar"
     >
-      <li><a href="#" data-text="요가 제품 추천">요가 제품 추천</a></li>
-      <li><a href="#" @click="click(2)" data-text="요가 자격증 정보">요가 자격증 정보</a></li>
-      <li><a href="#" data-text="요가 센터 추천">요가 센터 추천</a></li>
-      <li><a href="#" data-text="요가 영상 후기">요가 영상 후기</a></li>
-      <li><a href="#" data-text="about">about</a></li>
+      <li><a href="#" @click="click(0)" data-text="전체 글 보기">전체 글 보기</a></li>
+      <li><a href="#" @click="click(1)" data-text="요가 용품">요가 용품</a></li>
+      <li><a href="#" @click="click(2)" data-text="요가 자격증">요가 자격증</a></li>
+      <li><a href="#" @click="click(3)" data-text="요가 센터">요가 센터</a></li>
+      <li><a href="#" @click="click(4)" data-text="요가 영상">요가 영상</a></li>
     </ul>
   </div>
 </template>
 
-<script scoped>
+<script>
+import { mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState(["boardList", "category"]),
+  },
   methods : {
-    click(num){
-      this.$store.state.category = num;
+    click(classnum){
+      this.$store.commit('CHANGE_CATEGORY', classnum);
+      this.$store.dispatch("setBoardList", {pagenum: 1, category: this.category});
     }
-  }
-
+  },
 };
 </script>
 
 <style>
 .sidebar {
  margin-right: 30px;
+ margin-top: 50px;
 }
 
 li {
