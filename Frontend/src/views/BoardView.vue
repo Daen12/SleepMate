@@ -3,7 +3,7 @@
 
   <div class="parent">
   <div class="child1">
-  <side-bar></side-bar>
+  <side-bar @finishDetail="finishDetail" @finishCreate="finishCreate"></side-bar>
   </div>
 
 
@@ -13,7 +13,7 @@
       <hr>
       <br>
       <br>
-    <board-table v-if="!detailopen && !createopen" @createOpen ="createOpen" @openDetail="openDetail" ></board-table>
+    <board-table v-if="!detailopen && !createopen" @createOpen ="createOpen" @openDetail="openDetail"></board-table>
     <board-create v-if="createopen" @finishCreate="finishCreate"></board-create>
     <board-detail :idx="this.idx" :num="this.num" v-if="detailopen" @finishDetail="finishDetail" @finishDelete="finishDelete"></board-detail>
   </div>
@@ -42,6 +42,7 @@ export default {
       createopen : false,
       idx : -1,
       num : 0,
+      pageNum : 0,
     }
   },
   methods : {
