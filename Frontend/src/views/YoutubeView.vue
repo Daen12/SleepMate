@@ -75,7 +75,9 @@
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
       <button @click="verify">실험</button>
-        <youtube-wait-view></youtube-wait-view>
+        <youtube-wait-view v-if="!loaded"></youtube-wait-view>
+    <hr>
+<div v-if="loaded"> 
       <br />
       <br />
       <br />
@@ -99,6 +101,7 @@
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
         <div class="subTitle">{{ loginUser.prefer1 }} 관련 유튜브 영상</div>
+       
         <youtube-video-item
           v-for="(keyword, i) in prior1"
           :key="i"
@@ -134,6 +137,7 @@
         <br>
         <br>
       </div>
+</div>
     </div>
   </div>
 </template>
@@ -149,6 +153,7 @@ export default {
       prior1: "",
       prior2: "",
       prior3: "",
+      loaded : false,
     };
   },
   components: {
@@ -159,6 +164,10 @@ export default {
     ...mapState(["loginUser"]),
   },
   created() {
+    setTimeout(() => {
+      this.loaded = true;
+    }, 7000);
+
     if (sessionStorage.getItem("loginUser")) {
       let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
       this.$store.commit("SET_LOGIN_USER", loginUser);

@@ -18,11 +18,12 @@ export default {
   /* padding-left: 30px;
   margin-top: 5px;
   margin-bottom: 30px; */
-  margin-top: 200px;
+  padding-top: 300px;
   text-align: center;
   margin: auto;
   font-size: 25px;
   color: #ffffffcb;
+  height: 900px;
 }
 
 .loading {
