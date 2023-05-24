@@ -64,13 +64,12 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      pageNum: 0,
       pageSize: 0,
       categoryDecode : ["요가 용품", "요가 자격증", '요가 센터', '요가 영상'],
     };
   },
   computed: {
-    ...mapState(["boardList", "category"]),
+    ...mapState(["boardList", "category", "pageNum"]),
   },
   created() {
     this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
@@ -94,11 +93,11 @@ export default {
       return result;
     },
     nextPage() {
-      this.pageNum += 1;
+      this.$store.commit("PLUS_PAGENUM");
       this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
     prevPage() {
-      this.pageNum -= 1;
+      this.$store.commit("MINUS_PAGENUM");
       this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
     goToDetail(idx, num) {
@@ -128,6 +127,7 @@ export default {
         method: "GET",
       }).then((res) => {
         this.pageSize = Math.floor(res.data / 10 + 1);
+        
       })
     }
   }

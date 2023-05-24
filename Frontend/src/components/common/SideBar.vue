@@ -16,12 +16,14 @@
 import { mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState(["boardList", "category"]),
+    ...mapState(["boardList", "category", "pageNum"]),
   },
   methods : {
     click(classnum){
       this.$store.commit('CHANGE_CATEGORY', classnum);
       this.$store.dispatch("setBoardList", {pagenum: 1, category: this.category});
+      this.$emit("finishDetail");
+      this.$store.commit("INIT_PAGENUM");
     }
   },
 };

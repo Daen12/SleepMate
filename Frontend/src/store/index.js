@@ -13,6 +13,7 @@ export default createStore({
     boardList: [],
     boardListSize: 0,
     board: {},
+    pageNum: 0,
     comments: [],
     category: 0,
 },
@@ -56,6 +57,15 @@ mutations: {
     CHANGE_CATEGORY(state, classnum) {
         state.category = classnum;
     },
+    PLUS_PAGENUM(state) {
+        state.pageNum += 1;
+    },
+    MINUS_PAGENUM(state) {
+        state.pageNum -= 1;
+    },
+    INIT_PAGENUM(state) {
+        state.pageNum = 0;
+    }
 },
 actions: {
     setLoginUser: function ({ commit }, user) {
