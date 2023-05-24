@@ -23,6 +23,7 @@ export default {
       this.$store.commit('CHANGE_CATEGORY', classnum);
       this.$store.dispatch("setBoardList", {pagenum: 1, category: this.category});
       this.$emit("finishDetail");
+      this.$emit("finishCreate");
       this.$store.commit("INIT_PAGENUM");
     }
   },
@@ -32,7 +33,7 @@ export default {
 <style>
 .sidebar {
  margin-right: 30px;
- margin-top: 50px;
+ margin-top: 130px;
 }
 
 li {

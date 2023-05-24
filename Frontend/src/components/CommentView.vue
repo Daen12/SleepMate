@@ -28,10 +28,12 @@
         <dl class="writer">{{ comment.writer }}</dl>
         <dl class="real">{{ comment.content }}</dl>
         <dl class="date">{{ sliceRegdate(comment.regdate) }}</dl>
-        <div class="hideUpdate">
+        <!-- <div class="hideUpdate"> -->
         <dl class="pointer" v-if="nickName === comment.writer" @click="changeUpdateMode(i)">✏️</dl>
         <dl class="pointer" v-if="nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
-        </div>
+        <!-- </div> -->
+        <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
+        <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
       </div>
     </div>
 
@@ -39,17 +41,15 @@
     <div v-if="updatemode == 1">
       <div class="content" v-for="(comment, i) in comments" :key="i">
         <dl class="writer" >{{ comment.writer }}</dl>
-        <dl class="real" v-show="!updateContentmode[i]">{{ comment.content }}</dl>
-        <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="u_content"/></dl>
+        <dl class="real" v-if="!updateContentmode[i]">{{ comment.content }}</dl>
+        <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="comment.content"/></dl>
         <dl class="date">{{ sliceRegdate(comment.regdate) }}</dl>
-        <div>
-        <dl class="pointer" v-if="updateContentmode[i]" @click="commentUpdate({idx: i, commentIdx: comment.idx})">✏️</dl>
+        <dl class="pointer" v-if="updateContentmode[i]" @click="commentUpdate({idx: i, commentIdx: comment.idx, updateContent: comment.content})">✏️</dl>
         <dl class="pointer" v-if="updateContentmode[i]" @click="cancelUpdate(i)">❌</dl>
-        </div>
-        <div>
-        <dl class="pointer" v-show="!updateContentmode[i] && nickName === comment.writer"  @click="changeUpdateMode(i)">✏️</dl>
-        <dl class="pointer" v-show="!updateContentmode[i] && nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
-        </div>
+        <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
+        <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
+        <dl class="pointer" v-if="!updateContentmode[i] && nickName === comment.writer"  @click="changeUpdateMode(i)">✏️</dl>
+        <dl class="pointer" v-if="!updateContentmode[i] && nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
       </div>
     </div>
   </div>
@@ -69,8 +69,6 @@ export default {
       updatemode: 0,
       nickName: "",
       c_content: "",
-      e_content: [],
-      u_content : "",
       updateContentmode: [],
     }
   },
@@ -174,53 +172,56 @@ export default {
     commentUpdate(obj) {
       let comment = {
         articleIdx: this.idx,
-        content: this.u_content,
+        content: obj.updateContent,
         writer: this.nickName,
         idx : obj.commentIdx,
       };
-      this.u_content = "";
+
+      var result = confirm("댓글을 수정하시겠습니까?")
+      if (result) {
       const API_URL = `http://localhost:9999/api/comment/update`;
-      axios({
-        url: API_URL,
-        method: "PUT",
-        data : comment,
-        headers: {
-          "access-token": sessionStorage.getItem("access-token"),
-        },
-      }).then(()=>{
-        console.log("updated!");
-        this.updatemode = 0;
-        this.updateContentmode[obj.idx] = false;
-      })
+        axios({
+          url: API_URL,
+          method: "PUT",
+          data : comment,
+          headers: {
+            "access-token": sessionStorage.getItem("access-token"),
+          },
+        }).then(()=>{
+            alert("수정되었습니다.");
+            this.updatemode = 0;
+            this.updateContentmode[obj.idx] = false;
+        })
+      }
     },
 
     // DELETE
     commentDelete(idx) {
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
-      axios({
-        url: API_URL,
-        method: "DELETE",
-        headers: {
-          "access-token": sessionStorage.getItem("access-token"),
-        },
-      })
-        .then(() => {
-          alert("삭제되었습니다.");
-          this.$store.commit("DELETE_COMMENT", idx);
+      var result = confirm("댓글을 삭제하시겠습니까?")
+      if (result) {
+        axios({
+          url: API_URL,
+          method: "DELETE",
+          headers: {
+            "access-token": sessionStorage.getItem("access-token"),
+          },
         })
-        .catch((err) => {
-          console.log(err);
-          alert("로그인 후 이용해주세요");
-        });
+          .then(() => {
+            alert("삭제되었습니다.");
+            this.$store.commit("DELETE_COMMENT", idx);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("로그인 후 이용해주세요");
+          });
+      }
     },
   },
   created() {
     if (sessionStorage.getItem("loginUser")) {
       this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
     }
-    this.e_content = this.comments.content;
-    console.log(this.comments.content);
-
     for (let i = 0; i < this.comments.length; i++) {
       this.updateContentmode[i] = false;
     }
@@ -248,6 +249,11 @@ export default {
 }
 .pointer {
   cursor: pointer;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.nullPointer {
   margin-bottom: 20px;
   margin-left: 20px;
 }

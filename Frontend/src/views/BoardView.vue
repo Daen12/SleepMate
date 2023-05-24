@@ -3,7 +3,7 @@
 
   <div class="parent">
   <div class="child1">
-  <side-bar @finishDetail="finishDetail"></side-bar>
+  <side-bar @finishDetail="finishDetail" @finishCreate="finishCreate"></side-bar>
   </div>
 
 
