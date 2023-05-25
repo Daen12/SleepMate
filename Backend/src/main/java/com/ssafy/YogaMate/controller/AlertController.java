@@ -1,6 +1,7 @@
 package com.ssafy.YogaMate.controller;
 
 import com.ssafy.YogaMate.model.dto.Alert;
+import com.ssafy.YogaMate.model.dto.AlertDto;
 import com.ssafy.YogaMate.model.service.AlertService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +36,7 @@ public class AlertController {
     @ApiOperation(value = "Get Users Alert", notes = "로그인 한 유저의 알림 데이터 반환")
     public ResponseEntity<Map<String, Object>> getAllAlerts(@PathVariable String nickname) {
         Map<String, Object> result = new HashMap<>();
-        List<Alert> alertList = alertService.getAllAlerts(nickname);
+        List<AlertDto> alertList = alertService.getAllAlerts(nickname);
         HttpStatus status = null;
 
         if (alertList == null && alertList.size() == 0) {

@@ -1,6 +1,7 @@
 package com.ssafy.YogaMate.model.service;
 
 import com.ssafy.YogaMate.model.dto.Alert;
+import com.ssafy.YogaMate.model.dto.AlertDto;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface AlertService {
 
     boolean writeAlert(Alert alert);
 
-    List<Alert> getAllAlerts(String nickname);
+    List<AlertDto> getAllAlerts(String nickname);
 
     boolean deleteOneAlert(int idx);
 

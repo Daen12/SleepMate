@@ -2,6 +2,7 @@ package com.ssafy.YogaMate.model.service;
 
 import com.ssafy.YogaMate.model.dao.AlertDao;
 import com.ssafy.YogaMate.model.dto.Alert;
+import com.ssafy.YogaMate.model.dto.AlertDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class AlertServiceImpl implements AlertService{
     }
 
     @Override
-    public List<Alert> getAllAlerts(String nickname) {
+    public List<AlertDto> getAllAlerts(String nickname) {
         return alertDao.getAllAlerts(nickname);
     }
 

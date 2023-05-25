@@ -32,7 +32,7 @@
                       >
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="about.html">About </a>
+                      <a class="nav-link" @click="loginCheck">Youtube-AI </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link pointer" @click="goToCommun"
@@ -66,44 +66,45 @@
         </div>
       </section>
       <!-- 여기까지 네비게이션바입니다. -->
-        
-        <youtube-wait-view v-if="loading"></youtube-wait-view>
-        <youtube-not-found-view v-if="burst"></youtube-not-found-view>
 
-<div> 
-      <br />
-      <br />
-      <br />
-      <div class="youtubes">
-        <div class="welcome">환영합니다!</div>
-          <hr>
-        <div class="desc">
-          요가 관련 최근 영상을 한 눈에 확인해보세요. 멤버십 가입으로 더욱
-          차별화된 맞춤 영상을 확인하실 수 있습니다.
-          <br>
+      <youtube-wait-view v-if="loading"></youtube-wait-view>
+      <youtube-not-found-view v-if="burst"></youtube-not-found-view>
+
+      <div v-if="!loading">
+        <br />
+        <br />
+        <br />
+        <div class="youtubes">
+          <div class="welcome">환영합니다!</div>
+          <hr />
+          <div class="desc">
+            요가 관련 최근 영상을 한 눈에 확인해보세요. 멤버십 가입으로 더욱
+            차별화된 맞춤 영상을 확인하실 수 있습니다.
+            <br />
+          </div>
+
+          <!-- 유저 직접 검색 창 -->
+          <youtube-search-view
+            v-if="showSearch"
+            @keywordSent="keywordSent"
+          ></youtube-search-view>
+          <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
+          <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
+          <div v-if="!showSearch">
+            <div class="subTitle">{{ this.keyword }} 관련 유튜브 영상</div>
+            <youtube-video-item
+              v-for="(keyword, i) in prior"
+              :key="i"
+              :keyword="keyword"
+              :preidx="1"
+              :preidx2="i"
+            ></youtube-video-item>
+            <br />
+            <br />
+            <br />
+          </div>
         </div>
-    </div>
-
-        <!-- 유저 직접 검색 창 -->
-        <youtube-search-view v-if="showSearch" @keywordSent="keywordSent"></youtube-search-view>
-        <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
-        <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
-        <div v-if="!showSearch">
-        <div class="subTitle">{{ this.keyword }} 관련 유튜브 영상</div>
-        <youtube-video-item
-          v-for="(keyword, i) in prior"
-          :key="i"
-          :keyword="keyword"
-          :preidx=1
-          :preidx2="i"
-        ></youtube-video-item>
-        </div>
-        <br>
-        <br>
-        <br>
-
-</div>
-
+      </div>
     </div>
   </div>
 </template>
@@ -112,19 +113,19 @@ import { mapState } from "vuex";
 import Swal from "sweetalert2";
 import { Configuration, OpenAIApi } from "openai";
 import YoutubeVideoItem from "@/components/youtube/YoutubeVideoItem.vue";
-import YoutubeWaitView from '@/components/youtube/YoutubeWaitView.vue';
-import YoutubeSearchView from '@/components/youtube/YoutubeSearchView.vue';
-import YoutubeNotFoundView from '@/components/youtube/YoutubeNotFoundView.vue';
+import YoutubeWaitView from "@/components/youtube/YoutubeWaitView.vue";
+import YoutubeSearchView from "@/components/youtube/YoutubeSearchView.vue";
+import YoutubeNotFoundView from "@/components/youtube/YoutubeNotFoundView.vue";
 export default {
   data() {
     return {
-    keyword : "",
-      loading : false,
-      showSearch : true,
+      keyword: "",
+      loading: false,
+      showSearch: true,
       prior: "",
-      loaded : true,
-      burst : false,
-    //   search : false,
+      loaded: true,
+      burst: false,
+      //   search : false,
     };
   },
   components: {
@@ -143,24 +144,26 @@ export default {
     }
   },
   methods: {
-    keywordSent(keyword){
-        this.loading = true;
-        this.keyword = keyword;
-        this.showSearch = false;
-      
+    keywordSent(keyword) {
+      this.loading = true;
+      this.keyword = keyword;
+      this.showSearch = false;
+
       this.openai(keyword).then((res) => {
-        if (res.substring(0, 1) !== '[') { //배열형태가 아니면 새로고침 후 다시
-            this.$router.go(0);
-        } else { //맞는 형태라면
-            this.prior = JSON.parse(res);
-            console.log(this.prior);
-            //7초뒤에 loaded 실행
-            setTimeout(() => {
-                // this.loaded = true;
-                this.loading = false;
-            }, 7000);
+        if (res.substring(0, 1) !== "[") {
+          //배열형태가 아니면 새로고침 후 다시
+          this.$router.go(0);
+        } else {
+          //맞는 형태라면
+          this.prior = JSON.parse(res);
+          console.log(this.prior);
+          //7초뒤에 loaded 실행
+          setTimeout(() => {
+            // this.loaded = true;
+            this.loading = false;
+          }, 7000);
         }
-        });
+      });
     },
 
     async openai(keyword) {
@@ -170,30 +173,30 @@ export default {
       });
       const openai = new OpenAIApi(configuration);
 
-        try{
-            const completion = await openai.createChatCompletion({
-              model: "gpt-3.5-turbo",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-                },
-                {
-                  role: "user",
-                  content: `${keyword}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-                },
-              ],
-              temperature: 0.8,
-              max_tokens: 50,
-            });
-            console.log(completion.data.choices[0].message.content);
-            return completion.data.choices[0].message.content;
-        } catch(e){
-            console.log(e);
-            if(e.response.status == 429){
-                this.burst = true;
-            }
+      try {
+        const completion = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content:
+                "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
+            },
+            {
+              role: "user",
+              content: `${keyword}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+            },
+          ],
+          temperature: 0.8,
+          max_tokens: 50,
+        });
+        console.log(completion.data.choices[0].message.content);
+        return completion.data.choices[0].message.content;
+      } catch (e) {
+        console.log(e);
+        if (e.response.status == 429) {
+          this.burst = true;
+        }
       }
     },
     logout() {
@@ -216,6 +219,27 @@ export default {
     },
     goToCommun() {
       this.$router.push("/base");
+    },
+    loginCheck() {
+      if (this.loginUser) {
+        //로그인유저가 있다면
+        console.log("clicked");
+        this.$router.push("/youtube");
+      } else {
+        Swal.fire({
+          title: "",
+          text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
+          width: 570,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: '이동',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push("/youtubebeta");
+          }
+        })
+      }
     },
   },
 };
@@ -309,5 +333,8 @@ li {
   border: 1px solid #000;
   padding: 5px 10px;
   cursor: pointer;
+}
+.Yresult {
+  margin: auto;
 }
 </style>

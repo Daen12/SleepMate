@@ -5,7 +5,7 @@
           <br>
           <br>
           <input  @keyup.enter="sendKeyword" v-model="keyword" type="text" placeholder="">
-          <button @click="sendKeyword">Go</button>
+          <button class="searchYbtn" @click="sendKeyword">Go</button>
         </div>
       </div>
 </template>
@@ -63,5 +63,9 @@ export default {
     height: 70px;
     width: 150px;
     margin-left: -30px;
+}
+
+.searchYbtn {
+    margin-left: 20px;
 }
 </style>

@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS `commentAlert` (
 PRIMARY KEY (`idx`)
 );
 
-insert into `commentAlert` (nickname, articleIdx, content, writer)
-values ("Daen", 1, "잘 보고 갑니다", "Daen");
+-- insert into `commentAlert` (nickname, articleIdx, content, writer)
+-- values ("Daen", 1, "잘 보고 갑니다", "Daen");
 -- -----------------------------------------------------
 -- Verify Table
 -- -----------------------------------------------------
