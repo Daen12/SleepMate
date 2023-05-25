@@ -123,7 +123,7 @@ export default createStore({
               showCloseButton: true,
               position: "bottom-right",
             }).then((result) => {
-              if (result.isConfirmed) {
+              if (result.isConfirmed && res.data.AlertNum != 0) {
                 commit("SHOW_ALERT");
               }
             });
