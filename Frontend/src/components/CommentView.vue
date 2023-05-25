@@ -262,7 +262,8 @@ export default {
       };
 
       Swal.fire({
-          title: '댓글을 수정하시겠습니까?',
+          title: '',
+          text: '댓글을 수정하시겠습니까?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: '수정',
@@ -301,7 +302,8 @@ export default {
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
 
       Swal.fire({
-          title: '댓글을 삭제하시겠습니까?',
+          title: '',
+          text:  '댓글을 삭제하시겠습니까?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: '삭제',
