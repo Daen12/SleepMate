@@ -78,6 +78,9 @@ export default createStore({
     SHOW_ALERT(state) {
       state.showAlert = true;
     },
+    DISABLE_ALERT(state) {
+      state.showAlert = false;
+    }
   },
   actions: {
     setLoginUser: function ({ commit }, user) {

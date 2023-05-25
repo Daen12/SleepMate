@@ -98,23 +98,31 @@ export default {
         });
         return;
       } else {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-          const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
-          axios({
-            url: API_URL,
-            method: "DELETE",
-            headers: {
-              "access-token": sessionStorage.getItem("access-token"),
-            },
-          }).then(() => {
-            console.log("deleted");
-            Toast.fire({
-              icon: "success",
-              title: "삭제되었습니다.",
+        Swal.fire({
+          title: '게시글을 삭제하시겠습니까?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
+            axios({
+              url: API_URL,
+              method: "DELETE",
+              headers: {
+                "access-token": sessionStorage.getItem("access-token"),
+              },
+            }).then(() => {
+              console.log("deleted");
+              Toast.fire({
+                icon: "success",
+                title: "삭제되었습니다.",
+              });
+              this.$emit("finishDelete");
             });
-            this.$emit("finishDelete");
-          });
-        }
+          }
+        })
       }
     },
     updateBoard() {

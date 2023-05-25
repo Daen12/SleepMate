@@ -122,13 +122,8 @@ export default {
     },
   },
   computed: {
-    ...mapState(["loginUser, showAlert"]),
+    ...mapState(["loginUser"]),
   },
-  watch: {
-    showAlert (val) {
-      val
-    }
-  }
 };
 </script>
 
