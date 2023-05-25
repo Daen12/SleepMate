@@ -99,7 +99,8 @@ export default {
         return;
       } else {
         Swal.fire({
-          title: '게시글을 삭제하시겠습니까?',
+          title: '',
+          text: '게시글을 삭제하시겠습니까?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: '삭제',

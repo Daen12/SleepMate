@@ -508,16 +508,19 @@ export default {
         console.log("clicked");
         this.$router.push("/youtube");
       } else {
-        //없다면
-        if (
-          confirm(
-            "멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?"
-          )
-        ) {
-          this.$router.push("/youtubebeta");
-        } else {
-          this.$router.go(0);
-        }
+        Swal.fire({
+          title: "",
+          text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
+          width: 570,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: '이동',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push("/youtubebeta");
+          }
+        })
       }
     },
     sendEmail() {
