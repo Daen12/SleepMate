@@ -8,9 +8,11 @@
         VALUES (#{nickname}, #{articleIdx}, #{content}, #{writer})
     </insert>
 
-    <select id="getAllAlerts" parameterType="String" resultType="Alert">
-        SELECT *
-        FROM commentAlert
+    <select id="getAllAlerts" parameterType="String" resultType="Alertdto">
+        SELECT ca.articleIdx, b.title, ca.content, ca.writer, ca.regdate
+        FROM commentAlert AS ca
+        JOIN board AS b
+        ON ca.articleIdx = b.idx
         WHERE nickname = #{nickname}
     </select>
 

@@ -108,6 +108,7 @@ export default {
   name: "CommentView",
   props: {
     idx: Number,
+    bWriter: String,
   },
   data() {
     return {
@@ -184,7 +185,7 @@ export default {
     },
 
     // CREATE
-    commentWrite() {
+    async commentWrite() {
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -199,14 +200,33 @@ export default {
         });
         return;
       }
+      let alert = {
+        nickname: this.bWriter,
+        articleIdx: this.idx,
+        content: this.c_content,
+        writer: this.nickName,
+      };
+      const API_URL = `http://localhost:9999/api/alert/write`;
+      await axios({
+        url: API_URL,
+        method: "POST",
+        data: alert,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        
       let comment = {
         articleIdx: this.idx,
         content: this.c_content,
         writer: this.nickName,
       };
-      const API_URL = `http://localhost:9999/api/comment/write`;
-      axios({
-        url: API_URL,
+      const API_URL2 = `http://localhost:9999/api/comment/write`;
+      await axios({
+        url: API_URL2,
         method: "POST",
         data: comment,
       })
@@ -262,32 +282,32 @@ export default {
       };
 
       Swal.fire({
-          title: '',
-          text: '댓글을 수정하시겠습니까?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: '수정',
-          cancelButtonText: '취소',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            const API_URL = `http://localhost:9999/api/comment/update`;
-            axios({
-              url: API_URL,
-              method: "PUT",
-              data: comment,
-              headers: {
-                "access-token": sessionStorage.getItem("access-token"),
-              },
-            }).then(() => {
-              Toast.fire({
-                icon: "success",
-                title: "수정되었습니다.",
-              });
-              this.updatemode = 0;
-              this.updateContentmode[obj.idx] = false;
+        title: "",
+        text: "댓글을 수정하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "수정",
+        cancelButtonText: "취소",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const API_URL = `http://localhost:9999/api/comment/update`;
+          axios({
+            url: API_URL,
+            method: "PUT",
+            data: comment,
+            headers: {
+              "access-token": sessionStorage.getItem("access-token"),
+            },
+          }).then(() => {
+            Toast.fire({
+              icon: "success",
+              title: "수정되었습니다.",
             });
-          }
-        })
+            this.updatemode = 0;
+            this.updateContentmode[obj.idx] = false;
+          });
+        }
+      });
     },
 
     // DELETE
@@ -302,37 +322,37 @@ export default {
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
 
       Swal.fire({
-          title: '',
-          text:  '댓글을 삭제하시겠습니까?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: '삭제',
-          cancelButtonText: '취소',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            axios({
-              url: API_URL,
-              method: "DELETE",
-              headers: {
-                "access-token": sessionStorage.getItem("access-token"),
-              },
-            })
-              .then(() => {
-                Toast.fire({
-                  icon: "success",
-                  title: "삭제되었습니다.",
-                });
-                this.$store.commit("DELETE_COMMENT", idx);
-              })
-              .catch((err) => {
-                console.log(err);
-                Toast.fire({
-                  icon: "warning",
-                  title: "로그인 후 이용해주세요",
-                });
+        title: "",
+        text: "댓글을 삭제하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "삭제",
+        cancelButtonText: "취소",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios({
+            url: API_URL,
+            method: "DELETE",
+            headers: {
+              "access-token": sessionStorage.getItem("access-token"),
+            },
+          })
+            .then(() => {
+              Toast.fire({
+                icon: "success",
+                title: "삭제되었습니다.",
               });
-          }
-        })
+              this.$store.commit("DELETE_COMMENT", idx);
+            })
+            .catch((err) => {
+              console.log(err);
+              Toast.fire({
+                icon: "warning",
+                title: "로그인 후 이용해주세요",
+              });
+            });
+        }
+      });
     },
   },
   created() {

@@ -3,19 +3,18 @@
     <ul class="slides">
       <!-- 비디오 3개씩 반환하므로 idx는 3까지 -->
       <li v-for="(video, idx) in videos" :key="idx">
-        <button
-          type="button"
-          data-toggle="modal"
-          :data-target="`#youtubeModal${preidx}${preidx2}${idx}`"
+        <a 
+        :href="`https://www.youtube.com/embed/${video.id.videoId}`"
+        target="_blank"
         >
           <img
             class="youtubeThumbnail"
             :src="`https://img.youtube.com/vi/${video.id.videoId}/sddefault.jpg`"
           />
-        </button>
+        </a>
 
         <!-- 유튜브 사진을 클릭하면 나오는 Modal 창 -->
-        <div
+        <!-- <div
           class="modal fade"
           :id="`youtubeModal${preidx}${preidx2}${idx}`"
           tabindex="-1"
@@ -24,8 +23,9 @@
           aria-hidden="true"
         >
           <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-header">
-
+            <div class="modal-header"></div>
+            <div class="modal-body">
+              <div>
               <iframe
                 width="1000"
                 height="563"
@@ -35,11 +35,11 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
               ></iframe>
-
-
+              </div>
+              <br />
             </div>
           </div>
-        </div>
+        </div> -->
       </li>
     </ul>
   </div>
@@ -62,7 +62,7 @@ export default {
   created() {
     setTimeout(() => {
       const URL = "https://www.googleapis.com/youtube/v3/search";
-      const API_KEY = "AIzaSyB_00m2oGsSGpPohlyp_BC0Isr5EZR7hj8";
+      const API_KEY = "AIzaSyADWMljQxD92o6-ScsFObpU8mjkCUDmrdg";
       axios({
         url: URL,
         method: "GET",
@@ -79,11 +79,8 @@ export default {
           console.log(this.videos[0]);
         })
         .catch((err) => console.log(err));
-     
-    },5000)
-
-
-  }
+    }, 5000);
+  },
 };
 </script>
 
@@ -94,17 +91,14 @@ button {
 .slide_wrapper {
   position: relative;
   width: 100%;
-  margin: 10px auto;
+  margin: auto;
   height: 300px;
-  /* overflow: hidden; */
-  /* border: 1px solid #222; */
+  display: inline-flex;
+  justify-content: space-evenly;
 }
 .slides {
   position: absolute;
-  /* left: 0; */
-  top: 0;
-  left: 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .slides.animated {
   transition: 0.4s ease-out;
@@ -137,7 +131,10 @@ button {
   width: 560px;
   height: 315px;
 } */
-.modal-header {
-  color: white;
+body {
+  margin: 0,
+}
+div {
+  box-sizing: border-box;
 }
 </style>

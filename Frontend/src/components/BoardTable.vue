@@ -25,7 +25,7 @@
             <td class="tg-0lax" v-if="board.classnum == category || category == 0">{{ i + 1 }}</td>
             <td class="tg-0lax category" v-if="board.classnum == category || category == 0">{{ categoryDecode[ board.classnum - 1 ]}}</td>
             <td class="tg-0lax" v-if="board.classnum == category || category == 0">
-              <button @click="goToDetail(board.idx, i + 1)">
+              <button @click="goToDetail(board.idx, i + 1, board.writer)">
                 {{ board.title }}
               </button>
             </td>
@@ -67,6 +67,7 @@ export default {
     return {
       pageSize: 0,
       categoryDecode : ["요가 용품", "요가 자격증", '요가 센터', '요가 영상'],
+      nickName: '',
     };
   },
   computed: {
@@ -74,6 +75,11 @@ export default {
   },
   created() {
     this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
+    if (sessionStorage.getItem("loginUser")) {
+      this.nickName = JSON.parse(
+        sessionStorage.getItem("loginUser")
+      ).userNickname;
+    }
   },
   methods: {
     sliceRegdate(data) {
@@ -101,8 +107,16 @@ export default {
       this.$store.commit("MINUS_PAGENUM");
       this.$store.dispatch("setBoardList", {pagenum: this.pageNum + 1, category: this.category});
     },
-    goToDetail(idx, num) {
+    goToDetail(idx, num, writer) {
       this.$emit("openDetail", idx, num);
+      if (this.nickName ===  writer) {
+        axios({
+          url: `http://localhost:9999/api/alert/delete/${writer}/${idx}`,
+          method: "DELETE"
+        }).then((res) => {
+          console.log(res);
+        })
+      }
     },
     writeBoard() {
       const Toast = Swal.mixin({

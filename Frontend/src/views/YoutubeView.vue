@@ -32,7 +32,7 @@
                       >
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="about.html">About </a>
+                      <a class="nav-link" @click="loginCheck">Youtube-AI</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link pointer" @click="goToCommun"
@@ -334,6 +334,27 @@ export default {
         icon: "info",
         title: "로그아웃 되었습니다.",
       });
+    },
+    loginCheck() {
+      if (this.loginUser) {
+        //로그인유저가 있다면
+        console.log("clicked");
+        this.$router.push("/youtube");
+      } else {
+        Swal.fire({
+          title: "",
+          text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
+          width: 570,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: '이동',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push("/youtubebeta");
+          }
+        })
+      }
     },
     goToCommun() {
       this.$router.push("/base");

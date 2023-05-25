@@ -85,7 +85,7 @@
                     >
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="about.html">About </a>
+                    <a class="nav-link" @click="loginCheck" >Youtube-AI</a>
                   </li>
                   <li class="nav-item">
                     <router-link to="/base"
@@ -647,5 +647,8 @@ export default {
   margin-top: 20px;
   font-size: 20px;
   border-bottom: none;
+}
+.nav-link {
+  cursor: pointer;
 }
 </style>

@@ -37,7 +37,7 @@
           {{ board.content }}
         </div>
 
-        <comment-view v-if="!updatemode" :idx="board.idx"></comment-view>
+        <comment-view v-if="!updatemode" :idx="board.idx" :bWriter="board.writer"></comment-view>
 
         <textarea v-if="updatemode" v-model="board.content" class="update cont">
         </textarea>
