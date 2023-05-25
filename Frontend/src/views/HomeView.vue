@@ -168,7 +168,7 @@
         <div class="row">
           <div class="col-md-6 px-0">
             <div class="img-box">
-              <!-- <img src="images/about-img.jpg" alt=""> -->
+              <img src="images/about-us3.jpg" alt="">
             </div>
           </div>
           <div class="col-md-5">
@@ -177,7 +177,10 @@
                 <hr />
                 <h2>About Us</h2>
               </div>
-              <p>설명설명</p>
+              <p>많은 분들께서 선택하는 웰니스를 위한 첫걸음, 요가.<br> 
+              요가에 대해 알고 싶은 토픽에 대한 Best keyword를 AI가 선택해서 직접 검색해준다면 어떨까요? <br>
+              요가메이트의 멤버십 커뮤니티와 AI 검색코너는 당신의 힐링을 책임집니다. <br>
+              현대인을 위한 요가 플랫폼, YogaMate에서 진정한 웰니스를 누려보세요.</p>
               <!-- <a href="">
               Read More
             </a> -->
@@ -249,59 +252,16 @@
             <div class="carousel-item active">
               <div class="client_container layout_padding-top">
                 <div class="img-box">
-                  <img src="images/client-img.png" alt="" />
+                  <img src="images/user2.jpeg" alt="" />
                 </div>
                 <div class="detail-box">
-                  <h5>Jone Mark</h5>
+                  <h5>Flourine</h5>
                   <p>
                     <img src="images/left-quote.png" alt="" />
-                    <span> Lorem ipsum dolor sit amet, </span>
+                    <span> 평소에 의자에 앉아있는 경우가 많았는데, </span>
                     <img src="images/right-quote.png" alt="" /> <br />
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="client_container layout_padding-top">
-                <div class="img-box">
-                  <img src="images/client-img.png" alt="" />
-                </div>
-                <div class="detail-box">
-                  <h5>Jone Mark</h5>
-                  <p>
-                    <img src="images/left-quote.png" alt="" />
-                    <span> Lorem ipsum dolor sit amet, </span>
-                    <img src="images/right-quote.png" alt="" /> <br />
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="client_container layout_padding-top">
-                <div class="img-box">
-                  <img src="images/client-img.png" alt="" />
-                </div>
-                <div class="detail-box">
-                  <h5>Jone Mark</h5>
-                  <p>
-                    <img src="images/left-quote.png" alt="" />
-                    <span> Lorem ipsum dolor sit amet, </span>
-                    <img src="images/right-quote.png" alt="" /> <br />
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse
+                    요가 매트 아 죄송합니다 메이트였죠.. 덕분에 키가 3센치 커졌습니다. 감사합니다. 이 시대의 GOAT 요가매트!
+Fitstagram도 많이 애용해주세요~~
                   </p>
                 </div>
               </div>
@@ -546,33 +506,6 @@ export default {
           }
         );
 
-      // let data = {
-      //   service_id: 'service_vocd9kn',
-      //   template_id:'template_m511lr7', //I L 체크!!
-      //   user_id : 'EQ-0HYTiP50d3clZ1',
-      //   template_params:{
-      //     from_name : this.e_name,
-      //     email_id : this.e_email,
-      //     from_contact : this. e_contact,
-      //     from_content : this.e_content,
-      //   }
-      // };
-
-      // axios({
-      //   url : "https://api.emailjs.com/api/v1.0/email/send",
-      //   method : "POST",
-      //   data : JSON.stringify(data),
-      //   headers : {
-      //     'Content-type' : 'application/json'
-      //   }
-      // }).then(()=>{
-      //   console.log("here2");
-
-      //   alert("메세지가 발송되었습니다.");
-      // }).catch(() =>{
-      //   alert("메세지 전송에 실패하였습니다.");
-      //   console.log("here3");
-      // })
     },
 
     logout() {
@@ -628,6 +561,7 @@ export default {
 .youtubeClick {
   border: 1px solid white;
   padding: 8px 30px;
+  cursor: pointer;
 }
 .logoutButton {
   background-color: transparent;
