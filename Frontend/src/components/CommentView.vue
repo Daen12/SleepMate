@@ -1,25 +1,26 @@
 <template>
   <div class="comment_container">
     <div class="comment_header">
-      <div
-        @click="checkLoginStatus"
-        class="pointer writeBtn"
-        v-if="!writemode"
-      >
+      <div @click="checkLoginStatus" class="pointer writeBtn" v-if="!writemode">
         &nbsp;+&nbsp;댓글 등록&nbsp;
       </div>
     </div>
     <!-- 댓글 쓰는 창 -->
     <div v-if="writemode">
-    <div class="content">
-      <dl class="writer">{{ nickName }}</dl>
-      <dl class="real">
-        <input type="text" @keyup.enter="commentWrite" v-model="c_content" placeholder="댓글을 입력해주세요."/>
-      </dl>
-      <dl class="date"></dl>
-      <dl class="pointer" @click="commentWrite">➕</dl>
-      <dl class="pointer" @click="writemode = 0">❌</dl>
-    </div>
+      <div class="content">
+        <dl class="writer">{{ nickName }}</dl>
+        <dl class="real">
+          <input
+            type="text"
+            @keyup.enter="commentWrite"
+            v-model="c_content"
+            placeholder="댓글을 입력해주세요."
+          />
+        </dl>
+        <dl class="date"></dl>
+        <dl class="pointer" @click="commentWrite">➕</dl>
+        <dl class="pointer" @click="writemode = 0">❌</dl>
+      </div>
     </div>
 
     <!-- 기존 댓글 창 -->
@@ -29,8 +30,20 @@
         <dl class="real">{{ comment.content }}</dl>
         <dl class="date">{{ sliceRegdate(comment.regdate) }}</dl>
         <!-- <div class="hideUpdate"> -->
-        <dl class="pointer" v-if="nickName === comment.writer" @click="changeUpdateMode(i)">✏️</dl>
-        <dl class="pointer" v-if="nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
+        <dl
+          class="pointer"
+          v-if="nickName === comment.writer"
+          @click="changeUpdateMode(i)"
+        >
+          ✏️
+        </dl>
+        <dl
+          class="pointer"
+          v-if="nickName === comment.writer"
+          @click="commentDelete(comment.idx)"
+        >
+          🗑
+        </dl>
         <!-- </div> -->
         <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
         <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
@@ -40,16 +53,48 @@
     <!-- 댓글 수정 창 -->
     <div v-if="updatemode == 1">
       <div class="content" v-for="(comment, i) in comments" :key="i">
-        <dl class="writer" >{{ comment.writer }}</dl>
+        <dl class="writer">{{ comment.writer }}</dl>
         <dl class="real" v-if="!updateContentmode[i]">{{ comment.content }}</dl>
-        <dl class="real" v-if="updateContentmode[i]"><input type="text" v-model="comment.content"/></dl>
+        <dl class="real" v-if="updateContentmode[i]">
+          <input type="text" v-model="comment.content" />
+        </dl>
         <dl class="date">{{ sliceRegdate(comment.regdate) }}</dl>
-        <dl class="pointer" v-if="updateContentmode[i]" @click="commentUpdate({idx: i, commentIdx: comment.idx, updateContent: comment.content})">✏️</dl>
-        <dl class="pointer" v-if="updateContentmode[i]" @click="cancelUpdate(i)">❌</dl>
+        <dl
+          class="pointer"
+          v-if="updateContentmode[i]"
+          @click="
+            commentUpdate({
+              idx: i,
+              commentIdx: comment.idx,
+              updateContent: comment.content,
+            })
+          "
+        >
+          ✏️
+        </dl>
+        <dl
+          class="pointer"
+          v-if="updateContentmode[i]"
+          @click="cancelUpdate(i)"
+        >
+          ❌
+        </dl>
         <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
         <dl class="nullPointer" v-if="nickName !== comment.writer"></dl>
-        <dl class="pointer" v-if="!updateContentmode[i] && nickName === comment.writer"  @click="changeUpdateMode(i)">✏️</dl>
-        <dl class="pointer" v-if="!updateContentmode[i] && nickName === comment.writer" @click="commentDelete(comment.idx)">🗑</dl>
+        <dl
+          class="pointer"
+          v-if="!updateContentmode[i] && nickName === comment.writer"
+          @click="changeUpdateMode(i)"
+        >
+          ✏️
+        </dl>
+        <dl
+          class="pointer"
+          v-if="!updateContentmode[i] && nickName === comment.writer"
+          @click="commentDelete(comment.idx)"
+        >
+          🗑
+        </dl>
       </div>
     </div>
   </div>
@@ -71,48 +116,48 @@ export default {
       nickName: "",
       c_content: "",
       updateContentmode: [],
-    }
+    };
   },
   computed: {
     ...mapState(["loginUser", "comments"]),
   },
-  watch:{
-    writemode(){
+  watch: {
+    writemode() {
       axios({
-      url: `http://localhost:9999/api/comment/${this.idx}`,
-      method: "GET",
-    })
-      .then((res) => {
-        this.$store.commit("SET_COMMENTS", res.data.comments);
+        url: `http://localhost:9999/api/comment/${this.idx}`,
+        method: "GET",
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          this.$store.commit("SET_COMMENTS", res.data.comments);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    updatemode(){
+    updatemode() {
       axios({
-      url: `http://localhost:9999/api/comment/${this.idx}`,
-      method: "GET",
-    })
-      .then((res) => {
-        this.$store.commit("SET_COMMENTS", res.data.comments);
+        url: `http://localhost:9999/api/comment/${this.idx}`,
+        method: "GET",
       })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
+        .then((res) => {
+          this.$store.commit("SET_COMMENTS", res.data.comments);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   methods: {
-    checkLoginStatus(){
+    checkLoginStatus() {
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
-      if(sessionStorage.getItem("loginUser")){
-        this.writemode = 1
+      if (sessionStorage.getItem("loginUser")) {
+        this.writemode = 1;
       } else {
         Toast.fire({
           icon: "warning",
@@ -124,11 +169,11 @@ export default {
       var today = new Date();
 
       var year = today.getFullYear();
-      var month = ('0' + (today.getMonth() + 1)).slice(-2);
-      var day = ('0' + today.getDate()).slice(-2);
-      let dateString = year + '-' + month  + '-' + day;
+      var month = ("0" + (today.getMonth() + 1)).slice(-2);
+      var day = ("0" + today.getDate()).slice(-2);
+      let dateString = year + "-" + month + "-" + day;
 
-      let regdate = '' + data;
+      let regdate = "" + data;
       let result = "";
       if (regdate.substring(0, 10) === dateString) {
         result = regdate.substring(11);
@@ -140,12 +185,25 @@ export default {
 
     // CREATE
     commentWrite() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      });
+      if (this.c_content === "") {
+        Toast.fire({
+          icon: "error",
+          title: "댓글 내용을 입력해주세요",
+        });
+        return;
+      }
       let comment = {
         articleIdx: this.idx,
         content: this.c_content,
         writer: this.nickName,
       };
-      console.log(comment);
       const API_URL = `http://localhost:9999/api/comment/write`;
       axios({
         url: API_URL,
@@ -159,10 +217,9 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-        .finally(()=>{
+        .finally(() => {
           this.writemode = 0;
-        }
-      )
+        });
     },
 
     // UPDATE
@@ -174,7 +231,7 @@ export default {
       this.updatemode = 1;
       this.updateContentmode[idx] = true;
 
-      for (let i=0; i<this.updateContentmode.length; i++) {
+      for (let i = 0; i < this.updateContentmode.length; i++) {
         if (i !== idx && this.updateContentmode[i] == true) {
           this.updateContentmode[i] = false;
         }
@@ -185,36 +242,52 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
+
+      if (obj.updateContent === "") {
+        Toast.fire({
+          icon: "error",
+          title: "댓글 내용을 입력해주세요",
+        });
+        return;
+      }
 
       let comment = {
         articleIdx: this.idx,
         content: obj.updateContent,
         writer: this.nickName,
-        idx : obj.commentIdx,
+        idx: obj.commentIdx,
       };
 
-      var result = confirm("댓글을 수정하시겠습니까?")
-      if (result) {
-      const API_URL = `http://localhost:9999/api/comment/update`;
-        axios({
-          url: API_URL,
-          method: "PUT",
-          data : comment,
-          headers: {
-            "access-token": sessionStorage.getItem("access-token"),
-          },
-        }).then(()=>{
-          Toast.fire({
-          icon: "success",
-          title: "수정되었습니다.",
-        });
-          this.updatemode = 0;
-          this.updateContentmode[obj.idx] = false;
+      Swal.fire({
+          title: '',
+          text: '댓글을 수정하시겠습니까?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: '수정',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const API_URL = `http://localhost:9999/api/comment/update`;
+            axios({
+              url: API_URL,
+              method: "PUT",
+              data: comment,
+              headers: {
+                "access-token": sessionStorage.getItem("access-token"),
+              },
+            }).then(() => {
+              Toast.fire({
+                icon: "success",
+                title: "수정되었습니다.",
+              });
+              this.updatemode = 0;
+              this.updateContentmode[obj.idx] = false;
+            });
+          }
         })
-      }
     },
 
     // DELETE
@@ -223,45 +296,56 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
-      var result = confirm("댓글을 삭제하시겠습니까?")
-      if (result) {
-        axios({
-          url: API_URL,
-          method: "DELETE",
-          headers: {
-            "access-token": sessionStorage.getItem("access-token"),
-          },
+
+      Swal.fire({
+          title: '',
+          text:  '댓글을 삭제하시겠습니까?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios({
+              url: API_URL,
+              method: "DELETE",
+              headers: {
+                "access-token": sessionStorage.getItem("access-token"),
+              },
+            })
+              .then(() => {
+                Toast.fire({
+                  icon: "success",
+                  title: "삭제되었습니다.",
+                });
+                this.$store.commit("DELETE_COMMENT", idx);
+              })
+              .catch((err) => {
+                console.log(err);
+                Toast.fire({
+                  icon: "warning",
+                  title: "로그인 후 이용해주세요",
+                });
+              });
+          }
         })
-          .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "삭제되었습니다.",
-          });
-          this.$store.commit("DELETE_COMMENT", idx);
-          })
-          .catch((err) => {
-            console.log(err);
-            Toast.fire({
-            icon: "warning",
-            title: "로그인 후 이용해주세요",
-          });
-          });
-      }
     },
   },
   created() {
     if (sessionStorage.getItem("loginUser")) {
-      this.nickName = JSON.parse(sessionStorage.getItem("loginUser")).userNickname;
+      this.nickName = JSON.parse(
+        sessionStorage.getItem("loginUser")
+      ).userNickname;
     }
     for (let i = 0; i < this.comments.length; i++) {
       this.updateContentmode[i] = false;
     }
   },
-}
+};
 </script>
 
 <style>
@@ -336,7 +420,6 @@ export default {
   flex: 1;
   text-align: center;
   display: inline;
-
 }
 .content dl :nth-child(0) {
   border-right: 1px dotted #9a9999;

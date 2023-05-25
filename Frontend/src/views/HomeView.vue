@@ -472,7 +472,7 @@
         <!-- </div> -->
       </div>
     </section>
-
+    
     <!-- end info section -->
 
     <!-- footer section -->
@@ -508,16 +508,19 @@ export default {
         console.log("clicked");
         this.$router.push("/youtube");
       } else {
-        //없다면
-        if (
-          confirm(
-            "멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?"
-          )
-        ) {
-          this.$router.push("/youtubebeta");
-        } else {
-          this.$router.go(0);
-        }
+        Swal.fire({
+          title: "",
+          text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
+          width: 570,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: '이동',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push("/youtubebeta");
+          }
+        })
       }
     },
     sendEmail() {
@@ -577,14 +580,14 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 2000,
         timerProgressBar: true,
       });
       console.log("trying to log out");
       this.$store.dispatch("logout");
       setTimeout(() => {
         this.$router.go(0);
-      }, 1500);
+      }, 2000);
       Toast.fire({
         icon: "info",
         title: "로그아웃 되었습니다.",
@@ -594,11 +597,11 @@ export default {
   created() {
     //0-23사이의 정수
     let hours = new Date().getHours();
-    if (hours < 12 && hours > 0) {
+    if (hours < 12 && hours >= 0) {
       this.time = "아침이에요";
-    } else if (hours > 12 && hours < 18) {
+    } else if (hours >= 12 && hours <= 18) {
       this.time = "오후에요";
-    } else if (19 < hours && hours < 24) {
+    } else if (19 <= hours && hours < 24) {
       this.time = "저녁이에요";
     }
     console.log("created");
@@ -616,7 +619,7 @@ export default {
     LookAround,
   },
   computed: {
-    ...mapState(["loginUser"]), //loginUser를 state에서 가져와 매핑한다.
+    ...mapState(["loginUser", "showAlert"]), //loginUser를 state에서 가져와 매핑한다.
   },
 };
 </script>
