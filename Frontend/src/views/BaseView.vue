@@ -104,14 +104,14 @@ export default {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 1500,
+        timer: 2000,
         timerProgressBar: true,   
       });
       console.log("trying to log out");
       this.$store.dispatch("logout");
       setTimeout(() => {
         this.$router.go(0);
-      }, 1500);
+      }, 2000);
       Toast.fire({
           icon: 'info',
           title: '로그아웃 되었습니다.'

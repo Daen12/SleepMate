@@ -8,7 +8,7 @@ const Toast_verify = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmButton: false,
-  timer: 1500,
+  timer: 2000,
   timerProgressBar: true,
 });
 
@@ -78,6 +78,9 @@ export default createStore({
     SHOW_ALERT(state) {
       state.showAlert = true;
     },
+    DISABLE_ALERT(state) {
+      state.showAlert = false;
+    }
   },
   actions: {
     setLoginUser: function ({ commit }, user) {

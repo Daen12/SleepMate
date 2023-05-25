@@ -472,7 +472,7 @@
         <!-- </div> -->
       </div>
     </section>
-
+    
     <!-- end info section -->
 
     <!-- footer section -->
@@ -577,14 +577,14 @@ export default {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 2000,
         timerProgressBar: true,
       });
       console.log("trying to log out");
       this.$store.dispatch("logout");
       setTimeout(() => {
         this.$router.go(0);
-      }, 1500);
+      }, 2000);
       Toast.fire({
         icon: "info",
         title: "로그아웃 되었습니다.",
@@ -594,11 +594,11 @@ export default {
   created() {
     //0-23사이의 정수
     let hours = new Date().getHours();
-    if (hours < 12 && hours > 0) {
+    if (hours < 12 && hours >= 0) {
       this.time = "아침이에요";
-    } else if (hours > 12 && hours < 18) {
+    } else if (hours >= 12 && hours <= 18) {
       this.time = "오후에요";
-    } else if (19 < hours && hours < 24) {
+    } else if (19 <= hours && hours < 24) {
       this.time = "저녁이에요";
     }
     console.log("created");
@@ -616,7 +616,7 @@ export default {
     LookAround,
   },
   computed: {
-    ...mapState(["loginUser"]), //loginUser를 state에서 가져와 매핑한다.
+    ...mapState(["loginUser", "showAlert"]), //loginUser를 state에서 가져와 매핑한다.
   },
 };
 </script>
