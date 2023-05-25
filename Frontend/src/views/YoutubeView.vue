@@ -250,9 +250,11 @@ export default {
             console.log(e);
             if(e.response.status == 429){
                 this.burst = true;
+                this.burst = true;
                 setTimeout(()=>{
                   this.burst = false;
-                },5000);
+                  this.$router.go(0);
+                })
             }
         }
       }
@@ -281,6 +283,10 @@ export default {
             console.log(e.response.status);
             if(e.response.status == 429){
                 this.burst = true;
+                setTimeout(()=>{
+                  this.burst = false;
+                  this.$router.go(0);
+                })
             }
         }
       }

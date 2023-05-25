@@ -154,6 +154,7 @@ div {
 
 .white-bg {
   width: 70%;
+  min-height: 30%;
   background: white;
   border-radius: 8px;
   margin: auto;

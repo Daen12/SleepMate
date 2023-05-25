@@ -196,6 +196,10 @@ export default {
         console.log(e);
         if (e.response.status == 429) {
           this.burst = true;
+          this.loading = false;
+          setTimeout(() => {
+            this.$router.go(0)
+          }, 4000);
         }
       }
     },

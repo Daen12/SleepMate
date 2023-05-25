@@ -69,6 +69,12 @@ PRIMARY KEY (`idx`)
 
 -- insert into `commentAlert` (nickname, articleIdx, content, writer)
 -- values ("Daen", 1, "잘 보고 갑니다", "Daen");
+
+SELECT ca.articleIdx, b.title, ca.content, ca.writer, ca.regdate
+FROM commentAlert AS ca
+JOIN board AS b
+ON ca.articleIdx = b.idx
+WHERE nickname = 1234;
 -- -----------------------------------------------------
 -- Verify Table
 -- -----------------------------------------------------
