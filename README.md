@@ -1,4 +1,5 @@
 # YogaMate
+![](https://blog.kakaocdn.net/dn/4FMBl/btsjJdZTvM5/ZcmmNwFkpspfp5a0Fyp8K0/img.png)
 <strong>내 손안의 요가 도우미, YogaMate</strong>
  
 
@@ -14,7 +15,7 @@
 
 <hr>
 
-![](https://blog.kakaocdn.net/dn/4FMBl/btsjJdZTvM5/ZcmmNwFkpspfp5a0Fyp8K0/img.png)
+
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FV1YaW%2Fbtsjx20LtaU%2Fw45o0qGUyDVphtbJ2chBB1%2Fimg.png)
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbjmqel%2FbtsjBsrlIRh%2FsKDkqQEUOq9iuJbXF8Tb6k%2Fimg.png)
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoS6Hj%2FbtsjGno2dMf%2F0kpUHDId0i0RGXjcHn6QV0%2Fimg.png)
