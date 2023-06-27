@@ -68,11 +68,11 @@
       <!-- 여기까지 네비게이션바입니다. -->
       <!-- <router-view></router-view> -->
       <!-- <button @click="verify">실험</button> -->
-        
+
         <youtube-wait-view v-if="!loaded"></youtube-wait-view>
         <youtube-not-found-view v-if="burst"></youtube-not-found-view>
 
-<div v-if="loaded"> 
+<div v-if="loaded">
       <br />
       <br />
       <br />
@@ -100,7 +100,7 @@
         <!-- 여기 부분 컴포넌트화 시켜야 하지 않을까 생각 중 -->
         <!-- 각각 prior(검색키워드)에 대해서 두번씩 돌려서 자식에 정보전달  -->
         <div class="subTitle">{{ loginUser.prefer1 }} 관련 유튜브 영상</div>
-       
+
         <youtube-video-item
           v-for="(keyword, i) in prior1"
           :key="i"
@@ -141,20 +141,20 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import Swal from "sweetalert2";
-import { Configuration, OpenAIApi } from "openai";
-import YoutubeVideoItem from "@/components/youtube/YoutubeVideoItem.vue";
+import {mapState} from 'vuex';
+import Swal from 'sweetalert2';
+import {Configuration, OpenAIApi} from 'openai';
+import YoutubeVideoItem from '@/components/youtube/YoutubeVideoItem.vue';
 import YoutubeWaitView from '@/components/youtube/YoutubeWaitView.vue';
 import YoutubeNotFoundView from '@/components/youtube/YoutubeNotFoundView.vue';
 export default {
   data() {
     return {
-      prior1: "",
-      prior2: "",
-      prior3: "",
-      loaded : false,
-      burst : false,
+      prior1: '',
+      prior2: '',
+      prior3: '',
+      loaded: false,
+      burst: false,
     };
   },
   components: {
@@ -163,20 +163,20 @@ export default {
     YoutubeNotFoundView,
   },
   computed: {
-    ...mapState(["loginUser"]),
+    ...mapState(['loginUser']),
   },
   created() {
     // setTimeout(() => {
     //   this.loaded = true;
     // }, 7000);
 
-    if (sessionStorage.getItem("loginUser")) {
-      let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-      this.$store.commit("SET_LOGIN_USER", loginUser);
+    if (sessionStorage.getItem('loginUser')) {
+      const loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+      this.$store.commit('SET_LOGIN_USER', loginUser);
     }
-    //openai() : n순위 관심사에 대해 chat gpt가 검색 키워드를 두개씩 반환. ['첫번째', '두번째'] 형태로!
+    // openai() : n순위 관심사에 대해 chat gpt가 검색 키워드를 두개씩 반환. ['첫번째', '두번째'] 형태로!
     this.openai(1).then((res) => {
-      if (res.substring(0, 1) !== '[') { //배열형태가 아니면 새로고침 후 다시
+      if (res.substring(0, 1) !== '[') { // 배열형태가 아니면 새로고침 후 다시
         this.$router.go(0);
       } else {
         this.prior1 = JSON.parse(res);
@@ -189,7 +189,6 @@ export default {
       } else {
         this.prior2 = JSON.parse(res);
         console.log(this.prior2);
-
       }
     });
     this.openai(3).then((res) => {
@@ -199,15 +198,15 @@ export default {
         this.prior3 = JSON.parse(res);
         console.log(this.prior3);
         res;
-        
+
         setTimeout(()=>{
           this.loaded = true;
-        },5000);
+        }, 5000);
       }
     });
   },
   methods: {
-    refresh(){
+    refresh() {
       this.$router.go(0);
     },
     // async openai(num){
@@ -218,137 +217,137 @@ export default {
     //   const openai = new OpenAIApi(configuration);
     //   let preference = `this.login.prefer${num}`;
     // }
-    ////////////////////////
+    // //////////////////////
     async openai(num) {
       const configuration = new Configuration({
-        organization: "org-YsN9LivjSkpgHXxpiJFZNpjS",
+        organization: 'org-YsN9LivjSkpgHXxpiJFZNpjS',
         apiKey: process.env.VUE_APP_OPEN_AI_API_KEY,
       });
       const openai = new OpenAIApi(configuration);
 
       if (num === 1) {
-        try{
-            const completion = await openai.createChatCompletion({
-              model: "gpt-3.5-turbo",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-                },
-                {
-                  role: "user",
-                  content: `${this.loginUser.prefer1}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-                },
-              ],
-              temperature: 0.8,
-              max_tokens: 50,
+        try {
+          const completion = await openai.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: [
+              {
+                role: 'system',
+                content:
+                    '결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해',
+              },
+              {
+                role: 'user',
+                content: `${this.loginUser.prefer1}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+              },
+            ],
+            temperature: 0.8,
+            max_tokens: 50,
+          });
+          console.log(completion.data.choices[0].message.content);
+          return completion.data.choices[0].message.content;
+        } catch (e) {
+          console.log(e);
+          if (e.response.status == 429) {
+            this.burst = true;
+            this.burst = true;
+            setTimeout(()=>{
+              this.burst = false;
+              this.$router.go(0);
             });
-            console.log(completion.data.choices[0].message.content);
-            return completion.data.choices[0].message.content;
-        } catch(e){
-            console.log(e);
-            if(e.response.status == 429){
-                this.burst = true;
-                this.burst = true;
-                setTimeout(()=>{
-                  this.burst = false;
-                  this.$router.go(0);
-                })
-            }
+          }
         }
       }
 
       if (num === 2) {
-        try{
-            const completion = await openai.createChatCompletion({
-              model: "gpt-3.5-turbo",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-                },
-                {
-                  role: "user",
-                  content: `${this.loginUser.prefer2}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-                },
-              ],
-              temperature: 0.8,
-              max_tokens: 50,
+        try {
+          const completion = await openai.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: [
+              {
+                role: 'system',
+                content:
+                    '결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해',
+              },
+              {
+                role: 'user',
+                content: `${this.loginUser.prefer2}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+              },
+            ],
+            temperature: 0.8,
+            max_tokens: 50,
+          });
+          console.log(completion.data.choices[0].message.content);
+          return completion.data.choices[0].message.content;
+        } catch (e) {
+          console.log(e.response.status);
+          if (e.response.status == 429) {
+            this.burst = true;
+            setTimeout(()=>{
+              this.burst = false;
+              this.$router.go(0);
             });
-            console.log(completion.data.choices[0].message.content);
-            return completion.data.choices[0].message.content;
-        } catch(e){
-            console.log(e.response.status);
-            if(e.response.status == 429){
-                this.burst = true;
-                setTimeout(()=>{
-                  this.burst = false;
-                  this.$router.go(0);
-                })
-            }
+          }
         }
       }
 
       if (num === 3) {
-        try{
-            const completion = await openai.createChatCompletion({
-              model: "gpt-3.5-turbo",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해",
-                },
-                {
-                  role: "user",
-                  content: `${this.loginUser.prefer3}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
-                },
-              ],
-              temperature: 0.8,
-              max_tokens: 50,
+        try {
+          const completion = await openai.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: [
+              {
+                role: 'system',
+                content:
+                    '결과 값은 항상 배열 형식으로 반환해줘, 쌍따옴표를 쓰고, 다른 말은 하지 말고 배열만 반환해',
+              },
+              {
+                role: 'user',
+                content: `${this.loginUser.prefer3}에 대해 사람들이 많이 검색한 유튜브 검색 키워드 2개를 배열 형식으로 알려줘`,
+              },
+            ],
+            temperature: 0.8,
+            max_tokens: 50,
+          });
+          console.log(completion.data.choices[0].message.content);
+          return completion.data.choices[0].message.content;
+        } catch (e) {
+          console.log(e);
+          if (e.response.status == 429) {
+            this.burst = true;
+            setTimeout(()=>{
+              this.burst = false;
+              this.$router.go(0);
             });
-            console.log(completion.data.choices[0].message.content);
-            return completion.data.choices[0].message.content;
-        } catch(e){
-            console.log(e);
-            if(e.response.status == 429){
-                this.burst = true;
-                setTimeout(()=>{
-                  this.burst = false;
-                  this.$router.go(0);
-                })
-            }
+          }
         }
       }
     },
     logout() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      console.log("trying to log out");
-      this.$store.dispatch("logout");
+      console.log('trying to log out');
+      this.$store.dispatch('logout');
       setTimeout(() => {
         this.$router.go(0);
       }, 2000);
       Toast.fire({
-        icon: "info",
-        title: "로그아웃 되었습니다.",
+        icon: 'info',
+        title: '로그아웃 되었습니다.',
       });
     },
     loginCheck() {
       if (this.loginUser) {
-        //로그인유저가 있다면
-        console.log("clicked");
-        this.$router.push("/youtube");
+        // 로그인유저가 있다면
+        console.log('clicked');
+        this.$router.push('/youtube');
       } else {
         Swal.fire({
-          title: "",
+          title: '',
           text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
           width: 570,
           icon: 'info',
@@ -357,13 +356,13 @@ export default {
           cancelButtonText: '취소',
         }).then((result) => {
           if (result.isConfirmed) {
-            this.$router.push("/youtubebeta");
+            this.$router.push('/youtubebeta');
           }
-        })
+        });
       }
     },
     goToCommun() {
-      this.$router.push("/base");
+      this.$router.push('/base');
     },
     verify() {
       console.log(this.prior1);

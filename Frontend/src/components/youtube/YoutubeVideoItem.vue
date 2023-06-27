@@ -3,7 +3,7 @@
     <ul class="slides">
       <!-- 비디오 3개씩 반환하므로 idx는 3까지 -->
       <li v-for="(video, idx) in videos" :key="idx">
-        <a 
+        <a
         :href="`https://www.youtube.com/embed/${video.id.videoId}`"
         target="_blank"
         >
@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 export default {
-  name: "YoutubeVideoItem",
+  name: 'YoutubeVideoItem',
   props: {
     keyword: String,
     preidx: Number,
@@ -61,24 +61,24 @@ export default {
   },
   created() {
     setTimeout(() => {
-      const URL = "https://www.googleapis.com/youtube/v3/search";
-      const API_KEY = "AIzaSyADWMljQxD92o6-ScsFObpU8mjkCUDmrdg";
+      const URL = 'https://www.googleapis.com/youtube/v3/search';
+      const API_KEY = 'AIzaSyADWMljQxD92o6-ScsFObpU8mjkCUDmrdg';
       axios({
         url: URL,
-        method: "GET",
+        method: 'GET',
         params: {
           key: API_KEY,
-          part: "snippet",
+          part: 'snippet',
           q: this.keyword,
-          type: "video",
+          type: 'video',
           maxResults: 3,
         },
       })
-        .then((res) => {
-          this.videos = res.data.items;
-          console.log(this.videos[0]);
-        })
-        .catch((err) => console.log(err));
+          .then((res) => {
+            this.videos = res.data.items;
+            console.log(this.videos[0]);
+          })
+          .catch((err) => console.log(err));
     }, 5000);
   },
 };

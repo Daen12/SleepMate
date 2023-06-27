@@ -12,21 +12,21 @@
 
 <script>
 export default {
-    name : "YoutubeSearchView",
-    data(){
-        return {
-            keyword : "",
-        }
+  name: 'YoutubeSearchView',
+  data() {
+    return {
+      keyword: '',
+    };
+  },
+  methods: {
+    sendKeyword() {
+      this.$emit('keywordSent', this.keyword);
+      console.log(this.keyword);
     },
-    methods : {
-        sendKeyword(){
-            this.$emit("keywordSent", this.keyword);
-            console.log(this.keyword);
-        }
-    }
-    
+  },
 
-}
+
+};
 </script>
 
 <style scoped>

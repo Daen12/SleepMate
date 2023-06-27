@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import axios from "axios";
-import Swal from "sweetalert2";
-import { mapState } from "vuex";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import {mapState} from 'vuex';
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       showAlertModal: false,
@@ -44,13 +44,13 @@ export default {
     };
   },
   created() {
-    if (sessionStorage.getItem("loginUser")) {
-      let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-      this.$store.commit("SET_LOGIN_USER", loginUser);
+    if (sessionStorage.getItem('loginUser')) {
+      const loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+      this.$store.commit('SET_LOGIN_USER', loginUser);
     }
   },
   computed: {
-    ...mapState(["showAlert", "loginUser"]),
+    ...mapState(['showAlert', 'loginUser']),
   },
   watch: {
     showAlert(res) {
@@ -58,7 +58,7 @@ export default {
         this.showAlertModal = true;
         axios({
           url: `http://localhost:9999/api/alert/${this.loginUser.userNickname}`,
-          method: "GET",
+          method: 'GET',
         }).then((res) => {
           this.alerts = res.data.Alerts;
         });
@@ -69,41 +69,41 @@ export default {
   },
   methods: {
     disableShowAlert() {
-      this.$store.commit("DISABLE_ALERT");
+      this.$store.commit('DISABLE_ALERT');
     },
     async removeAlerts() {
       await axios({
         url: `http://localhost:9999/api/alert/delete/all/${this.loginUser.userNickname}`,
-        method: "DELETE",
+        method: 'DELETE',
       }).then((res) => {
         console.log(res);
       });
 
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
 
       Toast.fire({
-        icon: "info",
-        title: "알림 모두 삭제되었습니다.",
+        icon: 'info',
+        title: '알림 모두 삭제되었습니다.',
       });
 
       this.showAlertModal = false;
     },
     sliceRegdate(data) {
-      var today = new Date();
+      const today = new Date();
 
-      var year = today.getFullYear();
-      var month = ("0" + (today.getMonth() + 1)).slice(-2);
-      var day = ("0" + today.getDate()).slice(-2);
-      let dateString = year + "-" + month + "-" + day;
+      const year = today.getFullYear();
+      const month = ('0' + (today.getMonth() + 1)).slice(-2);
+      const day = ('0' + today.getDate()).slice(-2);
+      const dateString = year + '-' + month + '-' + day;
 
-      let regdate = "" + data;
-      let result = "";
+      const regdate = '' + data;
+      let result = '';
       if (regdate.substring(0, 10) === dateString) {
         result = regdate.substring(11);
       } else {
@@ -112,9 +112,9 @@ export default {
       return result;
     },
     sliceSentence(data) {
-      let regdate = "" + data;
+      const regdate = '' + data;
       return regdate.substring(0, 5) + '....';
-    }
+    },
   },
 };
 </script>

@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapState} from 'vuex';
 import Swal from 'sweetalert2';
 // import FooterView from "@/components/common/FooterView.vue";
 
@@ -90,9 +90,9 @@ export default {
     // FooterView,
   },
   created() {
-    if (sessionStorage.getItem("loginUser")) {
-      let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-      this.$store.commit("SET_LOGIN_USER", loginUser);
+    if (sessionStorage.getItem('loginUser')) {
+      const loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+      this.$store.commit('SET_LOGIN_USER', loginUser);
       return true;
     } else {
       return false;
@@ -105,16 +105,16 @@ export default {
         position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
-        timerProgressBar: true,   
+        timerProgressBar: true,
       });
-      console.log("trying to log out");
-      this.$store.dispatch("logout");
+      console.log('trying to log out');
+      this.$store.dispatch('logout');
       setTimeout(() => {
         this.$router.go(0);
       }, 2000);
       Toast.fire({
-          icon: 'info',
-          title: '로그아웃 되었습니다.'
+        icon: 'info',
+        title: '로그아웃 되었습니다.',
       });
     },
     goToCommun() {
@@ -122,12 +122,12 @@ export default {
     },
     loginCheck() {
       if (this.loginUser) {
-        //로그인유저가 있다면
-        console.log("clicked");
-        this.$router.push("/youtube");
+        // 로그인유저가 있다면
+        console.log('clicked');
+        this.$router.push('/youtube');
       } else {
         Swal.fire({
-          title: "",
+          title: '',
           text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
           width: 570,
           icon: 'info',
@@ -136,14 +136,14 @@ export default {
           cancelButtonText: '취소',
         }).then((result) => {
           if (result.isConfirmed) {
-            this.$router.push("/youtubebeta");
+            this.$router.push('/youtubebeta');
           }
-        })
+        });
       }
     },
   },
   computed: {
-    ...mapState(["loginUser"]),
+    ...mapState(['loginUser']),
   },
 };
 </script>

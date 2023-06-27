@@ -13,19 +13,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import {mapState} from 'vuex';
 export default {
   computed: {
-    ...mapState(["boardList", "category", "pageNum"]),
+    ...mapState(['boardList', 'category', 'pageNum']),
   },
-  methods : {
-    click(classnum){
+  methods: {
+    click(classnum) {
       this.$store.commit('CHANGE_CATEGORY', classnum);
-      this.$store.dispatch("setBoardList", {pagenum: 1, category: this.category});
-      this.$emit("finishDetail");
-      this.$emit("finishCreate");
-      this.$store.commit("INIT_PAGENUM");
-    }
+      this.$store.dispatch('setBoardList', {pagenum: 1, category: this.category});
+      this.$emit('finishDetail');
+      this.$emit('finishCreate');
+      this.$store.commit('INIT_PAGENUM');
+    },
   },
 };
 </script>

@@ -101,11 +101,11 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapState } from "vuex";
-import Swal from "sweetalert2";
+import axios from 'axios';
+import {mapState} from 'vuex';
+import Swal from 'sweetalert2';
 export default {
-  name: "CommentView",
+  name: 'CommentView',
   props: {
     idx: Number,
     bWriter: String,
@@ -114,68 +114,68 @@ export default {
     return {
       writemode: 0,
       updatemode: 0,
-      nickName: "",
-      c_content: "",
+      nickName: '',
+      c_content: '',
       updateContentmode: [],
     };
   },
   computed: {
-    ...mapState(["loginUser", "comments"]),
+    ...mapState(['loginUser', 'comments']),
   },
   watch: {
     writemode() {
       axios({
         url: `http://localhost:9999/api/comment/${this.idx}`,
-        method: "GET",
+        method: 'GET',
       })
-        .then((res) => {
-          this.$store.commit("SET_COMMENTS", res.data.comments);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            this.$store.commit('SET_COMMENTS', res.data.comments);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     },
     updatemode() {
       axios({
         url: `http://localhost:9999/api/comment/${this.idx}`,
-        method: "GET",
+        method: 'GET',
       })
-        .then((res) => {
-          this.$store.commit("SET_COMMENTS", res.data.comments);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            this.$store.commit('SET_COMMENTS', res.data.comments);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     },
   },
   methods: {
     checkLoginStatus() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      if (sessionStorage.getItem("loginUser")) {
+      if (sessionStorage.getItem('loginUser')) {
         this.writemode = 1;
       } else {
         Toast.fire({
-          icon: "warning",
-          title: "로그인 후 이용 가능합니다.",
+          icon: 'warning',
+          title: '로그인 후 이용 가능합니다.',
         });
       }
     },
     sliceRegdate(data) {
-      var today = new Date();
+      const today = new Date();
 
-      var year = today.getFullYear();
-      var month = ("0" + (today.getMonth() + 1)).slice(-2);
-      var day = ("0" + today.getDate()).slice(-2);
-      let dateString = year + "-" + month + "-" + day;
+      const year = today.getFullYear();
+      const month = ('0' + (today.getMonth() + 1)).slice(-2);
+      const day = ('0' + today.getDate()).slice(-2);
+      const dateString = year + '-' + month + '-' + day;
 
-      let regdate = "" + data;
-      let result = "";
+      const regdate = '' + data;
+      let result = '';
       if (regdate.substring(0, 10) === dateString) {
         result = regdate.substring(11);
       } else {
@@ -188,19 +188,19 @@ export default {
     async commentWrite() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      if (this.c_content === "") {
+      if (this.c_content === '') {
         Toast.fire({
-          icon: "error",
-          title: "댓글 내용을 입력해주세요",
+          icon: 'error',
+          title: '댓글 내용을 입력해주세요',
         });
         return;
       }
-      let alert = {
+      const alert = {
         nickname: this.bWriter,
         articleIdx: this.idx,
         content: this.c_content,
@@ -209,17 +209,17 @@ export default {
       const API_URL = `http://localhost:9999/api/alert/write`;
       await axios({
         url: API_URL,
-        method: "POST",
+        method: 'POST',
         data: alert,
       })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        
-      let comment = {
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+      const comment = {
         articleIdx: this.idx,
         content: this.c_content,
         writer: this.nickName,
@@ -227,19 +227,19 @@ export default {
       const API_URL2 = `http://localhost:9999/api/comment/write`;
       await axios({
         url: API_URL2,
-        method: "POST",
+        method: 'POST',
         data: comment,
       })
-        .then((res) => {
-          this.$store.commit("CREATE_COMMENT", res.data);
-          this.c_content = "";
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.writemode = 0;
-        });
+          .then((res) => {
+            this.$store.commit('CREATE_COMMENT', res.data);
+            this.c_content = '';
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            this.writemode = 0;
+          });
     },
 
     // UPDATE
@@ -260,21 +260,21 @@ export default {
     commentUpdate(obj) {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
 
-      if (obj.updateContent === "") {
+      if (obj.updateContent === '') {
         Toast.fire({
-          icon: "error",
-          title: "댓글 내용을 입력해주세요",
+          icon: 'error',
+          title: '댓글 내용을 입력해주세요',
         });
         return;
       }
 
-      let comment = {
+      const comment = {
         articleIdx: this.idx,
         content: obj.updateContent,
         writer: this.nickName,
@@ -282,26 +282,26 @@ export default {
       };
 
       Swal.fire({
-        title: "",
-        text: "댓글을 수정하시겠습니까?",
-        icon: "warning",
+        title: '',
+        text: '댓글을 수정하시겠습니까?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "수정",
-        cancelButtonText: "취소",
+        confirmButtonText: '수정',
+        cancelButtonText: '취소',
       }).then((result) => {
         if (result.isConfirmed) {
           const API_URL = `http://localhost:9999/api/comment/update`;
           axios({
             url: API_URL,
-            method: "PUT",
+            method: 'PUT',
             data: comment,
             headers: {
-              "access-token": sessionStorage.getItem("access-token"),
+              'access-token': sessionStorage.getItem('access-token'),
             },
           }).then(() => {
             Toast.fire({
-              icon: "success",
-              title: "수정되었습니다.",
+              icon: 'success',
+              title: '수정되었습니다.',
             });
             this.updatemode = 0;
             this.updateContentmode[obj.idx] = false;
@@ -314,7 +314,7 @@ export default {
     commentDelete(idx) {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -322,43 +322,43 @@ export default {
       const API_URL = `http://localhost:9999/api/comment/delete/${idx}`;
 
       Swal.fire({
-        title: "",
-        text: "댓글을 삭제하시겠습니까?",
-        icon: "warning",
+        title: '',
+        text: '댓글을 삭제하시겠습니까?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "삭제",
-        cancelButtonText: "취소",
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
       }).then((result) => {
         if (result.isConfirmed) {
           axios({
             url: API_URL,
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
-              "access-token": sessionStorage.getItem("access-token"),
+              'access-token': sessionStorage.getItem('access-token'),
             },
           })
-            .then(() => {
-              Toast.fire({
-                icon: "success",
-                title: "삭제되었습니다.",
+              .then(() => {
+                Toast.fire({
+                  icon: 'success',
+                  title: '삭제되었습니다.',
+                });
+                this.$store.commit('DELETE_COMMENT', idx);
+              })
+              .catch((err) => {
+                console.log(err);
+                Toast.fire({
+                  icon: 'warning',
+                  title: '로그인 후 이용해주세요',
+                });
               });
-              this.$store.commit("DELETE_COMMENT", idx);
-            })
-            .catch((err) => {
-              console.log(err);
-              Toast.fire({
-                icon: "warning",
-                title: "로그인 후 이용해주세요",
-              });
-            });
         }
       });
     },
   },
   created() {
-    if (sessionStorage.getItem("loginUser")) {
+    if (sessionStorage.getItem('loginUser')) {
       this.nickName = JSON.parse(
-        sessionStorage.getItem("loginUser")
+          sessionStorage.getItem('loginUser'),
       ).userNickname;
     }
     for (let i = 0; i < this.comments.length; i++) {

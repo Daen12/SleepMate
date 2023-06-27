@@ -177,7 +177,7 @@
                 <hr />
                 <h2>About Us</h2>
               </div>
-              <p>많은 분들께서 선택하는 웰니스를 위한 첫걸음, 요가.<br> 
+              <p>많은 분들께서 선택하는 웰니스를 위한 첫걸음, 요가.<br>
               요가에 대해 알고 싶은 토픽에 대한 Best keyword를 AI가 선택해서 직접 검색해준다면 어떨까요? <br>
               요가메이트의 멤버십 커뮤니티와 AI 검색코너는 당신의 힐링을 책임집니다. <br>
               현대인을 위한 요가 플랫폼, YogaMate에서 진정한 웰니스를 누려보세요.</p>
@@ -432,7 +432,7 @@ Fitstagram도 많이 애용해주세요~~
         <!-- </div> -->
       </div>
     </section>
-    
+
     <!-- end info section -->
 
     <!-- footer section -->
@@ -446,30 +446,30 @@ Fitstagram도 많이 애용해주세요~~
 </template>
 
 <script>
-import emailjs from "emailjs-com";
-import LookAround from "@/components/LookAround.vue";
-import { mapState } from "vuex";
-import Swal from "sweetalert2";
+import emailjs from 'emailjs-com';
+import LookAround from '@/components/LookAround.vue';
+import {mapState} from 'vuex';
+import Swal from 'sweetalert2';
 export default {
-  name: "HomeView",
+  name: 'HomeView',
   data() {
     return {
-      time: "",
-      e_name: "",
-      e_email: "",
-      e_contact: "",
-      e_content: "",
+      time: '',
+      e_name: '',
+      e_email: '',
+      e_contact: '',
+      e_content: '',
     };
   },
   methods: {
     loginCheck() {
       if (this.loginUser) {
-        //로그인유저가 있다면
-        console.log("clicked");
-        this.$router.push("/youtube");
+        // 로그인유저가 있다면
+        console.log('clicked');
+        this.$router.push('/youtube');
       } else {
         Swal.fire({
-          title: "",
+          title: '',
           text: '멤버십 가입 시 맞춤형 유튜브 서비스를 이용하실 수 있습니다. 베타 서비스 페이지로 이동하시겠습니까?',
           width: 570,
           icon: 'info',
@@ -478,73 +478,72 @@ export default {
           cancelButtonText: '취소',
         }).then((result) => {
           if (result.isConfirmed) {
-            this.$router.push("/youtubebeta");
+            this.$router.push('/youtubebeta');
           }
-        })
+        });
       }
     },
     sendEmail() {
-      console.log("");
-      let data = {
+      console.log('');
+      const data = {
         from_name: this.e_name,
         email_id: this.e_email,
         from_contact: this.e_contact,
         from_content: this.e_content,
       };
       emailjs
-        .send("service_vocd9kn", "template_m511lr7", data, "EQ-0HYTiP50d3clZ1")
-        .then(
-          (result) => {
-            console.log("성공!", result.text);
-            this.e_name = "";
-            this.e_email = "";
-            this.e_contact = "";
-            this.e_content = "";
-          },
-          (error) => {
-            console.log(error.text);
-          }
-        );
-
+          .send('service_vocd9kn', 'template_m511lr7', data, 'EQ-0HYTiP50d3clZ1')
+          .then(
+              (result) => {
+                console.log('성공!', result.text);
+                this.e_name = '';
+                this.e_email = '';
+                this.e_contact = '';
+                this.e_content = '';
+              },
+              (error) => {
+                console.log(error.text);
+              },
+          );
     },
 
     logout() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      console.log("trying to log out");
-      this.$store.dispatch("logout");
+      console.log('trying to log out');
+      this.$store.dispatch('logout');
       setTimeout(() => {
         this.$router.go(0);
       }, 2000);
       Toast.fire({
-        icon: "info",
-        title: "로그아웃 되었습니다.",
+        icon: 'info',
+        title: '로그아웃 되었습니다.',
       });
     },
   },
   created() {
-    //0-23사이의 정수
-    let hours = new Date().getHours();
+    // 0-23사이의 정수
+    const hours = new Date().getHours();
     if (hours < 12 && hours >= 0) {
-      this.time = "아침이에요";
+      this.time = '아침이에요';
     } else if (hours >= 12 && hours <= 18) {
-      this.time = "오후에요";
+      this.time = '오후에요';
     } else if (19 <= hours && hours < 24) {
-      this.time = "저녁이에요";
+      this.time = '저녁이에요';
     }
-    console.log("created");
-    if (sessionStorage.getItem("loginUser")) {
-      let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-      console.log("user logged in");
-      this.$store.commit("SET_LOGIN_USER", loginUser);
+    console.log('created');
+    if (sessionStorage.getItem('loginUser')) {
+      const loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+      console.log('user logged in');
+      this.$store.commit('SET_LOGIN_USER', loginUser);
       return true;
     } else {
-      console.log("user not detected");
+      console.log('user not detected');
       return false;
     }
   },
@@ -552,7 +551,7 @@ export default {
     LookAround,
   },
   computed: {
-    ...mapState(["loginUser", "showAlert"]), //loginUser를 state에서 가져와 매핑한다.
+    ...mapState(['loginUser', 'showAlert']), // loginUser를 state에서 가져와 매핑한다.
   },
 };
 </script>

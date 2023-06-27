@@ -8,7 +8,7 @@
         <!-- post로 전송해야 보안성이 좋다. action은 process부서의 adduser에서 데이터 처리해달라는 뜻 -->
         <div class="int-area">
             <!-- name은 키값이 된다. -->
-            <input v-model="name" type="text" name="name" id="name" autocomplete="off" required> 
+            <input v-model="name" type="text" name="name" id="name" autocomplete="off" required>
             <label for="name">YOUR NAME</label>
         </div>
         <div class="int-area">
@@ -42,71 +42,70 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Swal from "sweetalert2";
+import {mapState} from 'vuex';
+import Swal from 'sweetalert2';
 export default {
-    data() {
+  data() {
     return {
     // Nickcheck:"",
     // Idcheck:"",
-      name: "",
-      nickname:"",
-      email : "",
-      id: "",
-      password: "",
+      name: '',
+      nickname: '',
+      email: '',
+      id: '',
+      password: '',
     };
   },
-  computed : {
-    ...mapState(["dupNick"]),
-    ...mapState(["dupId"])
+  computed: {
+    ...mapState(['dupNick']),
+    ...mapState(['dupId']),
 
   },
   methods: {
-    dupcheckNick(){
-        if(this.nickname.length > 0) {
-            this.$store.dispatch("dupcheckNick", this.nickname);
-        }
+    dupcheckNick() {
+      if (this.nickname.length > 0) {
+        this.$store.dispatch('dupcheckNick', this.nickname);
+      }
     },
-    dupcheckId(){
-        if (this.id.length > 0) {
-            this.$store.dispatch("dupcheckId", this.id);
-        }
-
+    dupcheckId() {
+      if (this.id.length > 0) {
+        this.$store.dispatch('dupcheckId', this.id);
+      }
     },
     regist() {
-    const Toast = Swal.mixin({
+      const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      if (this.id === "" || this.password === "" || this.name === "" || this.nickname==="") {
+      if (this.id === '' || this.password === '' || this.name === '' || this.nickname==='') {
         Toast.fire({
-          icon: "error",
-          title: "모든 내용을 입력해주세요.",
+          icon: 'error',
+          title: '모든 내용을 입력해주세요.',
         });
         return;
       }
-      if(this.dupId == 0 || this.dupNick==0){
+      if (this.dupId == 0 || this.dupNick==0) {
         Toast.fire({
-          icon: "error",
-          title: "아이디 또는 닉네임 중복확인을 해주세요.",
+          icon: 'error',
+          title: '아이디 또는 닉네임 중복확인을 해주세요.',
         });
         return;
       }
 
-      let user = {
+      const user = {
         name: this.name,
         nickname: this.nickname,
         id: this.id,
         password: this.password,
       };
 
-      this.$store.dispatch("createUser", user);
+      this.$store.dispatch('createUser', user);
     },
   },
-}
+};
 
 </script>
 

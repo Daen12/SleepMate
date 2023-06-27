@@ -17,41 +17,41 @@
     <board-create v-if="createopen" @finishCreate="finishCreate"></board-create>
     <board-detail :idx="this.idx" :num="this.num" v-if="detailopen" @finishDetail="finishDetail" @finishDelete="finishDelete"></board-detail>
   </div>
-  
+
   </div>
   <!-- parent div end -->
 </div>
 </template>
 
 <script>
-import SideBar from '@/components/common/SideBar.vue'
-import BoardTable from '@/components/BoardTable.vue'
-import BoardDetail from '@/components/BoardDetail.vue'
-import BoardCreate from '@/components/BoardCreate.vue'
+import SideBar from '@/components/common/SideBar.vue';
+import BoardTable from '@/components/BoardTable.vue';
+import BoardDetail from '@/components/BoardDetail.vue';
+import BoardCreate from '@/components/BoardCreate.vue';
 
 export default {
-  components: { 
-    SideBar, 
-    BoardTable, 
-    BoardDetail,  
+  components: {
+    SideBar,
+    BoardTable,
+    BoardDetail,
     BoardCreate,
-    },
-  data(){
-    return{
-      detailopen : false,
-      createopen : false,
-      idx : -1,
-      num : 0,
-      pageNum : 0,
-    }
   },
-  methods : {
-    openDetail(idx, num){
+  data() {
+    return {
+      detailopen: false,
+      createopen: false,
+      idx: -1,
+      num: 0,
+      pageNum: 0,
+    };
+  },
+  methods: {
+    openDetail(idx, num) {
       this.detailopen = true;
       this.idx = idx;
       this.num = num;
     },
-    createOpen(){
+    createOpen() {
       this.createopen = true;
     },
     finishDetail() {
@@ -62,14 +62,14 @@ export default {
     },
     finishCreate() {
       this.createopen = false;
-    }
+    },
   },
   created() {
     // if (this.$state.verifyAlarm !== 0) {
     //   this.detailopen
     // }
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -105,7 +105,6 @@ export default {
   /* border: 2px solid orange; */
   flex: 4;
 }
-
 
 
 </style>

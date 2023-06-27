@@ -46,19 +46,19 @@
 </template>
 
 <script>
-import router from "@/router";
-import Swal from "sweetalert2";
+import router from '@/router';
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
       board: null,
       comments: [],
       updatemode: false,
-      title: "",
-      content: "",
+      title: '',
+      content: '',
       // updateText : "",
-      nickName: "",
-      category: "1",
+      nickName: '',
+      category: '1',
     };
   },
   props: {
@@ -70,41 +70,41 @@ export default {
       router.go(0);
     },
     createBoard() {
-      //axios 요청 보내기
+      // axios 요청 보내기
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      if (this.title === "") {
+      if (this.title === '') {
         Toast.fire({
-          icon: "warning",
-          title: "제목을 입력하세요!",
+          icon: 'warning',
+          title: '제목을 입력하세요!',
         });
-      } else if (this.content === "") {
+      } else if (this.content === '') {
         Toast.fire({
-          icon: "warning",
-          title: "내용을 입력하세요!",
+          icon: 'warning',
+          title: '내용을 입력하세요!',
         });
       } else {
-        let board = {
+        const board = {
           classnum: this.category,
           title: this.title,
           content: this.content,
           writer: this.nickName,
         };
-        this.$store.dispatch("writeBoard", board);
+        this.$store.dispatch('writeBoard', board);
         setTimeout(() => {
-          this.$emit("finishCreate");
+          this.$emit('finishCreate');
         }, 200);
       }
     },
   },
   created() {
     this.nickName = JSON.parse(
-      sessionStorage.getItem("loginUser")
+        sessionStorage.getItem('loginUser'),
     ).userNickname;
   },
 };

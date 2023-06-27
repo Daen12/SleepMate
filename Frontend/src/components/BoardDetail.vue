@@ -37,7 +37,8 @@
           {{ board.content }}
         </div>
 
-        <comment-view v-if="!updatemode" :idx="board.idx" :bWriter="board.writer"></comment-view>
+        <comment-view v-if="!updatemode"
+        :idx="board.idx" :bWriter="board.writer"></comment-view>
 
         <textarea v-if="updatemode" v-model="board.content" class="update cont">
         </textarea>
@@ -70,31 +71,31 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapState } from "vuex";
-import CommentView from "@/components/CommentView.vue";
-import Swal from "sweetalert2";
+import axios from 'axios';
+import {mapState} from 'vuex';
+import CommentView from '@/components/CommentView.vue';
+import Swal from 'sweetalert2';
 export default {
   methods: {
     showComment() {
       this.showingComment = true;
     },
     goback() {
-      this.$emit("finishDetail");
+      this.$emit('finishDetail');
     },
     deleteBoard() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
 
-      if (!sessionStorage.getItem("loginUser")) {
+      if (!sessionStorage.getItem('loginUser')) {
         Toast.fire({
-          icon: "warning",
-          title: "로그인 후 이용 가능합니다.",
+          icon: 'warning',
+          title: '로그인 후 이용 가능합니다.',
         });
         return;
       } else {
@@ -110,43 +111,43 @@ export default {
             const API_URL = `http://localhost:9999/api/board/delete/${this.board.idx}`;
             axios({
               url: API_URL,
-              method: "DELETE",
+              method: 'DELETE',
               headers: {
-                "access-token": sessionStorage.getItem("access-token"),
+                'access-token': sessionStorage.getItem('access-token'),
               },
             }).then(() => {
-              console.log("deleted");
+              console.log('deleted');
               Toast.fire({
-                icon: "success",
-                title: "삭제되었습니다.",
+                icon: 'success',
+                title: '삭제되었습니다.',
               });
-              this.$emit("finishDelete");
+              this.$emit('finishDelete');
             });
           }
-        })
+        });
       }
     },
     updateBoard() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
 
-      if (!sessionStorage.getItem("loginUser")) {
+      if (!sessionStorage.getItem('loginUser')) {
         Toast.fire({
-          icon: "warning",
-          title: "로그인 후 이용 가능합니다.",
+          icon: 'warning',
+          title: '로그인 후 이용 가능합니다.',
         });
       } else if (
         this.board.writer !==
-        JSON.parse(sessionStorage.getItem("loginUser")).userNickname
+        JSON.parse(sessionStorage.getItem('loginUser')).userNickname
       ) {
         Toast.fire({
-          icon: "error",
-          title: "본인이 작성한 글만 수정 가능합니다.",
+          icon: 'error',
+          title: '본인이 작성한 글만 수정 가능합니다.',
         });
       } else {
         this.updatemode = true;
@@ -155,7 +156,7 @@ export default {
     updateFinish() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -163,21 +164,21 @@ export default {
       const API_URL = `http://localhost:9999/api/board/update`;
       axios({
         url: API_URL,
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "access-token": sessionStorage.getItem("access-token"),
+          'access-token': sessionStorage.getItem('access-token'),
         },
         data: this.board,
       }).then(() => {
         this.updatemode = false;
         Toast.fire({
-          icon: "success",
-          title: "수정되었습니다.",
+          icon: 'success',
+          title: '수정되었습니다.',
         });
       });
     },
     sliceRegdate(data) {
-      let regdate = "" + data;
+      const regdate = '' + data;
       if (data === undefined) {
         console.log(data);
       }
@@ -187,8 +188,8 @@ export default {
   data() {
     return {
       showingComment: false,
-      titleUpdate: "",
-      contentUpdate: "",
+      titleUpdate: '',
+      contentUpdate: '',
       updatemode: false,
       checkUser: false,
     };
@@ -198,31 +199,31 @@ export default {
     num: Number,
   },
   computed: {
-    ...mapState(["board", "loginUser"]),
+    ...mapState(['board', 'loginUser']),
   },
   created() {
     axios({
       url: `http://localhost:9999/api/board/detail/${this.idx}`,
-      method: "GET",
+      method: 'GET',
     })
-      .then((res) => {
-        this.board = res.data;
-        this.$store.commit("SET_BOARD", res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          this.board = res.data;
+          this.$store.commit('SET_BOARD', res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
     axios({
       url: `http://localhost:9999/api/comment/${this.idx}`,
-      method: "GET",
+      method: 'GET',
     })
-      .then((res) => {
-        this.$store.commit("SET_COMMENTS", res.data.comments);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          this.$store.commit('SET_COMMENTS', res.data.comments);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   },
   updated() {
     if (this.loginUser && this.board.writer === this.loginUser.userNickname) {

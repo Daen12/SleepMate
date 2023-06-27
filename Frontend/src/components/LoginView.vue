@@ -3,7 +3,6 @@
     <section class="signin-form">
       <h1>LOGIN</h1>
       <!-- form을 만들어야 서버에 전송 가능 -->
-      <!-- <form class="signup-form" method = "post" action="/process/adduser"> -->
       <div class="signup-form">
         <div class="int-area">
           <input
@@ -42,37 +41,37 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
-      id: "",
-      password: "",
+      id: '',
+      password: '',
     };
   },
   methods: {
     login() {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
       });
-      if (this.id === "" || this.password === "") {
+      if (this.id === '' || this.password === '') {
         Toast.fire({
-          icon: "error",
-          title: "모든 내용을 입력해주세요",
+          icon: 'error',
+          title: '모든 내용을 입력해주세요',
         });
         return;
       }
 
-      let user = {
+      const user = {
         id: this.id,
         password: this.password,
       };
 
-      this.$store.dispatch("setLoginUser", user);
+      this.$store.dispatch('setLoginUser', user);
     },
   },
 };
@@ -97,7 +96,7 @@ export default {
     background : url("./signup.jpg") no-repeat center;
     background-size: cover;
     backdrop-filter: blur(2px);
-    background-color: rgba(0,0,0,0.3); 
+    background-color: rgba(0,0,0,0.3);
 } */
 .signin-background {
   margin: auto;
